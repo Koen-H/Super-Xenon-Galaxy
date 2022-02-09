@@ -4,27 +4,22 @@ using System.Drawing;							// System.Drawing contains drawing tools such as Col
 
 public class MyGame : Game
 {
-	public MyGame() : base(800, 600, false)		// Create a window that's 800x600 and NOT fullscreen
-	{
-		// Draw some things on a canvas:
-		EasyDraw canvas = new EasyDraw(800, 600);
-		canvas.Clear(Color.MediumPurple);
-		canvas.Fill(Color.Yellow);
-		canvas.Ellipse(width / 2, height / 2, 200, 200);
-		canvas.Fill(50);
-		canvas.TextSize(32);
-		canvas.TextAlign(CenterMode.Center, CenterMode.Center);
-		canvas.Text("Welcome!", width / 2, height / 2);
+	private Level level;
+	private HUD hud;
 
-		// Add the canvas to the engine to display it:
-		AddChild(canvas);
+	public MyGame() : base(1920, 1080, false, true, 960, 540)		// Create a window that's 800x600 and NOT fullscreen
+	{
+		level = new Level("Map.tmx");
+		hud = new HUD();
+
+		AddChild(level);
 		Console.WriteLine("MyGame initialized");
 	}
 
 	// For every game object, Update is called every frame, by the engine:
 	void Update()
 	{
-		// Empty
+		level.Update();
 	}
 
 	static void Main()							// Main() is the first method that's called when the program is run
