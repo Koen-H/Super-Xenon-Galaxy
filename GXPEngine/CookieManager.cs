@@ -76,7 +76,9 @@ namespace GXPEngine
             float rX = random.Next(distance, game.width - distance);
             float rY = random.Next(distance, game.height - distance);
 
-            Cookie cookie = new Cookie(rX, rY, "COOKIE_" + colors.GetValue(rC) + ".png");
+            ObjectColor randomColor = (ObjectColor)colors.GetValue(rC);
+
+            Cookie cookie = new Cookie(rX, rY, "COOKIE_" + randomColor + ".png", randomColor);
             return cookie;
         }
 
