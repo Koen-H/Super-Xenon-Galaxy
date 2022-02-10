@@ -15,7 +15,6 @@ public class MyGame : Game
 		level = new Level("Map.tmx", pData);
 		hud = new HUD(this, pData);
 
-
 		AddChild(level);
 		AddChild(hud);
 		Console.WriteLine("MyGame initialized");

@@ -24,6 +24,11 @@ namespace GXPEngine
             return score;
         }
 
+        public void IncreaseScore()
+        {
+            score++;
+        }
+
         public int GetHearts()
         {
             return hearts;

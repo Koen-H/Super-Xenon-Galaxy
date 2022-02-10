@@ -39,7 +39,7 @@ namespace GXPEngine
 
         private float GetTimer()
         {
-            timerMilli += Time.deltaTime / 2;
+            timerMilli += Time.deltaTime;
             timerSec = (int) timerMilli / 1000;
             return timerSec;
         }

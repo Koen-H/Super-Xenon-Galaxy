@@ -14,6 +14,8 @@ namespace GXPEngine
 
     public class Player : AnimationSprite
     {
+        private PlayerData _pData;
+
         private bool pressUp;
         private bool pressDown;
         private bool pressLeft;
@@ -29,8 +31,10 @@ namespace GXPEngine
         private ObjectColor currentColor;
 
         private float speed;
-        public Player(Level level, Vector2 pos) : base("PLAYER_PINK.png", spriteCols, spriteRows)
+        public Player(Level level, Vector2 pos, PlayerData pData) : base("PLAYER_PINK.png", spriteCols, spriteRows)
         {
+            _pData = pData;
+
             x = pos.x;
             y = pos.y;
 
@@ -39,7 +43,7 @@ namespace GXPEngine
 
             speedX = 0;
             speedY = 0;
-            speed = 180;
+            speed = 360;
 
             currentColor = ObjectColor.PINK;    //The default color for the player
             UpdateSprite();
@@ -166,6 +170,7 @@ namespace GXPEngine
                         Cookie cookie = (Cookie)collision;
                         if (cookie.cookieColor == currentColor)//Check if the cookie is the same color as the player
                         {
+                            _pData.IncreaseScore();
                             cookie.Destroy();//DESTROY THE COOKIE!
                         }
                     }
