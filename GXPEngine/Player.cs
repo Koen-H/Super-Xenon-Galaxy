@@ -14,6 +14,12 @@ namespace GXPEngine
 
     public class Player : AnimationSprite
     {
+        private bool pressUp;
+        private bool pressDown;
+        private bool pressLeft;
+        private bool pressRight;
+        private bool pressSpace;
+
         private Level _level;
         private float speedX;
         private float speedY;
@@ -92,25 +98,49 @@ namespace GXPEngine
         
         private void ChangeColor()
         {
-            if (Input.GetKeyDown(Key.UP))
+            if (Input.GetKeyDown(Key.UP) && !pressUp)
             {
+                pressUp = true;
                 currentColor = ObjectColor.CYAN;
                 UpdateSprite();
             }
-            if (Input.GetKeyDown(Key.LEFT))
+            if (Input.GetKeyDown(Key.LEFT) && !pressLeft)
             {
+                pressLeft = true;
                 currentColor = ObjectColor.ORANGE;
                 UpdateSprite();
             }
-            if (Input.GetKeyDown(Key.RIGHT))
+            if (Input.GetKeyDown(Key.RIGHT) && !pressRight)
             {
+                pressRight = true;
                 currentColor = ObjectColor.PINK;
                 UpdateSprite();
             }
-            if (Input.GetKeyDown(Key.DOWN))
+            if (Input.GetKeyDown(Key.DOWN) && !pressDown)
             {
+                pressDown = true;
                 currentColor = ObjectColor.PURPLE;
                 UpdateSprite();
+            }
+
+            if (Input.GetKeyUp(Key.UP))
+            {
+                pressUp = false;
+
+            }
+            if (Input.GetKeyUp(Key.LEFT))
+            {
+                pressLeft = false;
+
+            }
+            if (Input.GetKeyUp(Key.RIGHT))
+            {
+                pressRight = false;
+
+            }
+            if (Input.GetKeyUp(Key.DOWN))
+            {
+                pressDown = false;
             }
         }
 
@@ -124,8 +154,10 @@ namespace GXPEngine
 
         private void EatCookie()
         {
-            if (Input.GetKeyDown(Key.SPACE))
+            if (Input.GetKeyDown(Key.SPACE) && !pressSpace)
             {
+                pressSpace = true;
+
                 GameObject[] collisions = GetCollisions();//Get all the collisions
                 foreach (GameObject collision in collisions)
                 {
@@ -139,6 +171,11 @@ namespace GXPEngine
                     }
 
                 }
+            }
+
+            if (Input.GetKeyUp(Key.SPACE))
+            {
+                pressSpace = false;
             }
         }
     }

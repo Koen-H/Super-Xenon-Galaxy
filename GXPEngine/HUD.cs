@@ -33,7 +33,6 @@ namespace GXPEngine
             scoreHolder.TextSize(30);
             scoreHolder.Text("SCORE: " + scoreHolder);
             scoreHolder.SetXY(width / 2, scoreHolder.height / 2);
-            //score.alpha = 0;
             AddChild(scoreHolder);
         }
 
