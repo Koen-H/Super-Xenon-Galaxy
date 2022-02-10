@@ -10,19 +10,28 @@ namespace GXPEngine
     public class Level : GameObject
     {
         private Player player;
+        private CookieManager cookieManager;
 
         private TiledLoader tiledLoader;
 
         public Level(string filename) : base(true)
         {
             tiledLoader = new TiledLoader(filename);
-
             Create();
+
+            cookieManager = new CookieManager(this);
+            AddChild(cookieManager);
+
         }
 
         public void Update()
         {
             player.Update();
+        }
+
+        public Player GetPlayer()
+        {
+            return player;
         }
 
         private void Create()
