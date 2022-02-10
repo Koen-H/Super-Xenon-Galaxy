@@ -26,20 +26,17 @@ namespace GXPEngine
         private float speedX;
         private float speedY;
 
-        private const int spriteCols = 7;
+        private const int spriteCols = 1;
         private const int spriteRows = 1;
         private ObjectColor currentColor;
 
         private float speed;
-        public Player(Level level, Vector2 pos, PlayerData pData) : base("PLAYER_PINK.png", spriteCols, spriteRows)
+        public Player(Level level, Vector2 pos, PlayerData pData) : base("Assets/Player/pink.png", spriteCols, spriteRows)
         {
             _pData = pData;
 
             x = pos.x;
             y = pos.y;
-
-            SetOrigin(width / 2, height / 2);
-            SetScaleXY(3);
 
             speedX = 0;
             speedY = 0;
@@ -47,6 +44,9 @@ namespace GXPEngine
 
             currentColor = ObjectColor.PINK;    //The default color for the player
             UpdateSprite();
+
+            SetOrigin(width / 2, height / 2);
+            SetScaleXY(4);
 
             _level = level;
 
@@ -59,6 +59,7 @@ namespace GXPEngine
             Move();
             ChangeColor();
             EatCookie();
+            Console.WriteLine(rotation);
         }
 
         private void Move()
@@ -66,24 +67,48 @@ namespace GXPEngine
             speedX = 0;
             speedY = 0;
 
+            if (rotation > 360) rotation -= 360;
+
             if (Input.GetKey(Key.A) && !Input.GetKey(Key.D))
             {
+                //SetOrigin(0, height);
+                //rotation--;
+                //speedY = 0;
+
                 speedX = -speed;
+                rotation = 270;
+
+                //if (rotation < -90) rotation = -90;
+                //else rotation -= 5;
             }
 
             else if (Input.GetKey(Key.D) && !Input.GetKey(Key.A))
             {
+                //SetOrigin(width, height);
+                //rotation++;
+                //speedY = 0;
+
                 speedX = speed;
+                rotation = 90;
+
+                //if (rotation > 90) rotation = 90;
+                //else rotation += 5;
             }
 
             if (Input.GetKey(Key.W) && !Input.GetKey(Key.S))
             {
                 speedY = -speed;
+                rotation = 0;
+
             }
 
             else if (Input.GetKey(Key.S) && !Input.GetKey(Key.W))
             {
                 speedY = speed;
+                rotation = 180;
+
+                //if (rotation > 180) rotation = 180;
+                //else rotation += 5;
             }
 
             float vx = speedX * Time.deltaTime / 1000;
@@ -150,9 +175,12 @@ namespace GXPEngine
 
         private void UpdateSprite()
         {
-            string spriteString = "PLAYER_" + currentColor + ".png";
+            string spriteString = "Assets/Player/" + currentColor.ToString().ToLower() + ".png";
             this.initializeFromTexture(Texture2D.GetInstance(spriteString, false));
             initializeAnimFrames(spriteCols, spriteRows);
+
+            SetOrigin(width / 8, height / 8);
+
             Console.WriteLine("Player's color has changed to:" + currentColor);
         }
 
