@@ -9,11 +9,12 @@ public class MyGame : Game
 	private HUD hud;
 
 
-	public MyGame() : base(1920, 1080, false, true, 960, 540)		// Create a window that's 800x600 and NOT fullscreen
+	public MyGame() : base(1920, 1080, false, false, 960, 540)		// Create a window that's 800x600 and NOT fullscreen
 	{
 		pData = new PlayerData();
 		level = new Level("Map.tmx", pData);
 		hud = new HUD(this, pData);
+
 
 		AddChild(level);
 		AddChild(hud);

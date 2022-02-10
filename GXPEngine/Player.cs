@@ -33,7 +33,7 @@ namespace GXPEngine
 
             speedX = 0;
             speedY = 0;
-            speed = 3;
+            speed = 180;
 
             currentColor = ObjectColor.PINK;    //The default color for the player
             UpdateSprite();
@@ -76,12 +76,15 @@ namespace GXPEngine
                 speedY = speed;
             }
 
+            float vx = speedX * Time.deltaTime / 1000;
+            float vy = speedY * Time.deltaTime / 1000;
 
-            if (MoveUntilCollision(speedX, 0) != null)
+
+            if (MoveUntilCollision(vx, 0) != null)
             {
                 //speedX = 0;
             }
-            if (MoveUntilCollision(0, speedY) != null)
+            if (MoveUntilCollision(0, vy) != null)
             {
                 //speedY = 0;
             }
