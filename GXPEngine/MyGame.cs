@@ -4,23 +4,25 @@ using System.Drawing;                           // System.Drawing contains drawi
 
 public class MyGame : Game
 {
+	private PlayerData pData;
 	private Level level;
 	private HUD hud;
 
 
 	public MyGame() : base(1920, 1080, false, true, 960, 540)		// Create a window that's 800x600 and NOT fullscreen
 	{
-		level = new Level("Map.tmx");
-		hud = new HUD();
+		pData = new PlayerData();
+		level = new Level("Map.tmx", pData);
+		hud = new HUD(this, pData);
 
 		AddChild(level);
+		AddChild(hud);
 		Console.WriteLine("MyGame initialized");
 	}
 
 	// For every game object, Update is called every frame, by the engine:
 	void Update()
 	{
-        level.Update();
     }
 
 	static void Main()							// Main() is the first method that's called when the program is run
