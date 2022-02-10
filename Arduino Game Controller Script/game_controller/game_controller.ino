@@ -88,7 +88,7 @@ void loop() {
   }
   if(colorButtonOne == LOW && colorPinOnePressed){
       colorPinOnePressed = false;
-    Keyboard.write(38);
+    Keyboard.write(KEY_LEFT_ARROW);
   }
 
   //color 2
@@ -97,7 +97,7 @@ void loop() {
   }
   if(colorButtonTwo == LOW && colorPinTwoPressed){
       colorPinTwoPressed = false;
-    Keyboard.write('2');
+    Keyboard.write(KEY_UP_ARROW);
   }
 
   //color 3
@@ -106,7 +106,7 @@ void loop() {
   }
   if(colorButtonThree == LOW && colorPinThreePressed){
       colorPinThreePressed = false;
-    Keyboard.write('3');
+    Keyboard.write(KEY_DOWN_ARROW);
   }
 
   // color 4
@@ -115,7 +115,8 @@ void loop() {
   }
   if(colorButtonFour == LOW && colorPinFourPressed){
       colorPinFourPressed = false;
-    Keyboard.write('4');
+    Keyboard.press(KEY_RIGHT_ARROW);
+    Keyboard.release(KEY_RIGHT_ARROW);
   }
   
 

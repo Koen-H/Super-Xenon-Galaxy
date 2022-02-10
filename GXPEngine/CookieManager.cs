@@ -35,7 +35,7 @@ namespace GXPEngine
 
         void Update()
         {
-            Console.WriteLine(GetTimer());
+            //Console.WriteLine(GetTimer());
             CreateCookies();
         }
 

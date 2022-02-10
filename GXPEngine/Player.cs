@@ -18,7 +18,10 @@ namespace GXPEngine
         private float speedX;
         private float speedY;
 
+        private int spriteCols = 7;
+        private int spriteRows = 1;
         private PlayerColor currentColor;
+
         private float speed;
         public Player(Level level, Vector2 pos) : base("barry.png", 7, 1)
         {
@@ -32,6 +35,9 @@ namespace GXPEngine
             speedY = 0;
             speed = 3;
 
+            currentColor = PlayerColor.PINK;//The default color for the player
+            UpdateSprite();
+
             _level = level;
 
             collider.isTrigger = true;
@@ -41,7 +47,7 @@ namespace GXPEngine
         {
             Animate(0.05f);
             Move();
-            //ChangeColor();
+            ChangeColor();
         }
 
         private void Move()
@@ -80,25 +86,36 @@ namespace GXPEngine
             }
         }
         
-       /* private void ChangeColor()
+        private void ChangeColor()
         {
-            if (Input.GetKey())
+            if (Input.GetKeyDown(Key.UP))
             {
-                speedX = -speed;
+                currentColor = PlayerColor.CYAN;
+                UpdateSprite();
             }
-            if (Input.GetKey(Key.A) && !Input.GetKey(Key.D))
+            if (Input.GetKeyDown(Key.LEFT))
             {
-                speedX = -speed;
+                currentColor = PlayerColor.ORANGE;
+                UpdateSprite();
             }
-            if (Input.GetKey(Key.A) && !Input.GetKey(Key.D))
+            if (Input.GetKeyDown(Key.RIGHT))
             {
-                speedX = -speed;
+                currentColor = PlayerColor.PINK;
+                UpdateSprite();
             }
-            if (Input.GetKey(Key.A) && !Input.GetKey(Key.D))
+            if (Input.GetKeyDown(Key.DOWN))
             {
-                speedX = -speed;
+                currentColor = PlayerColor.PURPLE;
+                UpdateSprite();
             }
-        }*/
+        }
+        private void UpdateSprite()
+        {
+            string spriteString = "PLAYER_" + currentColor + ".png";
+            this.initializeFromTexture(Texture2D.GetInstance(spriteString, false));
+            initializeAnimFrames(spriteCols, spriteRows);
+            Console.WriteLine("Player's color has changed to:" + currentColor);
+        }
     }
 
 }
