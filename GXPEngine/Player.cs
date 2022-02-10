@@ -48,6 +48,7 @@ namespace GXPEngine
             Animate(0.05f);
             Move();
             ChangeColor();
+            EatCookie();
         }
 
         private void Move()
@@ -109,12 +110,33 @@ namespace GXPEngine
                 UpdateSprite();
             }
         }
+
         private void UpdateSprite()
         {
             string spriteString = "PLAYER_" + currentColor + ".png";
             this.initializeFromTexture(Texture2D.GetInstance(spriteString, false));
             initializeAnimFrames(spriteCols, spriteRows);
             Console.WriteLine("Player's color has changed to:" + currentColor);
+        }
+
+        private void EatCookie()
+        {
+            if (Input.GetKeyDown(Key.SPACE))
+            {
+                GameObject[] collisions = GetCollisions();//Get all the collisions
+                foreach (GameObject collision in collisions)
+                {
+                    if (collision is Cookie)//If one of them is a cookie
+                    {
+                        Cookie cookie = (Cookie)collision;
+                        if (cookie.cookieColor == currentColor)//Check if the cookie is the same color as the player
+                        {
+                            cookie.Destroy();//DESTROY THE COOKIE!
+                        }
+                    }
+
+                }
+            }
         }
     }
 
