@@ -7,6 +7,7 @@ namespace GXPEngine
 {
     public class CookieManager : GameObject
     {
+        private PlayerData _pData;
         private Level _level;
         private Player player;
         private Random random;
@@ -18,8 +19,9 @@ namespace GXPEngine
         private const int distance = 32;
         private List<Cookie> cookies;
 
-        public CookieManager(Level level)
+        public CookieManager(Level level, PlayerData pData)
         {
+            _pData = pData;
             _level = level;
             player = _level.GetPlayer();
 
@@ -35,11 +37,18 @@ namespace GXPEngine
         {
             //Console.WriteLine(GetTimer());
             CreateCookies();
+            Console.WriteLine(spawnRate);
+        }
+
+        private float GetSpawnRate()
+        {
+            spawnRate = CalculateSpawnRate();
+            return spawnRate;
         }
 
         private float GetTimer()
         {
-            timerMilli += Time.deltaTime;
+            timerMilli += Time.deltaTime / 2;
             timerSec = (int) timerMilli / 1000;
             return timerSec;
         }
@@ -51,7 +60,7 @@ namespace GXPEngine
 
         private void CreateCookies()
         {
-            if ((int)GetTimer() < spawnRate) return;
+            if ((int)GetTimer() < GetSpawnRate()) return;
             SetTimer(0);
 
             Cookie cookie;
@@ -78,7 +87,7 @@ namespace GXPEngine
 
             ObjectColor randomColor = (ObjectColor)colors.GetValue(rC);
 
-            Cookie cookie = new Cookie(rX, rY, "COOKIE_" + randomColor + ".png", randomColor);
+            Cookie cookie = new Cookie(rX, rY, "Assets/Cookie/" + randomColor + ".png", randomColor);
             return cookie;
         }
 
@@ -86,9 +95,9 @@ namespace GXPEngine
         /// Method for future spawn rate calculation depending on score.
         /// </summary>
         /// <returns></returns>
-        private float CurrentSpawnSpeed()
+        private float CalculateSpawnRate()
         {
-            return 0;
+            return 2 - (float) _pData.GetScore() / 100;
         }
     }
 }
