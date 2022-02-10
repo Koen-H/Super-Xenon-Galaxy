@@ -26,7 +26,7 @@ namespace GXPEngine
 
 
 
-            cookieManager = new CookieManager(this);
+            cookieManager = new CookieManager(this, pData);
             AddChild(cookieManager);
 
         }
