@@ -7,6 +7,7 @@ public class MyGame : Game
 	private Level level;
 	private HUD hud;
 
+
 	public MyGame() : base(1920, 1080, false, true, 960, 540)		// Create a window that's 800x600 and NOT fullscreen
 	{
 		level = new Level("Map.tmx");

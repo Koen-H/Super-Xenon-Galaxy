@@ -88,7 +88,7 @@ void loop() {
   }
   if(colorButtonOne == LOW && colorPinOnePressed){
       colorPinOnePressed = false;
-    Keyboard.write('1');
+    Keyboard.write(38);
   }
 
   //color 2

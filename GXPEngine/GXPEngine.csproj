@@ -36,6 +36,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArduinoController.cs" />
     <Compile Include="Cookie.cs" />
     <Compile Include="CookieManager.cs" />
     <Compile Include="GXPEngine\AddOns\Gizmos.cs" />

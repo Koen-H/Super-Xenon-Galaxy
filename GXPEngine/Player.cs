@@ -6,13 +6,19 @@ using System.Text;
 
 namespace GXPEngine
 {
+
+    public enum PlayerColor
+    {
+        PINK, PURPLE, ORANGE, CYAN
+    }
+
     public class Player : AnimationSprite
     {
         private Level _level;
-
         private float speedX;
         private float speedY;
 
+        private PlayerColor currentColor;
         private float speed;
         public Player(Level level, Vector2 pos) : base("barry.png", 7, 1)
         {
@@ -35,6 +41,7 @@ namespace GXPEngine
         {
             Animate(0.05f);
             Move();
+            //ChangeColor();
         }
 
         private void Move()
@@ -72,6 +79,26 @@ namespace GXPEngine
                 //speedY = 0;
             }
         }
+        
+       /* private void ChangeColor()
+        {
+            if (Input.GetKey())
+            {
+                speedX = -speed;
+            }
+            if (Input.GetKey(Key.A) && !Input.GetKey(Key.D))
+            {
+                speedX = -speed;
+            }
+            if (Input.GetKey(Key.A) && !Input.GetKey(Key.D))
+            {
+                speedX = -speed;
+            }
+            if (Input.GetKey(Key.A) && !Input.GetKey(Key.D))
+            {
+                speedX = -speed;
+            }
+        }*/
     }
 
 }
