@@ -10,12 +10,10 @@ namespace GXPEngine
     {
         private PlayerData _pData;
         private EasyDraw scoreHolder;
-        private int score;
 
         public HUD(Game game, PlayerData pData) : base(game.width, game.height, false)
         {
             _pData = pData;
-            score = _pData.GetScore();
 
             CreateScore();
         }
@@ -27,19 +25,19 @@ namespace GXPEngine
 
         private void CreateScore()
         {
-            scoreHolder = new EasyDraw(640, 360, false);
-            scoreHolder.TextAlign(CenterMode.Min, CenterMode.Center);
+            scoreHolder = new EasyDraw(400, 100, false);
+            scoreHolder.TextAlign(CenterMode.Center, CenterMode.Center);
             scoreHolder.Fill(Color.White);
-            scoreHolder.TextSize(30);
-            scoreHolder.Text("SCORE: " + scoreHolder);
-            scoreHolder.SetXY(width / 2, scoreHolder.height / 2);
+            scoreHolder.TextSize(45);
+            scoreHolder.Text("SCORE: " + _pData.GetScore());
+            scoreHolder.SetXY(width / 2 - scoreHolder.width / 2, scoreHolder.height / 4);
             AddChild(scoreHolder);
         }
 
         private void ScoreUpdate()
         {
             scoreHolder.ClearTransparent();
-            scoreHolder.Text("SCORE: " + score);
+            scoreHolder.Text("SCORE: " + _pData.GetScore());
         }
     }
 }

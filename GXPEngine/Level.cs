@@ -17,10 +17,14 @@ namespace GXPEngine
 
         public Level(string filename, PlayerData pData) : base(true)
         {
+            _pData = pData;
+
+
             tiledLoader = new TiledLoader(filename);
             Create();
 
-            _pData = pData;
+
+
 
             cookieManager = new CookieManager(this);
             AddChild(cookieManager);
@@ -62,7 +66,7 @@ namespace GXPEngine
         {
             if (obj.Type == "Player")
             {
-                player = new Player(this, new Vector2(obj.X, obj.Y));
+                player = new Player(this, new Vector2(obj.X, obj.Y), _pData);
                 AddChild(player);
             }
 
