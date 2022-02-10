@@ -17,7 +17,6 @@ namespace GXPEngine
 
         private const int distance = 32;
         private List<Cookie> cookies;
-        private List<string> cookiePaths;
 
         public CookieManager(Level level)
         {
@@ -29,7 +28,6 @@ namespace GXPEngine
             spawnRate = 1;
 
             cookies = new List<Cookie>();
-            cookiePaths = new List<string> {"circle.png", "square.png", "checkers.png", "colors.png" };
             CreateCookies();
         }
 
@@ -74,10 +72,11 @@ namespace GXPEngine
         private Cookie CreateCookie()
         {
             int rC = random.Next(0, 4);
+            Array colors = Enum.GetValues(typeof(ObjectColor));
             float rX = random.Next(distance, game.width - distance);
             float rY = random.Next(distance, game.height - distance);
 
-            Cookie cookie = new Cookie(rX, rY, cookiePaths[rC]);
+            Cookie cookie = new Cookie(rX, rY, "COOKIE_" + colors.GetValue(rC) + ".png");
             return cookie;
         }
 

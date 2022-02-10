@@ -7,7 +7,7 @@ using System.Text;
 namespace GXPEngine
 {
 
-    public enum PlayerColor
+    public enum ObjectColor
     {
         PINK, PURPLE, ORANGE, CYAN
     }
@@ -18,12 +18,12 @@ namespace GXPEngine
         private float speedX;
         private float speedY;
 
-        private int spriteCols = 7;
-        private int spriteRows = 1;
-        private PlayerColor currentColor;
+        private const int spriteCols = 7;
+        private const int spriteRows = 1;
+        private ObjectColor currentColor;
 
         private float speed;
-        public Player(Level level, Vector2 pos) : base("barry.png", 7, 1)
+        public Player(Level level, Vector2 pos) : base("PLAYER_PINK.png", spriteCols, spriteRows)
         {
             x = pos.x;
             y = pos.y;
@@ -35,7 +35,7 @@ namespace GXPEngine
             speedY = 0;
             speed = 3;
 
-            currentColor = PlayerColor.PINK;//The default color for the player
+            currentColor = ObjectColor.PINK;    //The default color for the player
             UpdateSprite();
 
             _level = level;
@@ -90,22 +90,22 @@ namespace GXPEngine
         {
             if (Input.GetKeyDown(Key.UP))
             {
-                currentColor = PlayerColor.CYAN;
+                currentColor = ObjectColor.CYAN;
                 UpdateSprite();
             }
             if (Input.GetKeyDown(Key.LEFT))
             {
-                currentColor = PlayerColor.ORANGE;
+                currentColor = ObjectColor.ORANGE;
                 UpdateSprite();
             }
             if (Input.GetKeyDown(Key.RIGHT))
             {
-                currentColor = PlayerColor.PINK;
+                currentColor = ObjectColor.PINK;
                 UpdateSprite();
             }
             if (Input.GetKeyDown(Key.DOWN))
             {
-                currentColor = PlayerColor.PURPLE;
+                currentColor = ObjectColor.PURPLE;
                 UpdateSprite();
             }
         }

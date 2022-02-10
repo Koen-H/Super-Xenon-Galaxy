@@ -11,6 +11,7 @@ namespace GXPEngine
         {
             collider.isTrigger = true;
             SetOrigin(width / 2, height / 2);
+            SetScaleXY(4);
             SetXY(x, y);
         }
 
