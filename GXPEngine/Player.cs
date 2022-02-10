@@ -12,15 +12,19 @@ namespace GXPEngine
 
         private float speedX;
         private float speedY;
+
+        private float speed;
         public Player(Level level, Vector2 pos) : base("barry.png", 7, 1)
         {
             x = pos.x;
             y = pos.y;
 
             SetOrigin(width / 2, height / 2);
+            SetScaleXY(3);
 
             speedX = 0;
             speedY = 0;
+            speed = 3;
 
             _level = level;
 
@@ -40,22 +44,22 @@ namespace GXPEngine
 
             if (Input.GetKey(Key.A) && !Input.GetKey(Key.D))
             {
-                speedX = -1;
+                speedX = -speed;
             }
 
-            if (Input.GetKey(Key.D) && !Input.GetKey(Key.A))
+            else if (Input.GetKey(Key.D) && !Input.GetKey(Key.A))
             {
-                speedX = 1;
+                speedX = speed;
             }
 
             if (Input.GetKey(Key.W) && !Input.GetKey(Key.S))
             {
-                speedY = -1;
+                speedY = -speed;
             }
 
-            if (Input.GetKey(Key.S) && !Input.GetKey(Key.W))
+            else if (Input.GetKey(Key.S) && !Input.GetKey(Key.W))
             {
-                speedY = 1;
+                speedY = speed;
             }
 
 
