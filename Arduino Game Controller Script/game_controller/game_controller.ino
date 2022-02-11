@@ -3,7 +3,7 @@
 const int spacePin = 8;//spacebar
 
 const int colorPinOne = 3;//Color =
-const int colorPinTwo = 7;//Color = NOTE: CHANGE THIS PIN NUMBER TO 4 ON WORKING CONTROLLER!
+const int colorPinTwo = 4;//Color = NOTE: CHANGE THIS PIN NUMBER TO 4 ON WORKING CONTROLLER!
 const int colorPinThree = 5;//Color =
 const int colorPinFour = 6;//Color =
 boolean colorPinOnePressed, colorPinTwoPressed, colorPinThreePressed, colorPinFourPressed;
