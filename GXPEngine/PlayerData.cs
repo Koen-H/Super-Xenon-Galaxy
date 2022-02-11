@@ -11,11 +11,11 @@ namespace GXPEngine
     public class PlayerData
     {
         private int score;
-        private int hearts;
+        private int lifes;
 
         public PlayerData()
         {
-            hearts = 3;
+            lifes = 3;
             score = 0;
         }
 
@@ -29,9 +29,14 @@ namespace GXPEngine
             score++;
         }
 
-        public int GetHearts()
+        public int GetLifes()
         {
-            return hearts;
+            return lifes;
+        }
+
+        public void DecreaseLifes()
+        {
+            lifes--;
         }
     }
 }
