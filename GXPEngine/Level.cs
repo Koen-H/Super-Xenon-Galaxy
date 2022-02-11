@@ -23,9 +23,6 @@ namespace GXPEngine
             tiledLoader = new TiledLoader(filename);
             Create();
 
-
-
-
             cookieManager = new CookieManager(this, pData);
             AddChild(cookieManager);
 
@@ -34,6 +31,7 @@ namespace GXPEngine
         public void Update()
         {
             player.Update();
+            cookieManager.Update();
         }
 
         public Player GetPlayer()

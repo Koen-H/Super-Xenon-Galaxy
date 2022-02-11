@@ -40,7 +40,7 @@ namespace GXPEngine
 
             speedX = 0;
             speedY = 0;
-            speed = 360;
+            speed = 180;
 
             currentColor = ObjectColor.PINK;    //The default color for the player
             UpdateSprite();
@@ -59,7 +59,6 @@ namespace GXPEngine
             Move();
             ChangeColor();
             EatCookie();
-            Console.WriteLine(rotation);
         }
 
         private void Move()
@@ -78,8 +77,8 @@ namespace GXPEngine
                 speedX = -speed;
                 rotation = 270;
 
-                //if (rotation < -90) rotation = -90;
-                //else rotation -= 5;
+                //if (rotation > 270) rotation = 270;
+                //else rotation += 5;
             }
 
             else if (Input.GetKey(Key.D) && !Input.GetKey(Key.A))
@@ -99,6 +98,9 @@ namespace GXPEngine
             {
                 speedY = -speed;
                 rotation = 0;
+
+                //if (rotation > 0) rotation = 0;
+                //else rotation += 5;
 
             }
 
@@ -123,6 +125,13 @@ namespace GXPEngine
             {
                 //speedY = 0;
             }
+
+
+            //Edge control
+            if (x < width / 2) x = width / 2;
+            if (x > game.width - width / 2) x = game.width - width / 2;
+            if (y < height / 2) y = height / 2;
+            if (y > game.height - height / 2) y = game.height - height / 2;
         }
         
         private void ChangeColor()
@@ -181,7 +190,7 @@ namespace GXPEngine
 
             SetOrigin(width / 8, height / 8);
 
-            Console.WriteLine("Player's color has changed to:" + currentColor);
+            //Console.WriteLine("Player's color has changed to:" + currentColor);
         }
 
         private void EatCookie()

@@ -9,6 +9,9 @@ namespace GXPEngine
     {
         public ObjectColor cookieColor;
 
+        private float colorIndex;
+        private int decaySpeed;
+
         public Cookie(float x, float y, string path, ObjectColor _cookieColor) : base (path, 1, 1)
         {
             cookieColor = _cookieColor;
@@ -16,11 +19,25 @@ namespace GXPEngine
             SetOrigin(width / 2, height / 2);
             SetScaleXY(4);
             SetXY(x, y);
+
+            colorIndex = 1;
+            decaySpeed = 1;
         }
 
         void Update()
         {
+            ColorUpdate();
+        }
 
+        public float GetColorIndex()
+        {
+            return colorIndex;
+        }
+
+        private void ColorUpdate()
+        {
+            colorIndex -= decaySpeed * 0.001f;
+            SetColor(colorIndex, colorIndex, colorIndex);
         }
 
     }

@@ -14,7 +14,9 @@ namespace GXPEngine
 
         private float timerMilli;
         private int timerSec;
+
         private float spawnRate;
+        private const float maxSpawnRate = 5;
 
         private const int distance = 32;
         private List<Cookie> cookies;
@@ -27,17 +29,17 @@ namespace GXPEngine
 
             random = new Random();
             timerMilli = 0;
-            spawnRate = 1;
+            spawnRate = maxSpawnRate;
 
             cookies = new List<Cookie>();
             CreateCookies();
         }
 
-        void Update()
+        public void Update()
         {
-            //Console.WriteLine(GetTimer());
+            CookieDecay();
+            if (_pData.GetLifes() <= 0) return;
             CreateCookies();
-            Console.WriteLine(spawnRate);
         }
 
         private float GetSpawnRate()
@@ -58,6 +60,23 @@ namespace GXPEngine
             timerMilli = t;
         }
 
+        private void CookieDecay()
+        {
+            if (cookies != null && cookies.Count > 0)
+            {
+                foreach (Cookie c in cookies)
+                {
+                    if (c.GetColorIndex() <= 0)
+                    {
+                        if (_pData.GetLifes() > 0) _pData.DecreaseLifes();
+                        cookies.Remove(c);
+                        c.LateDestroy();
+                        break;
+                    }
+                }
+            }
+        }
+
         private void CreateCookies()
         {
             if ((int)GetTimer() < GetSpawnRate()) return;
@@ -68,12 +87,13 @@ namespace GXPEngine
             while (true)
             {
                 cookie = CreateCookie();
-                if (player.DistanceTo(cookie) > player.width * 2)
-                {
-                    break;
-                }
+                bool good = (player.DistanceTo(cookie) > player.width * 2);
+
+                GameObject[] collisions = cookie.GetCollisions();
+
+                if (collisions.Length == 0 && good) break;
+
             }
-            
             cookies.Add(cookie);
             AddChild(cookie);
         }
@@ -97,7 +117,7 @@ namespace GXPEngine
         /// <returns></returns>
         private float CalculateSpawnRate()
         {
-            return 2 - (float) _pData.GetScore() / 100;
+            return maxSpawnRate - (float) _pData.GetScore() / 10;
         }
     }
 }
