@@ -66,7 +66,7 @@ namespace GXPEngine
             timer.TextAlign(CenterMode.Min, CenterMode.Center);
             timer.Fill(Color.White);
             timer.TextSize(45);
-            timer.Text(("" + TimeSpan.FromMilliseconds(Time.time)).Substring(1, 11));
+            timer.Text(("" + TimeSpan.FromMilliseconds(Time.time)).Substring(1, 10));
             timer.SetXY(width - timer.width, timer.height / 4);
             AddChild(timer);
         }
