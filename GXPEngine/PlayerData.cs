@@ -15,7 +15,7 @@ namespace GXPEngine
 
         public PlayerData()
         {
-            lifes = 3;
+            lifes = 4;
             score = 0;
         }
 

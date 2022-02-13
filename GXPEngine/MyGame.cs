@@ -28,6 +28,7 @@ public class MyGame : Game
 		gameManager.Update();
         if(gameController != null) gameController.AnalogStick();
 
+        //Console.WriteLine(GetDiagnostics());
     }
 
 	static void Main()							// Main() is the first method that's called when the program is run

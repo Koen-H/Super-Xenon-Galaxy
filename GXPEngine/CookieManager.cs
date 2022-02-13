@@ -17,6 +17,7 @@ namespace GXPEngine
 
         private float spawnRate;
         private const float maxSpawnRate = 5;
+        private const float minSpawnRate = 1;
 
         private const int distance = 32;
         private List<Cookie> cookies;
@@ -38,13 +39,13 @@ namespace GXPEngine
         public void Update()
         {
             CookieDecay();
-            if (_pData.GetLifes() <= 0) return;
             CreateCookies();
         }
 
         private float GetSpawnRate()
         {
             spawnRate = CalculateSpawnRate();
+            if (spawnRate < minSpawnRate) spawnRate = minSpawnRate;
             return spawnRate;
         }
 
@@ -82,6 +83,8 @@ namespace GXPEngine
             if ((int)GetTimer() < GetSpawnRate()) return;
             SetTimer(0);
 
+            if (GetChildCount() > 60) return;
+
             Cookie cookie;
 
             while (true)
@@ -117,7 +120,7 @@ namespace GXPEngine
         /// <returns></returns>
         private float CalculateSpawnRate()
         {
-            return maxSpawnRate - (float) _pData.GetScore() / 10;
+            return maxSpawnRate - (float) (_pData.GetScore() / 10);
         }
     }
 }
