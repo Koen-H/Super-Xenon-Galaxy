@@ -53,7 +53,7 @@ namespace GXPEngine
             collider.isTrigger = true;
         }
 
-        public void Update()
+        public void FixedUpdate()
         {
             Animate(0.05f);
             Move();

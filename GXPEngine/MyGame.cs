@@ -18,7 +18,7 @@ public class MyGame : Game
 	void Update()
 	{
 		gameManager.Update();
-        Console.WriteLine(GetDiagnostics());
+        //Console.WriteLine(GetDiagnostics());
     }
 
 	static void Main()							// Main() is the first method that's called when the program is run

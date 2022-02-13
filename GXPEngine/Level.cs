@@ -19,18 +19,17 @@ namespace GXPEngine
         {
             _pData = pData;
 
-
             tiledLoader = new TiledLoader(filename);
             Create();
 
             cookieManager = new CookieManager(this, pData);
-            AddChild(cookieManager);
-
+            AddChildAt(cookieManager, GetChildCount() - 1);
         }
 
         public void Update()
         {
-            player.Update();
+            if (_pData.GetLifes() <= 0) return;
+            player.FixedUpdate();
             cookieManager.Update();
         }
 
