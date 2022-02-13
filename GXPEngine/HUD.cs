@@ -12,11 +12,14 @@ namespace GXPEngine
 
         private EasyDraw score;
         private EasyDraw lifes;
+        private EasyDraw timer;
+
+        private TimeSpan time;
 
         public HUD(Game game, PlayerData pData) : base(game.width, game.height, false)
         {
             _pData = pData;
-
+            time = TimeSpan.FromMilliseconds(Time.time);
             CreateHUD();
         }
 
@@ -24,13 +27,14 @@ namespace GXPEngine
         {
             ScoreUpdate();
             LifesUpdate();
+            //TimerUpdate();
         }
 
         private void CreateHUD()
         {
             CreateScore();
             CreateLifes();
-            //CreateTimer();
+            CreateTimer();
         }
 
         private void CreateScore()
@@ -55,6 +59,18 @@ namespace GXPEngine
             AddChild(lifes);
         }
 
+        private void CreateTimer()
+        {
+            timer = new EasyDraw(500, 100, false);
+
+            timer.TextAlign(CenterMode.Min, CenterMode.Center);
+            timer.Fill(Color.White);
+            timer.TextSize(45);
+            timer.Text(("" + TimeSpan.FromMilliseconds(Time.time)).Substring(1, 11));
+            timer.SetXY(width - timer.width, timer.height / 4);
+            AddChild(timer);
+        }
+
         private void ScoreUpdate()
         {
             score.ClearTransparent();
@@ -65,6 +81,15 @@ namespace GXPEngine
         {
             lifes.ClearTransparent();
             lifes.Text("LIFES: " + _pData.GetLifes());
+        }
+
+        private void TimerUpdate()
+        {
+            timer.ClearTransparent();
+            string temp = TimeSpan.FromMilliseconds(Time.time).ToString();
+            string text = ("" + TimeSpan.FromMilliseconds(Time.time));
+            timer.Text(temp.Substring(1, 10));
+            Console.WriteLine(temp.Length);
         }
     }
 }
