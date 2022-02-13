@@ -12,6 +12,7 @@ namespace GXPEngine
         private PlayerData pData;
         private Level level;
 
+
         public GameManager()
         {
             menu = new Menu();

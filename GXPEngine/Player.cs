@@ -30,17 +30,18 @@ namespace GXPEngine
         private const int spriteRows = 1;
         private ObjectColor currentColor;
 
+        private ArduinoController gameController;
+
         private float speed;
         public Player(Level level, Vector2 pos, PlayerData pData) : base("Assets/Player/pink.png", spriteCols, spriteRows)
         {
             _pData = pData;
-
             x = pos.x;
             y = pos.y;
 
             speedX = 0;
             speedY = 0;
-            speed = 180;
+            //speed = 180;
 
             currentColor = ObjectColor.PINK;    //The default color for the player
             UpdateSprite();
@@ -51,6 +52,10 @@ namespace GXPEngine
             _level = level;
 
             collider.isTrigger = true;
+
+            MyGame myGame = (MyGame)game;
+            if(myGame.gameController != null) gameController = myGame.gameController;
+
         }
 
         public void Update()
@@ -63,70 +68,58 @@ namespace GXPEngine
 
         private void Move()
         {
-            speedX = 0;
-            speedY = 0;
-
-            if (rotation > 360) rotation -= 360;
-
-            if (Input.GetKey(Key.A) && !Input.GetKey(Key.D))
+            speed = 0;
+            if (gameController != null)
             {
-                //SetOrigin(0, height);
-                //rotation--;
-                //speedY = 0;
+                rotation = gameController.analogRotation;
+                speed = (float)Math.Floor(gameController.analogForce / 10);
+                speed *= 1.5f;
+            }
+             if (rotation > 360) rotation -= 360;
 
-                speedX = -speed;
-                rotation = 270;
-
-                //if (rotation > 270) rotation = 270;
-                //else rotation += 5;
+             if (Input.GetKey(Key.A) && !Input.GetKey(Key.D))
+             {
+                // SetOrigin(0, height);
+                rotation -= 2;
+                // rotation = 270;
             }
 
-            else if (Input.GetKey(Key.D) && !Input.GetKey(Key.A))
-            {
-                //SetOrigin(width, height);
-                //rotation++;
-                //speedY = 0;
+             else if (Input.GetKey(Key.D) && !Input.GetKey(Key.A))
+             {
+                //w SetOrigin(width, height);
+                 rotation += 2;
+                 //if (rotation > 90) rotation = 90;
+                 //else rotation += 5;
+             }
 
-                speedX = speed;
-                rotation = 90;
+             if (Input.GetKey(Key.W) && !Input.GetKey(Key.S))
+             {
+                speed = 5;
+                 //rotation = 0;
 
-                //if (rotation > 90) rotation = 90;
-                //else rotation += 5;
-            }
+                 //if (rotation > 0) rotation = 0;
+                 //else rotation += 5;
 
-            if (Input.GetKey(Key.W) && !Input.GetKey(Key.S))
-            {
-                speedY = -speed;
-                rotation = 0;
+             }
 
-                //if (rotation > 0) rotation = 0;
-                //else rotation += 5;
+             else if (Input.GetKey(Key.S) && !Input.GetKey(Key.W))
+             {
+                // speedY = speed;
+                // rotation = 180;
 
-            }
+                 //if (rotation > 180) rotation = 180;
+                 //else rotation += 5;
+             }
+            // if (MoveUntilCollision(vx, 0) != null)
+            //{
+            //     //speedX = 0;
+            // }
+            /* if (MoveUntilCollision(0, vy) != null)
+             {
+                 //speedY = 0;
+             }*/
 
-            else if (Input.GetKey(Key.S) && !Input.GetKey(Key.W))
-            {
-                speedY = speed;
-                rotation = 180;
-
-                //if (rotation > 180) rotation = 180;
-                //else rotation += 5;
-            }
-
-            float vx = speedX * Time.deltaTime / 1000;
-            float vy = speedY * Time.deltaTime / 1000;
-
-
-            if (MoveUntilCollision(vx, 0) != null)
-            {
-                //speedX = 0;
-            }
-            if (MoveUntilCollision(0, vy) != null)
-            {
-                //speedY = 0;
-            }
-
-
+            this.Move(0, -speed);
             //Edge control
             if (x < width / 2) x = width / 2;
             if (x > game.width - width / 2) x = game.width - width / 2;

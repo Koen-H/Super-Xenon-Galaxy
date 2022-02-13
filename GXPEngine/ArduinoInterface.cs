@@ -1,8 +1,30 @@
-﻿using System.IO.Ports;
+/*
+  Interface for the serial port and GXP
+  
+  created 10 Feb 2019
+  modified 24 Feb 2019
+  by Eusebiu Mihail Buga, Glyn Leine
+
+  The class auto-detects the serial port of whatever arduino you use as long as it sends back the "HANDSHAKE" message, so you
+  don't have to worry about port name changing every time you boot your PC or restart the Arduino
+
+  Use this to your heart's content
+  As all code in existence, if you want to modify it or make it prettier, by all means do so
+
+  If you don't have the "Ports" library referenced this is how you do it
+    -Right click References on your solution manager
+    -Click "add reference"
+    -Search for "System"
+    -Tick the box
+    -Enjoy a library used for embedded stuff made by web developers
+*/
+
+
+using System.IO.Ports;
 using System;
 using GXPEngine;
 
-public class ArduinoController
+public class ArduinoInterface
 {
     static SerialPort port = null;
     private String[] Ports = SerialPort.GetPortNames();
@@ -11,15 +33,17 @@ public class ArduinoController
     private static int _parameterSize = 8;//number of parameters, i think 8 is plenty
     private String[] _parameters = new String[_parameterSize];
 
-    public float analogRotation;
-    public float analogForce;
 
+    /* !!IMPORTANT!!
+    ****If you use an arduino Uno, Nano, or any not USB-native chips, set this to true
+    */
+    private const bool _useUno = true;
 
-    public ArduinoController()
+    public ArduinoInterface()
     {
-        Console.WriteLine("Connecting with controller...");
+        Console.WriteLine("blah");
         Initialise();
-        Console.WriteLine("Done.");
+        Console.WriteLine("bleh");
     }
 
     private void Initialise()
@@ -47,8 +71,17 @@ public class ArduinoController
                 port.BaudRate = 9600;
                 port.ReadTimeout = 1000000;
 
-                port.RtsEnable = false;
-                port.DtrEnable = false;
+
+                if (_useUno == false)
+                {
+                    port.RtsEnable = true;
+                    port.DtrEnable = true;
+                }
+                else
+                {
+                    port.RtsEnable = false;
+                    port.DtrEnable = false;
+                }
 
                 if (port.IsOpen)
                 {
@@ -65,8 +98,10 @@ public class ArduinoController
                 port.DiscardOutBuffer();
                 port.DiscardInBuffer();
 
-                SendString("CONNECT CONTROLLER");
+                Console.WriteLine("Send Data please");
+                SendString("GIVE HANDSHAKE");
 
+                Console.WriteLine("Gimme Data please");
                 String Accept = null;
                 bool accepted = false;
 
@@ -82,15 +117,17 @@ public class ArduinoController
                     }
 
                 Console.WriteLine(Accept);
-                if (Accept.Contains("CONNECTED"))
+                if (Accept.Contains("HANDSHAKE"))
                 {
                     found = true;
-                    port.Write("CONTROLLER SUCCESFULLY CONNECTED");
+                    port.Write("FOUND");
                     break;
                 }
 
                 port.DiscardInBuffer();
+                Console.WriteLine("blih");
             }
+            Console.WriteLine("bloh");
         }
 
         port.DiscardInBuffer();
@@ -140,7 +177,7 @@ public class ArduinoController
         return float.Parse(_parameters[parameter]);
     }
 
-    public void SendString(string send)//Send a message to the controller
+    private void SendString(string send)
     {
         if (port.IsOpen)
             try
@@ -153,6 +190,7 @@ public class ArduinoController
                 found = false;
                 Search();
                 SendString(send);
+                Time.previousTime = Time.time;
             }
         else
         {
@@ -160,6 +198,7 @@ public class ArduinoController
             found = false;
             Search();
             SendString(send);
+            Time.previousTime = Time.time;
         }
     }
 
@@ -170,35 +209,20 @@ public class ArduinoController
         try { _message = port.ReadLine(); }
         catch (System.IO.IOException e) { _message = ""; }
 
+        //Discard the buffer
+        //if (port.BytesToRead > 100)
+        //{
+        //    port.DiscardInBuffer();
+        //    port.ReadLine();
+        //}
+
         _message.Trim();
         _parameters = _message.Split(' ');
     }
-    
-    public void AnalogStick()
-    {
-        double xPos = Math.Ceiling(GetFloatParameter(0) / 10);
-        double yPos = Math.Ceiling(GetFloatParameter(1) / 10)*-1;
-        if (xPos == 0) xPos = 1;
-        if (yPos == 0) yPos = 1;
-        double force = Math.Sqrt((xPos * xPos) + (yPos * yPos));
-       
-        if(force > 50)//Easy fix
-        {
-            force = 50;
-        }
-        analogForce = (float)force;
-        if (analogForce > 10)
-        {
-            analogRotation = (float) Math.Ceiling(((Math.PI + Math.Atan2(yPos ,- xPos)) * 180 / Math.PI));
-            analogRotation += 90;
-            //Console.WriteLine(xPos + ", " + yPos + ", " + analogRotation);
 
 
-        }
-    }
-
-
-    ~ArduinoController()
+    //Deconstructors in C# ??? no way...
+    ~ArduinoInterface()
     {
         port.Close();
     }
