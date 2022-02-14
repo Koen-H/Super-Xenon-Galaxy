@@ -69,62 +69,45 @@ namespace GXPEngine
         private void Move()
         {
             speed = 0;
+            
+            if (rotation > 360) rotation -= 360;
+
+            if (Input.GetKey(Key.A) && !Input.GetKey(Key.D))
+            {
+                rotation -= 2;
+            }
+
+            else if (Input.GetKey(Key.D) && !Input.GetKey(Key.A))
+            {
+                rotation += 2;
+            }
+
+            if (Input.GetKey(Key.W) && !Input.GetKey(Key.S))
+            {
+                speed = 5 * 60;
+            }
+
+            else if (Input.GetKey(Key.S) && !Input.GetKey(Key.W))
+            {
+                
+            }
+
             if (gameController != null)
             {
                 rotation = gameController.analogRotation;
                 speed = (float)Math.Floor(gameController.analogForce / 10);
                 speed *= 1.5f;
             }
-             if (rotation > 360) rotation -= 360;
 
-             if (Input.GetKey(Key.A) && !Input.GetKey(Key.D))
-             {
-                // SetOrigin(0, height);
-                rotation -= 2;
-                // rotation = 270;
-            }
+            float v = -speed * Time.deltaTime / 1000;
 
-             else if (Input.GetKey(Key.D) && !Input.GetKey(Key.A))
-             {
-                //w SetOrigin(width, height);
-                 rotation += 2;
-                 //if (rotation > 90) rotation = 90;
-                 //else rotation += 5;
-             }
+            Move(0, v);
 
-             if (Input.GetKey(Key.W) && !Input.GetKey(Key.S))
-             {
-                speed = 5;
-                 //rotation = 0;
-
-                 //if (rotation > 0) rotation = 0;
-                 //else rotation += 5;
-
-             }
-
-             else if (Input.GetKey(Key.S) && !Input.GetKey(Key.W))
-             {
-                // speedY = speed;
-                // rotation = 180;
-
-                 //if (rotation > 180) rotation = 180;
-                 //else rotation += 5;
-             }
-            // if (MoveUntilCollision(vx, 0) != null)
-            //{
-            //     //speedX = 0;
-            // }
-            /* if (MoveUntilCollision(0, vy) != null)
-             {
-                 //speedY = 0;
-             }*/
-
-            this.Move(0, -speed);
             //Edge control
-            if (x < width / 2) x = width / 2;
-            if (x > game.width - width / 2) x = game.width - width / 2;
-            if (y < height / 2) y = height / 2;
-            if (y > game.height - height / 2) y = game.height - height / 2;
+            if (x < -width / 2) x = game.width + width / 2;
+            if (x > game.width + width / 2) x = -width / 2;
+            if (y < -height / 2) y = game.height + height / 2;
+            if (y > game.height + height / 2) y = -height / 2;
         }
         
         private void ChangeColor()
@@ -178,7 +161,7 @@ namespace GXPEngine
         private void UpdateSprite()
         {
             string spriteString = "Assets/Player/" + currentColor.ToString().ToLower() + ".png";
-            this.initializeFromTexture(Texture2D.GetInstance(spriteString, false));
+            initializeFromTexture(Texture2D.GetInstance(spriteString, false));
             initializeAnimFrames(spriteCols, spriteRows);
 
             SetOrigin(width / 8, height / 8);

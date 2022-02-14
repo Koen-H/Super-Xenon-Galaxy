@@ -20,6 +20,7 @@ namespace GXPEngine
         {
             _pData = pData;
             time = TimeSpan.FromMilliseconds(Time.time);
+
             CreateHUD();
         }
 
@@ -27,7 +28,7 @@ namespace GXPEngine
         {
             ScoreUpdate();
             LifesUpdate();
-            //TimerUpdate();
+            TimerUpdate();
         }
 
         private void CreateHUD()
@@ -66,8 +67,9 @@ namespace GXPEngine
             timer.TextAlign(CenterMode.Min, CenterMode.Center);
             timer.Fill(Color.White);
             timer.TextSize(45);
-            timer.Text(("" + TimeSpan.FromMilliseconds(Time.time)).Substring(1, 11));
+            timer.Text((TimeSpan.FromMilliseconds(Time.time) - time).ToString("h\\:mm\\:ss\\.ffffff"));
             timer.SetXY(width - timer.width, timer.height / 4);
+
             AddChild(timer);
         }
 
@@ -86,10 +88,8 @@ namespace GXPEngine
         private void TimerUpdate()
         {
             timer.ClearTransparent();
-            string temp = TimeSpan.FromMilliseconds(Time.time).ToString();
-            string text = ("" + TimeSpan.FromMilliseconds(Time.time));
-            timer.Text(temp.Substring(1, 10));
-            Console.WriteLine(temp.Length);
+            string temp = (TimeSpan.FromMilliseconds(Time.time) - time).ToString("h\\:mm\\:ss\\.ff");
+            timer.Text(temp);
         }
     }
 }
