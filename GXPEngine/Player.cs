@@ -95,8 +95,8 @@ namespace GXPEngine
             if (gameController != null)
             {
                 rotation = gameController.analogRotation;
-                speed = (float)Math.Floor(gameController.analogForce / 10);
-                speed *= 1.5f;
+                speed = (float)Math.Floor(gameController.analogForce / 10) * 60;
+                //speed *= 1.5f;
             }
 
             float v = -speed * Time.deltaTime / 1000;

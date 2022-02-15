@@ -3,7 +3,8 @@
 const int spacePin = 8;//spacebar
 
 const int colorPinOne = 3;//Color =
-const int colorPinTwo = 7;//Color = NOTE: CHANGE THIS PIN NUMBER TO 4 ON WORKING CONTROLLER! Mine is 7
+const int colorPinLedOne = 12;
+const int colorPinTwo = 4;//Color = NOTE: CHANGE THIS PIN NUMBER TO 4 ON WORKING CONTROLLER! Mine is 7
 const int colorPinThree = 5;//Color =
 const int colorPinFour = 6;//Color =
 boolean colorPinOnePressed, colorPinTwoPressed, colorPinThreePressed, colorPinFourPressed;
@@ -12,8 +13,9 @@ int colorButtonTwo = 0;
 int colorButtonThree= 0;
 int colorButtonFour = 0; 
 
-const int analogY = A0;//Analog stick Y   
-const int analogX = A1;//Analog stick X  
+const int analogX = A2;//Analog stick X  
+const int analogY = A3;//Analog stick Y   
+
 
 
                  
@@ -31,6 +33,7 @@ void setup() {
   // put your setup code here, to run once:
   pinMode(spacePin, INPUT_PULLUP );
   pinMode(colorPinOne, INPUT_PULLUP );
+  pinMode(colorPinLedOne, OUTPUT );
   pinMode(colorPinTwo, INPUT_PULLUP );
   pinMode(colorPinThree, INPUT_PULLUP );
   pinMode(colorPinFour, INPUT_PULLUP );
@@ -41,6 +44,7 @@ void setup() {
   digitalWrite( MIDDLE_LED_PIN, LOW);
   digitalWrite( LEFT_LED_PIN, LOW);
 
+  digitalWrite( colorPinLedOne, HIGH);
   Serial.begin(9600);
 
   Keyboard.begin();
@@ -66,9 +70,9 @@ void loop() {
   {
     String s;
     //Just concatenate everything you want to send, with a space in between
-    s.concat(analogRead(A1)- 512);
+    s.concat(analogRead(analogX)- 512);
     s.concat(" ");
-    s.concat(analogRead(A0)- 512);
+    s.concat(analogRead(analogY)- 512);
     //After everything is done just send the data
     Serial.println(s);
   }
