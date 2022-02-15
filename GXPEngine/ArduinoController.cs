@@ -35,7 +35,7 @@ public class ArduinoController
         for (int i = 0; i < _parameterSize; i++)
         {
             _parameters[i] = "0";
-        }
+            }
 
         while (!found)
         {

@@ -1,16 +1,19 @@
 #include <Keyboard.h>
 
-const int spacePin = 8;//spacebar
-const int spacePinLed = 7;
+// 9 = yellow light
+// 11 == cyan light
 
-const int colorPinOne = 3;//Color =
-const int colorPinLedOne = 12;
-const int colorPinTwo = 4;//Color = NOTE: CHANGE THIS PIN NUMBER TO 4 ON WORKING CONTROLLER! Mine is 7
-const int colorPinLedTwo = 11;
-const int colorPinThree = 5;//Color =
-const int colorPinLedThree = 10;
-const int colorPinFour = 6;//Color =
-const int colorPinLedFour = 9;
+const int spacePin = 8;//spacebar
+const int spacePinLed = 10;// Spacebar led
+
+const int colorPinOne = 3;//Color = Orange
+const int colorPinLedOne = 11;//
+const int colorPinTwo = 6;//Color = NOTE: CHANGE THIS PIN NUMBER TO 4 ON WORKING CONTROLLER! Mine is 7
+const int colorPinLedTwo = 9;
+const int colorPinThree = 4;//Color =
+const int colorPinLedThree = 12;
+const int colorPinFour = 5;//Color = 
+const int colorPinLedFour = 7;
 boolean colorPinOnePressed, colorPinTwoPressed, colorPinThreePressed, colorPinFourPressed;
 int colorButtonOne = 0;
 int colorButtonTwo = 0;
@@ -46,8 +49,6 @@ void setup() {
   pinMode(RIGHT_LED_PIN, OUTPUT);
   pinMode(MIDDLE_LED_PIN, OUTPUT);
   pinMode(LEFT_LED_PIN, OUTPUT);
-
-  
   
   Serial.begin(9600);
 
