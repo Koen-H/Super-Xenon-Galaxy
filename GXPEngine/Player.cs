@@ -42,7 +42,7 @@ namespace GXPEngine
             UpdateSprite();
 
             SetOrigin(width / 2, height / 2);
-            SetScaleXY(2.5f);
+            SetScaleXY(2f);
 
             collider.isTrigger = true;
 
@@ -55,7 +55,7 @@ namespace GXPEngine
             Animate(0.5f);
             Move();
             ChangeColor();
-            EatCookie();
+            PressSpace();
         }
 
         private void Move()
@@ -163,7 +163,7 @@ namespace GXPEngine
             //Console.WriteLine("Player's color has changed to:" + currentColor);
         }
 
-        private void EatCookie()
+        private void PressSpace()
         {
             if (Input.GetKeyDown(Key.SPACE) && !pressSpace)
             {
@@ -179,6 +179,12 @@ namespace GXPEngine
                             _pData.IncreaseScore();
                             cookie.Destroy();//DESTROY THE COOKIE!
                         }
+                    }
+
+                    if (collision is EasyDraw button)
+                    {
+                        _pData.ChangeName(_pData.GetButtons()[button]);
+                        Console.WriteLine(_pData.GetButtons()[button]);
                     }
 
                 }

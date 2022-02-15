@@ -11,14 +11,19 @@ namespace GXPEngine
         private Menu menu;
         private PlayerData pData;
         private Level level;
+        private InputName input;
 
 
         public GameManager()
         {
+            pData = new PlayerData();
+
+
             menu = new Menu();
             AddChild(menu);
 
-            pData = new PlayerData();
+            
+
         }
 
         public void Update()
@@ -32,6 +37,9 @@ namespace GXPEngine
 
                 AddChild(level);
                 AddChild(hud);
+
+                input = new InputName(game, pData);
+                AddChild(input);
             }
 
 
@@ -41,6 +49,7 @@ namespace GXPEngine
             {
                 level.Update();
                 hud.Update();
+                input.Update();
             }
         }
     }
