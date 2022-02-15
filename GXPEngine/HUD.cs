@@ -58,7 +58,7 @@ namespace GXPEngine
             score.Fill(Color.White);
             score.TextFont(font);
             score.Text("SCORE: " + _pData.GetScore());
-            score.SetXY(width / 2 - score.width / 2, score.height / 5);
+            score.SetXY(width / 2 - score.width / 2, (score.height / 5 )+5);
             AddChild(score);
         }
 
@@ -91,7 +91,7 @@ namespace GXPEngine
             timer.Fill(Color.White);
             timer.TextFont(font);
             timer.Text((TimeSpan.FromMilliseconds(Time.time) - time).ToString("h\\.mm\\.ss\\.ff"));
-            timer.SetXY(width - timer.width * 1.1f, timer.height / 5);
+            timer.SetXY(width - timer.width * 1.1f, (timer.height / 5) + 5);
             AddChild(timer);
         }
 

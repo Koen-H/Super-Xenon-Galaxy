@@ -190,14 +190,41 @@ public class ArduinoController
         if (analogForce > 10)
         {
             analogRotation = (float) Math.Ceiling(((Math.PI + Math.Atan2(yPos ,- xPos)) * 180 / Math.PI));
-            analogRotation += 90;
+            
             //Console.WriteLine(xPos + ", " + yPos + ", " + analogRotation);
 
 
         }
     }
 
-
+    public void ChangeLight(ObjectColor currentColor)
+    {
+        SendString("COLORS_OFF");
+        switch (currentColor)
+        {
+            
+            case ObjectColor.CYAN:
+                {
+                    SendString("LED_ONE_ON");
+                    break;
+                }
+            case ObjectColor.ORANGE:
+                {
+                    SendString("LED_TWO_ON");
+                    break;
+                }
+            case ObjectColor.PINK:
+                {
+                    SendString("LED_THREE_ON");
+                    break;
+                }
+            case ObjectColor.PURPLE:
+                {
+                    SendString("LED_FOUR_ON");
+                    break;
+                }
+        }
+    }
     ~ArduinoController()
     {
         port.Close();

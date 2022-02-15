@@ -23,16 +23,22 @@ namespace GXPEngine
         private bool pressRight;
         private bool pressSpace;
 
-
         private const int spriteCols = 7;
         private const int spriteRows = 3;
         private ObjectColor currentColor;
 
         private ArduinoController gameController;
 
+        private ObjectColor lastColor;
+        private float combo;
+        private float speedBoost;
+        private float speedBoostInterval;
+
         private float speed;
+
         public Player(Vector2 pos, PlayerData pData) : base("Assets/Player/Body/pink.png", spriteCols, spriteRows)
         {
+            combo = 0;
             _pData = pData;
             x = pos.x;
             y = pos.y;
@@ -56,6 +62,7 @@ namespace GXPEngine
             Move();
             ChangeColor();
             EatCookie();
+
         }
 
         private void Move()
@@ -76,7 +83,7 @@ namespace GXPEngine
 
             if (Input.GetKey(Key.W) && !Input.GetKey(Key.S))
             {
-                speed = 5 * 60;
+                speed = 5 * 40;
             }
 
             else if (Input.GetKey(Key.S) && !Input.GetKey(Key.W))
@@ -87,15 +94,26 @@ namespace GXPEngine
             if (gameController != null)
             {
                 rotation = gameController.analogRotation;
-                speed = (float)Math.Floor(gameController.analogForce / 10) * 60;
+                speed = (float)Math.Floor(gameController.analogForce / 10) * 40;
                 //speed *= 1.5f;
             }
 
+
+
+            if (speedBoost > 0 && speed > 0)//apply buff from combo
+            {
+                speed += speedBoost;
+                if (Time.time > speedBoostInterval)
+                {
+                    speedBoost = 0;
+                }
+            }
+            
+
             float v = -speed * Time.deltaTime / 1000;
 
-            Move(0, v);
 
-            
+            Move(0, v);
 
             //Edge control
             if (x < -width / 2) x = game.width + width / 2;
@@ -160,6 +178,10 @@ namespace GXPEngine
 
             SetOrigin(width / (scale * 2), height / (scale * 2));
 
+            if (gameController != null)
+            {
+                gameController.ChangeLight(currentColor);
+            }
             //Console.WriteLine("Player's color has changed to:" + currentColor);
         }
 
@@ -178,6 +200,20 @@ namespace GXPEngine
                         {
                             _pData.IncreaseScore();
                             cookie.Destroy();//DESTROY THE COOKIE!
+
+                            speedBoost += 200; //The boos u get for a cookie
+                            speedBoostInterval = Time.time + 750f;// The time before it goes away.
+                            Console.WriteLine(speedBoostInterval);
+                            if (cookie.cookieColor == lastColor)
+                            {
+                                combo += 1f;
+                                Console.WriteLine(combo);
+                            }
+                            else
+                            {
+                                combo = 0;
+                            }
+                            lastColor = cookie.cookieColor;
                         }
                     }
 

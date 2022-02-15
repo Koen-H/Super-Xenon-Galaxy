@@ -1,12 +1,16 @@
 #include <Keyboard.h>
 
 const int spacePin = 8;//spacebar
+const int spacePinLed = 7;
 
 const int colorPinOne = 3;//Color =
 const int colorPinLedOne = 12;
 const int colorPinTwo = 4;//Color = NOTE: CHANGE THIS PIN NUMBER TO 4 ON WORKING CONTROLLER! Mine is 7
+const int colorPinLedTwo = 11;
 const int colorPinThree = 5;//Color =
+const int colorPinLedThree = 10;
 const int colorPinFour = 6;//Color =
+const int colorPinLedFour = 9;
 boolean colorPinOnePressed, colorPinTwoPressed, colorPinThreePressed, colorPinFourPressed;
 int colorButtonOne = 0;
 int colorButtonTwo = 0;
@@ -15,8 +19,6 @@ int colorButtonFour = 0;
 
 const int analogX = A2;//Analog stick X  
 const int analogY = A3;//Analog stick Y   
-
-
 
                  
 
@@ -32,19 +34,21 @@ const int        LEFT_LED_PIN = 12;
 void setup() {
   // put your setup code here, to run once:
   pinMode(spacePin, INPUT_PULLUP );
+  pinMode(spacePinLed, OUTPUT);
   pinMode(colorPinOne, INPUT_PULLUP );
   pinMode(colorPinLedOne, OUTPUT );
   pinMode(colorPinTwo, INPUT_PULLUP );
+  pinMode(colorPinLedTwo, OUTPUT );
   pinMode(colorPinThree, INPUT_PULLUP );
+  pinMode(colorPinLedThree, OUTPUT );
   pinMode(colorPinFour, INPUT_PULLUP );
+  pinMode(colorPinLedFour, OUTPUT );
   pinMode(RIGHT_LED_PIN, OUTPUT);
   pinMode(MIDDLE_LED_PIN, OUTPUT);
   pinMode(LEFT_LED_PIN, OUTPUT);
-  digitalWrite( RIGHT_LED_PIN, LOW);
-  digitalWrite( MIDDLE_LED_PIN, LOW);
-  digitalWrite( LEFT_LED_PIN, LOW);
 
-  digitalWrite( colorPinLedOne, HIGH);
+  
+  
   Serial.begin(9600);
 
   Keyboard.begin();
@@ -53,6 +57,7 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+  
  String message;
   while(Serial.available() > 0)
   {
@@ -76,11 +81,46 @@ void loop() {
     //After everything is done just send the data
     Serial.println(s);
   }
-  if(message.indexOf("LAMP") >= 0)
-  {
-    digitalWrite( RIGHT_LED_PIN, HIGH);
-    digitalWrite( MIDDLE_LED_PIN, HIGH);
-    digitalWrite( LEFT_LED_PIN, HIGH);
+  
+  if(message.indexOf("COLORS_OFF") >= 0){
+    digitalWrite( colorPinLedOne, LOW);
+    digitalWrite( colorPinLedTwo, LOW);
+    digitalWrite( colorPinLedThree, LOW);
+    digitalWrite( colorPinLedFour, LOW);
+    
+  }
+
+  if(message.indexOf("LED_SPACE_ON") >= 0){
+    digitalWrite( spacePinLed, HIGH);
+  }
+  if(message.indexOf("LED_ONE_ON") >= 0){
+    digitalWrite( colorPinLedOne, HIGH);
+  }
+    if(message.indexOf("LED_TWO_ON") >= 0){
+    digitalWrite( colorPinLedTwo, HIGH);
+  }
+    if(message.indexOf("LED_THREE_ON") >= 0){
+    digitalWrite( colorPinLedThree, HIGH);
+  }
+    if(message.indexOf("LED_FOUR_ON") >= 0){
+    digitalWrite( colorPinLedFour, HIGH);
+  }
+
+
+  if(message.indexOf("LED_SPACE_OFF") >= 0){
+    digitalWrite( spacePinLed, HIGH);
+  }
+    if(message.indexOf("LED_ONE_OFF") >= 0){
+    digitalWrite( colorPinLedOne, LOW);
+  }
+    if(message.indexOf("LED_TWO_OFF") >= 0){
+    digitalWrite( colorPinLedTwo, LOW);
+  }
+    if(message.indexOf("LED_THREE_OFF") >= 0){
+    digitalWrite( colorPinLedThree, LOW);
+  }
+    if(message.indexOf("LED_FOUR_OFF") >= 0){
+    digitalWrite( colorPinLedFour, LOW);
   }
 
 
