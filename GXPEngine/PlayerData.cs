@@ -17,6 +17,7 @@ namespace GXPEngine
         private float hudHeight;
 
         private Dictionary<EasyDraw, string> buttons;
+        private bool buttonsActive;
 
         public PlayerData()
         {
@@ -43,6 +44,16 @@ namespace GXPEngine
         public void DecreaseLifes()
         {
             lifes--;
+        }
+
+        public bool isButtonActive()
+        {
+            return buttonsActive;
+        }
+
+        public void SetButtonActive(bool b)
+        {
+            buttonsActive = b;
         }
 
         public float GetHudHeight()
@@ -74,20 +85,13 @@ namespace GXPEngine
         {
             if (s.Length > 0)
             {
-                if (s.Equals("-"))
+                if (s.Equals("-") && _name.Length > 0)
                 {
                     _name = _name.Remove(_name.Length - 1, 1);
                 }
-                else
+                else if(!s.Equals("-") && _name.Length < 3)
                 {
-
-                    if (_name.Length < 3)
-                    {
-
-                        _name += s;
-                        Console.WriteLine(_name);
-
-                    }
+                    _name += s;
                 }
             }
         }

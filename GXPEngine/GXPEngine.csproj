@@ -88,7 +88,9 @@
     <Compile Include="GXPEngine\SoLoud\Soloud.cs" />
     <Compile Include="GXPEngine\SoLoud\SoloudSoundSystem.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="PlayerBody.cs" />
     <Compile Include="PlayerData.cs" />
     <Compile Include="PlayerPiece.cs" />
+    <Compile Include="PlayerTail.cs" />
   </ItemGroup>
 </Project>

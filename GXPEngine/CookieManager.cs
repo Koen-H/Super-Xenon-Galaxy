@@ -32,6 +32,7 @@ namespace GXPEngine
             timerMilli = 0;
             spawnRate = maxSpawnRate;
 
+
             cookies = new List<Cookie>();
             CreateCookies();
         }
@@ -39,6 +40,7 @@ namespace GXPEngine
         public void Update()
         {
             CookieDecay();
+            if (_pData.GetLifes() <= 0) return;
             CreateCookies();
         }
 
@@ -86,13 +88,13 @@ namespace GXPEngine
             if (GetChildCount() > 60) return;
 
             Cookie cookie;
-
             while (true)
             {
                 cookie = CreateCookie();
                 bool good = (player.DistanceTo(cookie) > player.width * 2);
 
-                GameObject[] collisions = cookie.GetCollisions();
+                GameObject[] collisions = cookie.GetCollisions(true, false);
+                Console.WriteLine(collisions.Length);
 
                 if (collisions.Length == 0 && good) break;
 

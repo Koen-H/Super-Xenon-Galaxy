@@ -19,7 +19,7 @@ namespace GXPEngine
         private EasyDraw textBox;
         private const int difference = 10;
 
-        public InputName(Game game, PlayerData pData) : base(game.width, game.height, false)
+        public InputName(Game game, PlayerData pData) : base(game.width, game.height)
         {
             _pData = pData;
 
@@ -30,8 +30,12 @@ namespace GXPEngine
             CreateInputText();
         }
 
-        public void Update()
+        public void FixedUpdate()
         {
+            foreach (EasyDraw e in buttons.Keys)
+            {
+                e.alpha = 0.5f;
+            }
             UpdateInputText();
         }
 
@@ -55,14 +59,13 @@ namespace GXPEngine
                 letter.ShapeAlign(CenterMode.Center, CenterMode.Center);
                 letter.Stroke(Color.White);
                 letter.StrokeWeight(7);
-                letter.Fill(Color.Black);
+                letter.Fill(34, 1, 34);
                 letter.Rect(letter.width / 2, letter.height / 2, letter.width, letter.height);
                 letter.TextFont(font);
                 letter.Fill(Color.White);
                 letter.TextAlign(CenterMode.Center, CenterMode.Center);
                 letter.Text("" + alpha[i]);
                 letter.SetXY(letter.width * x - font.Size / 2, height / 2 + (letter.height * row) + difference * 2);
-                letter.collider.isTrigger = true;
                 buttons.Add(letter, alpha[i].ToString());
                 AddChildAt(letter, 25 - i);
                 x++;
@@ -79,7 +82,7 @@ namespace GXPEngine
             textBox.ShapeAlign(CenterMode.Center, CenterMode.Center);
             textBox.Stroke(Color.White);
             textBox.StrokeWeight(7);
-            textBox.Fill(Color.Black);
+            textBox.Fill(34, 1, 34);
             textBox.Rect(textBox.width / 2, textBox.height / 2, textBox.width, textBox.height);
 
             textBox.SetXY(width / 2 - textBox.width / 2 - difference, height / 2 - textBox.height);
