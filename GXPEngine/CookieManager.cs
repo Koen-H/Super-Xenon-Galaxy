@@ -110,7 +110,7 @@ namespace GXPEngine
 
             ObjectColor randomColor = (ObjectColor)colors.GetValue(rC);
 
-            Cookie cookie = new Cookie(rX, rY, "Assets/Cookie/" + randomColor + ".png", randomColor);
+            Cookie cookie = new Cookie(rX, rY, "Assets/Cookie/" + randomColor + "3.png", randomColor);
             return cookie;
         }
 

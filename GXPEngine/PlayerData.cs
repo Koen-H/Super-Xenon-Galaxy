@@ -13,9 +13,11 @@ namespace GXPEngine
         private int score;
         private int lifes;
 
+        private float hudHeight;
+
         public PlayerData()
         {
-            lifes = 4;
+            lifes = 5;
             score = 0;
         }
 
@@ -37,6 +39,16 @@ namespace GXPEngine
         public void DecreaseLifes()
         {
             lifes--;
+        }
+
+        public float GetHudHeight()
+        {
+            return hudHeight;
+        }
+
+        public void SetHudHeight(float h)
+        {
+            hudHeight = h;
         }
     }
 }

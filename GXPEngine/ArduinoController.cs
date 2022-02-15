@@ -57,7 +57,7 @@ public class ArduinoController
                     catch (System.IO.IOException e) { continue; }
                 }
                 else
-                {
+                   {
                     try { port.Open(); }
                     catch (System.IO.IOException e) { continue; }
                 }

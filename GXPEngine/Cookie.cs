@@ -12,12 +12,12 @@ namespace GXPEngine
         private float colorIndex;
         private int decaySpeed;
 
-        public Cookie(float x, float y, string path, ObjectColor _cookieColor) : base (path, 1, 1)
+        public Cookie(float x, float y, string path, ObjectColor _cookieColor) : base(path, 5, 2)
         {
             cookieColor = _cookieColor;
             collider.isTrigger = true;
             SetOrigin(width / 2, height / 2);
-            SetScaleXY(4);
+            SetScaleXY(2);
             SetXY(x, y);
 
             colorIndex = 1;
@@ -26,6 +26,8 @@ namespace GXPEngine
 
         void Update()
         {
+            Turn(5);
+            Animate(0.5f);
             ColorUpdate();
         }
 

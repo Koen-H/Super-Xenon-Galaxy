@@ -45,6 +45,8 @@
     <Compile Include="GXPEngine\AddOns\SpriteBatch.cs" />
     <Compile Include="GXPEngine\AddOns\TiledLoader.cs" />
     <Compile Include="HUD.cs" />
+    <Compile Include="InputName.cs" />
+    <Compile Include="LeaderBoard.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="MyGame.cs" />
@@ -87,5 +89,6 @@
     <Compile Include="GXPEngine\SoLoud\SoloudSoundSystem.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerData.cs" />
+    <Compile Include="PlayerPiece.cs" />
   </ItemGroup>
 </Project>
