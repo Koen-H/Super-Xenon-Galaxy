@@ -63,7 +63,7 @@ namespace GXPEngine
         {
             if (obj.Type == "Player")
             {
-                player = new Player(this, new Vector2(obj.X, obj.Y), _pData);
+                player = new Player(new Vector2(obj.X, obj.Y), _pData);
                 AddChild(player);
             }
 
