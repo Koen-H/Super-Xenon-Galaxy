@@ -102,9 +102,6 @@ namespace GXPEngine
 
         private void LifesUpdate()
         {
-            lifes.ClearTransparent();
-            lifes.Text("LIFES: " + _pData.GetLifes());
-
             if (hearts.Count > 0 && hearts.Count > _pData.GetLifes())
             {
                 hearts[hearts.Count - 1].LateRemove();
