@@ -102,8 +102,8 @@ namespace GXPEngine
 
         private void LifesUpdate()
         {
-            lifes.ClearTransparent();
-            lifes.Text("LIFES: " + _pData.GetLifes());
+            //lifes.ClearTransparent();
+            //lifes.Text("LIFES: " + _pData.GetLifes());
 
             if (hearts.Count > 0 && hearts.Count > _pData.GetLifes())
             {
