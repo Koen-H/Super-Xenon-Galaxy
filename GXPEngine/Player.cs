@@ -263,10 +263,6 @@ namespace GXPEngine
         {
             switch (speedBoostStage)
             {
-                case 0:
-                    {
-                        break;
-                    }
                 case 1:
                     {
                         speedBoostInterval = Time.time + 1500f;
