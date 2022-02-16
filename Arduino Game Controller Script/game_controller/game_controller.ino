@@ -12,7 +12,7 @@ const int colorPinTwo = 6;//Color = NOTE: CHANGE THIS PIN NUMBER TO 4 ON WORKING
 const int colorPinLedTwo = 9;
 const int colorPinThree = 4;//Color =
 const int colorPinLedThree = 12;
-const int colorPinFour = 5;//Color = 
+const int colorPinFour = 2;//Color = 
 const int colorPinLedFour = 7;
 boolean colorPinOnePressed, colorPinTwoPressed, colorPinThreePressed, colorPinFourPressed;
 int colorButtonOne = 0;
