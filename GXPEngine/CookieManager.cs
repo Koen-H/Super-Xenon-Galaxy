@@ -67,8 +67,23 @@ namespace GXPEngine
         {
             if (cookies != null && cookies.Count > 0)
             {
+                Console.WriteLine(cookies.Count);
                 foreach (Cookie c in cookies)
                 {
+                    c.SetAnimation();
+                    if (Time.time > c.timeToDie)
+                    {
+                        
+                        if (_pData.GetLifes() > 0) {
+                            _pData.DecreaseLifes();
+                          }
+                        RemoveCookieFromList(c);
+                        c.Destroy();
+                        break;
+                    }
+                    
+
+                    /*
                     if (c.GetColorIndex() <= 0)
                     {
                         if (_pData.GetLifes() > 0) _pData.DecreaseLifes();
@@ -76,6 +91,7 @@ namespace GXPEngine
                         c.LateDestroy();
                         break;
                     }
+                    */
                 }
             }
         }
@@ -112,9 +128,17 @@ namespace GXPEngine
 
             ObjectColor randomColor = (ObjectColor)colors.GetValue(rC);
 
-            Cookie cookie = new Cookie(rX, rY, "Assets/Cookie/" + randomColor + "3.png", randomColor);
+            Cookie cookie = new Cookie(rX, rY, "Assets/Cookie/" + randomColor + "3.png", randomColor , this);
             return cookie;
         }
+        
+        public void RemoveCookieFromList(Cookie cookie)
+        {
+            cookies.Remove(cookie);
+            //TODO: add the color typed list.
+        }
+
+
 
         /// <summary>
         /// Method for future spawn rate calculation depending on score.

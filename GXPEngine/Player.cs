@@ -225,7 +225,7 @@ namespace GXPEngine
                     {
                         if (cookie.cookieColor == currentColor)//Check if the cookie is the same color as the player
                         {
-                            
+                            cookie.cookieManager.RemoveCookieFromList(cookie);
                             cookie.Destroy();//DESTROY THE COOKIE!
 
                             if (cookie.cookieColor == lastColor)
@@ -242,7 +242,6 @@ namespace GXPEngine
                         }
                         speedBoostStage += 1;
                         SetSpeedBoost();
-
                     }
 
                     if (collision is EasyDraw button && _pData.isButtonActive())

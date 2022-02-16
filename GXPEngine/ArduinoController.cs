@@ -23,9 +23,9 @@ public class ArduinoController
     public ArduinoController()
     {
         Console.WriteLine("Connecting with controller...");
-        //SendString("COLORS_OFF");
+        SendString("COLORS_OFF");
         CreateLightAnimation();
-        //Initialise();
+        Initialise();
         Console.WriteLine("Done.");
     }
 
@@ -265,13 +265,36 @@ public class ArduinoController
     {
         if (Time.time > lightAnimationInterval) {//Change to next light layout
             LightAnimationData currentData = lightAnimation[currentLightAnimation++];
-            SetLights();
+            SetLights(currentData);
+            lightAnimationInterval = currentData.delay + Time.time;
         }
     }
 
-    private void SetLights()
+    private void SetLights(LightAnimationData lightData)
     {
+        SendString("COLORS_OFF");
+        SendString("LED_SPACE_OFF");
 
+        if (lightData.cyan)
+        {
+            SendString("LED_ONE_ON");
+        }
+        if (lightData.orange)
+        {
+            SendString("LED_TWO_ON");
+        }
+        if (lightData.pink)
+        {
+            SendString("LED_THREE_ON");
+        }
+        if (lightData.purple)
+        {
+            SendString("LED_FOUR_ON");
+        }
+        if (lightData.space)
+        {
+            SendString("LED_SPACE_ON");
+        }
     }
 
     ~ArduinoController()
