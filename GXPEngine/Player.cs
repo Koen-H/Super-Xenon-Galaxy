@@ -25,16 +25,23 @@ namespace GXPEngine
         private bool pressRight;
         private bool pressSpace;
 
-
         private const int spriteCols = 7;
         private const int spriteRows = 3;
         private ObjectColor currentColor;
 
         private ArduinoController gameController;
 
+        private ObjectColor lastColor;
+        private float combo;
+
+        private float speedBoostStage;
+        private float speedBoost;
+        private float speedBoostInterval;
+
         private float speed;
         public Player(float x, float y, PlayerData pData) : base("square.png", 1, 1)
         {
+            combo = 0;
             _pData = pData;
             this.x = x;
             this.y = y;
@@ -68,7 +75,17 @@ namespace GXPEngine
 
         public float GetSpeed()
         {
-            return speed;
+            if (speedBoostStage > 0 && speed > 0)//apply buff from speedchain
+            {
+                speed += speedBoost;
+                if (Time.time > speedBoostInterval)
+                {
+                    speedBoostStage--;
+                    SetSpeedBoost();
+
+                }
+            }
+            return speed * -1;
         }
 
         private void Move()
@@ -89,7 +106,7 @@ namespace GXPEngine
 
             if (Input.GetKey(Key.W) && !Input.GetKey(Key.S))
             {
-                speed = 5 * 60;
+                speed = 5 * 40;
             }
 
             else if (Input.GetKey(Key.S) && !Input.GetKey(Key.W))
@@ -100,15 +117,28 @@ namespace GXPEngine
             if (gameController != null)
             {
                 rotation = gameController.analogRotation;
-                speed = (float)Math.Floor(gameController.analogForce / 10);
-                speed *= 1.5f;
+                speed = (float)Math.Floor(gameController.analogForce / 10) * 40;
+                //speed *= 1.5f;
             }
+
+
+
+            if (speedBoostStage > 0 && speed > 0)//apply buff from speedchain
+            {
+                speed += speedBoost;
+                if (Time.time > speedBoostInterval)
+                {
+                    speedBoostStage--;
+                    SetSpeedBoost();
+
+                }
+            }
+
 
             float v = -speed * Time.deltaTime / 1000;
 
-            Move(0, v);
 
-            
+            Move(0, v);
 
             //Edge control
             if (x < -bodyAnimation.width / 4) x = game.width + bodyAnimation.width / 4;
@@ -175,6 +205,10 @@ namespace GXPEngine
 
             //SetOrigin(width / (scale * 2), height / (scale * 2));
 
+            if (gameController != null)
+            {
+                gameController.ChangeLight(currentColor);
+            }
             //Console.WriteLine("Player's color has changed to:" + currentColor);
         }
 
@@ -191,9 +225,24 @@ namespace GXPEngine
                     {
                         if (cookie.cookieColor == currentColor)//Check if the cookie is the same color as the player
                         {
-                            _pData.IncreaseScore();
+                            
                             cookie.Destroy();//DESTROY THE COOKIE!
+
+                            if (cookie.cookieColor == lastColor)
+                            {
+                                combo += 1f;
+                            }
+                            else
+                            {
+                                combo = 0;
+                            }
+
+                            _pData.IncreaseScore(combo);
+                            lastColor = cookie.cookieColor;
                         }
+                        speedBoostStage += 1;
+                        SetSpeedBoost();
+
                     }
 
                     if (collision is EasyDraw button && _pData.isButtonActive())
@@ -207,6 +256,35 @@ namespace GXPEngine
             if (Input.GetKeyUp(Key.SPACE))
             {
                 pressSpace = false;
+            }
+        }
+
+        private void SetSpeedBoost()
+        {
+            switch (speedBoostStage)
+            {
+                case 0:
+                    {
+                        break;
+                    }
+                case 1:
+                    {
+                        speedBoostInterval = Time.time + 1500f;
+                        speedBoost = 260;
+                        break;
+                    }
+                case 2:
+                    {
+                        speedBoostInterval = Time.time + 500f;
+                        speedBoost = 338;
+                        break;
+                    }
+                case 3:
+                    {
+                        speedBoostInterval = Time.time + 250f;
+                        speedBoost = 440;
+                        break;
+                    }
             }
         }
 

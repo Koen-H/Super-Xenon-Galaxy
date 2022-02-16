@@ -31,9 +31,31 @@ namespace GXPEngine
             return score;
         }
 
-        public void IncreaseScore()
+        public void IncreaseScore(float combo = 0)
         {
-            score++;
+            switch (combo)
+            {
+                case 0:
+                    {
+                        score += 5;
+                        break;
+                    }
+                case 1:
+                    {
+                        score += 10;
+                        break;
+                    }
+                case 2:
+                    {
+                        score += 20;
+                        break;
+                    }
+                case 3:
+                    {
+                        score += 50;
+                        break;
+                    }
+            }
         }
 
         public int GetLifes()
