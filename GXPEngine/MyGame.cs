@@ -3,6 +3,9 @@ using GXPEngine;                                // GXPEngine contains the engine
 using System.Drawing;                           // System.Drawing contains drawing tools such as Color definitions
 using System.IO.Ports;
 using System.Threading;
+using System.IO;
+using System.Threading.Tasks;
+
 public class MyGame : Game
 {
 	private GameManager gameManager;
@@ -17,7 +20,12 @@ public class MyGame : Game
             gameController = new ArduinoController();
             //gameController.SendString("LED_SPACE_ON");
         }
-        
+        string[] lines =
+        {
+            "First line", "Second line", "Third line"
+        };
+
+        File.WriteAllLines("Leaderboard", lines);
         gameManager = new GameManager();
 		AddChild(gameManager);
 		Console.WriteLine("MyGame initialized");
@@ -26,6 +34,7 @@ public class MyGame : Game
 	// For every game object, Update is called every frame, by the engine:
 	void Update()
 	{
+
 		gameManager.Update();
         if (gameController != null)
         {
@@ -36,7 +45,8 @@ public class MyGame : Game
         //Console.WriteLine(GetDiagnostics());
     }
 
-	static void Main()							// Main() is the first method that's called when the program is run
+
+    static void Main()							// Main() is the first method that's called when the program is run
 	{
 		new MyGame().Start();					// Create a "MyGame" and start it
         

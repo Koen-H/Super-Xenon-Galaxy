@@ -12,7 +12,7 @@ namespace GXPEngine
         private Menu menu;
         private PlayerData pData;
         private Level level;
-        private InputName input;
+        private LeaderBoard leaderBoard;
 
 
         public GameManager()
@@ -31,11 +31,11 @@ namespace GXPEngine
                 player = new Player(game.width / 2, game.height / 2, pData);
                 hud = new HUD(game, pData);
 		        level = new Level("Assets/background.png", player, pData);
-                input = new InputName(game, pData);
-                input.visible = false;
+                leaderBoard = new LeaderBoard(game, pData);
+                leaderBoard.visible = false;
 
                 AddChild(level);
-                AddChild(input);
+                AddChild(leaderBoard);
                 AddChild(player);
                 AddChild(hud);
             }
@@ -49,18 +49,18 @@ namespace GXPEngine
                 level.Update();
             }
 
-            if (input != null)
+            if (leaderBoard != null)
             {
                 if (pData.GetLifes() == 0)
                 {
                     pData.SetButtonActive(true);
-                    input.visible = true;
-                    input.FixedUpdate();
+                    leaderBoard.visible = true;
+                    leaderBoard.FixedUpdate();
                 }
                 else
                 {
                     pData.SetButtonActive(false);
-                    input.visible = false;
+                    leaderBoard.visible = false;
                 }
             }
 
@@ -71,6 +71,11 @@ namespace GXPEngine
 
             if (hud != null)
             {
+                if (leaderBoard.visible)
+                {
+                    hud.visible = false;
+                    return;
+                }
                 hud.Update();
             }
         }
