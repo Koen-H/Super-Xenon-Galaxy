@@ -16,6 +16,8 @@ namespace GXPEngine
     public class Player : AnimationSprite
     {
         private PlayerData _pData;
+        private PlayerBody bodyAnimation;
+        private PlayerTail tailAnimation;
 
         private bool pressUp;
         private bool pressDown;
@@ -35,34 +37,43 @@ namespace GXPEngine
         private float speedBoostInterval;
 
         private float speed;
-
-        public Player(Vector2 pos, PlayerData pData) : base("Assets/Player/Body/pink.png", spriteCols, spriteRows)
+        public Player(float x, float y, PlayerData pData) : base("square.png", 1, 1)
         {
             combo = 0;
             _pData = pData;
-            x = pos.x;
-            y = pos.y;
-            //speed = 180;
+            this.x = x;
+            this.y = y;
 
+            bodyAnimation = new PlayerBody();
+            tailAnimation = new PlayerTail(this);
             currentColor = ObjectColor.PINK;    //The default color for the player
             UpdateSprite();
 
             SetOrigin(width / 2, height / 2);
-            SetScaleXY(2.5f);
+            SetScaleXY(0.5f);
 
             collider.isTrigger = true;
+            alpha = 0;
 
             MyGame myGame = (MyGame)game;
             if(myGame.gameController != null) gameController = myGame.gameController;
+
+            AddChild(bodyAnimation);
+            AddChild(tailAnimation);
         }
 
         public void FixedUpdate()
         {
-            Animate(0.5f);
+            bodyAnimation.Update();
+            tailAnimation.Update();
             Move();
             ChangeColor();
-            EatCookie();
+            PressSpace();
+        }
 
+        public float GetSpeed()
+        {
+            return speed;
         }
 
         private void Move()
@@ -116,10 +127,10 @@ namespace GXPEngine
             Move(0, v);
 
             //Edge control
-            if (x < -width / 2) x = game.width + width / 2;
-            if (x > game.width) x = -width / 2;
-            if (y < -height / 2) y = game.height + height / 2;
-            if (y > game.height + height / 2) y = -height / 2;
+            if (x < -bodyAnimation.width / 4) x = game.width + bodyAnimation.width / 4;
+            if (x > game.width + bodyAnimation.width / 4) x = -bodyAnimation.width / 4;
+            if (y < _pData.GetHudHeight() -bodyAnimation.height / 4) y = game.height + bodyAnimation.height / 4;
+            if (y > game.height + bodyAnimation.height / 4) y = _pData.GetHudHeight() - bodyAnimation.height / 4;
         }
 
         private void ChangeColor()
@@ -172,11 +183,13 @@ namespace GXPEngine
 
         private void UpdateSprite()
         {
-            string spriteString = "Assets/Player/Body/" + currentColor.ToString().ToLower() + ".png";
-            initializeFromTexture(Texture2D.GetInstance(spriteString, false));
-            initializeAnimFrames(spriteCols, spriteRows);
+            bodyAnimation.UpdateSprite(currentColor.ToString().ToLower());
+            tailAnimation.UpdateSprite(currentColor.ToString().ToLower());
+            //string spriteString = "Assets/Player/Body/" + currentColor.ToString().ToLower() + ".png";
+            //initializeFromTexture(Texture2D.GetInstance(spriteString, false));
+            //initializeAnimFrames(spriteCols, spriteRows);
 
-            SetOrigin(width / (scale * 2), height / (scale * 2));
+            //SetOrigin(width / (scale * 2), height / (scale * 2));
 
             if (gameController != null)
             {
@@ -185,7 +198,7 @@ namespace GXPEngine
             //Console.WriteLine("Player's color has changed to:" + currentColor);
         }
 
-        private void EatCookie()
+        private void PressSpace()
         {
             if (Input.GetKeyDown(Key.SPACE) && !pressSpace)
             {
@@ -217,12 +230,25 @@ namespace GXPEngine
                         }
                     }
 
+                    if (collision is EasyDraw button && _pData.isButtonActive())
+                    {
+                        _pData.ChangeName(_pData.GetButtons()[button]);
+                    }
+
                 }
             }
 
             if (Input.GetKeyUp(Key.SPACE))
             {
                 pressSpace = false;
+            }
+        }
+
+        void OnCollision(GameObject other)
+        {
+            if (other is EasyDraw button)
+            {
+                button.alpha = 1f;
             }
         }
     }

@@ -9,6 +9,7 @@ namespace GXPEngine
     public class HUD : Canvas
     {
         private PlayerData _pData;
+        private InputName input;
 
         private Sprite hudBoard;
         private EasyDraw score;
@@ -20,7 +21,7 @@ namespace GXPEngine
 
         private Font font;
 
-        public HUD(Game game, PlayerData pData) : base(game.width, game.height, false)
+        public HUD(Game game, PlayerData pData) : base(game.width, game.height)
         {
             _pData = pData;
             time = TimeSpan.FromMilliseconds(Time.time);
@@ -30,9 +31,12 @@ namespace GXPEngine
 
         public void Update()
         {
-            ScoreUpdate();
             LifesUpdate();
-            TimerUpdate();
+            if (_pData.GetLifes() > 0)
+            {
+                ScoreUpdate();
+                TimerUpdate();
+            }
         }
 
         private void CreateHUD()
@@ -45,7 +49,8 @@ namespace GXPEngine
 
         private void CreateHudBoard()
         {
-            hudBoard = new Sprite("Assets/HUD/top.png", false, false);
+            hudBoard = new Sprite("Assets/HUD/top.png");
+            hudBoard.collider.isTrigger = true;
             AddChild(hudBoard);
 
             _pData.SetHudHeight(hudBoard.height);
@@ -94,6 +99,7 @@ namespace GXPEngine
             timer.SetXY(width - timer.width * 1.1f, (timer.height / 5) + 5);
             AddChild(timer);
         }
+
 
         private void ScoreUpdate()
         {
