@@ -1,6 +1,7 @@
 ﻿using System.IO.Ports;
 using System;
 using GXPEngine;
+using System.Collections.Generic;
 
 public class ArduinoController
 {
@@ -10,7 +11,7 @@ public class ArduinoController
     private String _message;
     private static int _parameterSize = 8;//number of parameters, i think 8 is plenty
     private String[] _parameters = new String[_parameterSize];
-
+    private List<int[]> lightAnimation = new List<int[]>();
     public float analogRotation;
     public float analogForce;
 
@@ -18,6 +19,8 @@ public class ArduinoController
     public ArduinoController()
     {
         Console.WriteLine("Connecting with controller...");
+        SendString("COLORS_OFF");
+        CreateLightAnimation();
         Initialise();
         Console.WriteLine("Done.");
     }
@@ -35,7 +38,7 @@ public class ArduinoController
         for (int i = 0; i < _parameterSize; i++)
         {
             _parameters[i] = "0";
-            }
+        }
 
         while (!found)
         {
@@ -57,7 +60,7 @@ public class ArduinoController
                     catch (System.IO.IOException e) { continue; }
                 }
                 else
-                   {
+                {
                     try { port.Open(); }
                     catch (System.IO.IOException e) { continue; }
                 }
@@ -173,24 +176,24 @@ public class ArduinoController
         _message.Trim();
         _parameters = _message.Split(' ');
     }
-    
+
     public void AnalogStick()
     {
         double xPos = Math.Ceiling(GetFloatParameter(0) / 10);
-        double yPos = Math.Ceiling(GetFloatParameter(1) / 10)*-1;
+        double yPos = Math.Ceiling(GetFloatParameter(1) / 10) * -1;
         if (xPos == 0) xPos = 1;
         if (yPos == 0) yPos = 1;
         double force = Math.Sqrt((xPos * xPos) + (yPos * yPos));
-       
-        if(force > 50)//Easy fix
+
+        if (force > 50)//Easy fix
         {
             force = 50;
         }
         analogForce = (float)force;
         if (analogForce > 10)
         {
-            analogRotation = (float) Math.Ceiling(((Math.PI + Math.Atan2(yPos ,- xPos)) * 180 / Math.PI));
-            
+            analogRotation = (float)Math.Ceiling(((Math.PI + Math.Atan2(yPos, -xPos)) * 180 / Math.PI));
+
             //Console.WriteLine(xPos + ", " + yPos + ", " + analogRotation);
 
 
@@ -202,7 +205,7 @@ public class ArduinoController
         SendString("COLORS_OFF");
         switch (currentColor)
         {
-            
+
             case ObjectColor.CYAN:
                 {
                     SendString("LED_ONE_ON");
@@ -225,6 +228,47 @@ public class ArduinoController
                 }
         }
     }
+
+    public void CreateLightAnimation() { 
+    
+        // cyan. orange, pink, purple, white, delay;
+        lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 0 });
+        lightAnimation.Add(new int[] { 1, 0, 0, 0, 0, 500 });
+        lightAnimation.Add(new int[] { 0, 0, 1, 0, 0, 1000 });
+        lightAnimation.Add(new int[] { 0, 0, 0, 1, 0, 1500 });
+        lightAnimation.Add(new int[] { 0, 1, 0, 0, 0, 2000 });
+        lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 2500 });
+        lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 3000 });
+        lightAnimation.Add(new int[] { 1, 1, 1, 1, 1, 3500 });
+        lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 4000 });
+        lightAnimation.Add(new int[] { 1, 1, 1, 1, 1, 4500 });
+        lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 5000 });
+        lightAnimation.Add(new int[] { 1, 0, 0, 1, 0, 5500 });
+        lightAnimation.Add(new int[] { 0, 1, 1, 0, 0, 6000 });
+        lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 6500 });
+        lightAnimation.Add(new int[] { 1, 0, 1, 0, 0, 7000 });
+        lightAnimation.Add(new int[] { 0, 1, 0, 1, 0, 7500 });
+        lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 8000 });
+        lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 8500 });
+        lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 9000 });
+        lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 9500 });
+        lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 10000 });
+        // SetInterval(() => gameController.SendString("LED_ONE_ON"), TimeSpan.FromSeconds(2));
+        CreateLightAnimation();
+        //gameController.SendString("LED_ONE_ON");//cyan = 1
+        //gameController.SendString("LED_TWO_ON");//orange = 2
+        //gameController.SendString("LED_THREE_ON");//pink = 3
+        //gameController.SendString("LED_FOUR_ON");//purple = 4
+    }
+
+    public void Update()
+    {
+        for(int i = 0; i < lightAnimation.Count; i++)
+        {
+            
+        }
+    }
+
     ~ArduinoController()
     {
         port.Close();

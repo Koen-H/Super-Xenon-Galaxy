@@ -75,7 +75,17 @@ namespace GXPEngine
 
         public float GetSpeed()
         {
-            return speed;
+            if (speedBoostStage > 0 && speed > 0)//apply buff from speedchain
+            {
+                speed += speedBoost;
+                if (Time.time > speedBoostInterval)
+                {
+                    speedBoostStage--;
+                    SetSpeedBoost();
+
+                }
+            }
+            return speed * -1;
         }
 
         private void Move()
