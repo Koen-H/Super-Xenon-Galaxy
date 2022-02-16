@@ -9,7 +9,7 @@ namespace GXPEngine
     public class HUD : Canvas
     {
         private PlayerData _pData;
-        private InputName input;
+        private LeaderBoard leaderBoard;
 
         private Sprite hudBoard;
         private EasyDraw score;
@@ -69,13 +69,6 @@ namespace GXPEngine
 
         private void CreateLifes()
         {
-            lifes = new EasyDraw(400, 100, false);
-            lifes.TextAlign(CenterMode.Center, CenterMode.Min);
-            lifes.Fill(Color.White);
-            lifes.TextFont(font);
-            lifes.Text("LIFES: " + _pData.GetLifes());
-            lifes.SetXY(lifes.width / 4, lifes.height / 4);
-            //AddChild(lifes);
 
             hearts = new List<AnimationSprite>();
             for (int i = 0; i < _pData.GetLifes(); i++)

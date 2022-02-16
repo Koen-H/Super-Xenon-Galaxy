@@ -45,7 +45,6 @@
     <Compile Include="GXPEngine\AddOns\SpriteBatch.cs" />
     <Compile Include="GXPEngine\AddOns\TiledLoader.cs" />
     <Compile Include="HUD.cs" />
-    <Compile Include="InputName.cs" />
     <Compile Include="LeaderBoard.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Menu.cs" />

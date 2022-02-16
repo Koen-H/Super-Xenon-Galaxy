@@ -1,0 +1,6 @@
+1- Cookie spawn animation 1 second
+2- Cookie no particles 2 seconds
+3- Cookie low particles 2 seconds
+4- Cookie medium particles 2 seconds
+5- Cookie high particles 2 seconds
+6- Cookie explode animation 1 second (not in yet, just delete for now)
