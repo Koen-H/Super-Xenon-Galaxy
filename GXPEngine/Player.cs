@@ -33,6 +33,8 @@ namespace GXPEngine
 
         private ObjectColor lastColor;
         private float combo;
+
+        private float speedBoostStage;
         private float speedBoost;
         private float speedBoostInterval;
 
@@ -111,12 +113,14 @@ namespace GXPEngine
 
 
 
-            if (speedBoost > 0 && speed > 0)//apply buff from combo
+            if (speedBoostStage > 0 && speed > 0)//apply buff from speedchain
             {
                 speed += speedBoost;
                 if (Time.time > speedBoostInterval)
                 {
-                    speedBoost = 0;
+                    speedBoostStage--;
+                    SetSpeedBoost();
+
                 }
             }
             
@@ -214,8 +218,6 @@ namespace GXPEngine
                             _pData.IncreaseScore();
                             cookie.Destroy();//DESTROY THE COOKIE!
 
-                            speedBoost += 200; //The boos u get for a cookie
-                            speedBoostInterval = Time.time + 750f;// The time before it goes away.
                             Console.WriteLine(speedBoostInterval);
                             if (cookie.cookieColor == lastColor)
                             {
@@ -228,6 +230,9 @@ namespace GXPEngine
                             }
                             lastColor = cookie.cookieColor;
                         }
+                        speedBoostStage += 1;
+                        SetSpeedBoost();
+
                     }
 
                     if (collision is EasyDraw button && _pData.isButtonActive())
@@ -241,6 +246,37 @@ namespace GXPEngine
             if (Input.GetKeyUp(Key.SPACE))
             {
                 pressSpace = false;
+            }
+        }
+
+        private void SetSpeedBoost()
+        {
+            switch (speedBoostStage)
+            {
+                case 1:
+                    {
+                        speedBoostInterval = Time.time + 2000f;
+                        speedBoost = 150;
+                        break;
+                    }
+                case 2:
+                    {
+                        speedBoostInterval = Time.time + 1000f;
+                        speedBoost = 225;
+                        break;
+                    }
+                case 3:
+                    {
+                        speedBoostInterval = Time.time + 500f;
+                        speedBoost = 325;
+                        break;
+                    }
+                case 4:
+                    {
+                        speedBoostInterval = Time.time + 250f;
+                        speedBoost = 450;
+                        break;
+                    }
             }
         }
 
