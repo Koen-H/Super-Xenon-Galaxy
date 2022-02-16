@@ -22,6 +22,11 @@ namespace GXPEngine
         private const int distance = 32;
         private List<Cookie> cookies;
 
+        private List<Cookie> currentPinkCookie = new List<Cookie>();
+        private List<Cookie> currentPurpleCookie = new List<Cookie>();
+        private List<Cookie> currentCyanCookie = new List<Cookie>();
+        private List<Cookie> currentOrangeCookie = new List<Cookie>();
+
         public CookieManager(Level level, PlayerData pData)
         {
             _pData = pData;
@@ -129,6 +134,22 @@ namespace GXPEngine
             ObjectColor randomColor = (ObjectColor)colors.GetValue(rC);
 
             Cookie cookie = new Cookie(rX, rY, "Assets/Cookie/" + randomColor + "3.png", randomColor , this);
+            if(randomColor == ObjectColor.PURPLE)
+            {
+                currentPurpleCookie.Add(cookie);
+            }
+            if(randomColor == ObjectColor.PINK)
+            {
+                currentPinkCookie.Add(cookie);
+            }
+            if(randomColor == ObjectColor.CYAN)
+            {
+                currentCyanCookie.Add(cookie);
+            }
+            if(randomColor == ObjectColor.ORANGE)
+            {
+                currentOrangeCookie.Add(cookie);
+            }
             return cookie;
         }
         

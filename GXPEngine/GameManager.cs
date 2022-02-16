@@ -53,6 +53,7 @@ namespace GXPEngine
             {
                 if (pData.GetLifes() == 0)
                 {
+                    new Sound("Assets/Sounds/wolf growl.wav").Play();//should be game over sound.
                     pData.SetButtonActive(true);
                     leaderBoard.visible = true;
                     leaderBoard.FixedUpdate();

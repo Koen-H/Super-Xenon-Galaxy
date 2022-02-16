@@ -65,6 +65,7 @@ namespace GXPEngine
 
         public void DecreaseLifes()
         {
+            new Sound("Assets/Sounds/wolf growl.wav").Play();//should be sound when player loses 1 life.
             lifes--;
         }
 
