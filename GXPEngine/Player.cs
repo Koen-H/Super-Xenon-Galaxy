@@ -123,7 +123,8 @@ namespace GXPEngine
 
                 }
             }
-            
+
+            Console.WriteLine(speed);
 
             float v = -speed * Time.deltaTime / 1000;
 
@@ -227,7 +228,7 @@ namespace GXPEngine
                                 combo = 0;
                             }
 
-                            _pData.IncreaseScore();
+                            _pData.IncreaseScore(combo);
                             lastColor = cookie.cookieColor;
                         }
                         speedBoostStage += 1;
@@ -253,28 +254,26 @@ namespace GXPEngine
         {
             switch (speedBoostStage)
             {
+                case 0:
+                    {
+                        break;
+                    }
                 case 1:
                     {
-                        speedBoostInterval = Time.time + 2000f;
-                        speedBoost = 150;
+                        speedBoostInterval = Time.time + 1500f;
+                        speedBoost = 260;
                         break;
                     }
                 case 2:
                     {
-                        speedBoostInterval = Time.time + 1000f;
-                        speedBoost = 225;
+                        speedBoostInterval = Time.time + 500f;
+                        speedBoost = 338;
                         break;
                     }
                 case 3:
                     {
-                        speedBoostInterval = Time.time + 500f;
-                        speedBoost = 325;
-                        break;
-                    }
-                case 4:
-                    {
                         speedBoostInterval = Time.time + 250f;
-                        speedBoost = 450;
+                        speedBoost = 440;
                         break;
                     }
             }

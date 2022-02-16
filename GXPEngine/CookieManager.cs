@@ -122,7 +122,7 @@ namespace GXPEngine
         /// <returns></returns>
         private float CalculateSpawnRate()
         {
-            return maxSpawnRate - (float) (_pData.GetScore() / 10);
+            return maxSpawnRate - (float) (_pData.GetScore() / 100);
         }
     }
 }
