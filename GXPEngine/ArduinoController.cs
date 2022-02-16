@@ -242,28 +242,21 @@ public class ArduinoController
         lightAnimation.Add(new LightAnimationData( false, false, false, true, false, 500 ));
         lightAnimation.Add(new LightAnimationData(false, true, false, false, false, 500)); // lightAnimation.Add(new int[] { 0, 1, 0, 0, 0, 2000 });
         lightAnimation.Add(new LightAnimationData(false, false, false, false, true, 500)); //lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 2500 });
-
-        /*TODO: Change this to the new layout, see above ^ FOR ELIO
-        lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 3000 });
-        lightAnimation.Add(new int[] { 1, 1, 1, 1, 1, 3500 });
-        lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 4000 });
-        lightAnimation.Add(new int[] { 1, 1, 1, 1, 1, 4500 });
-        lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 5000 });
-        lightAnimation.Add(new int[] { 1, 0, 0, 1, 0, 5500 });
-        lightAnimation.Add(new int[] { 0, 1, 1, 0, 0, 6000 });
-        lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 6500 });
-        lightAnimation.Add(new int[] { 1, 0, 1, 0, 0, 7000 });
-        lightAnimation.Add(new int[] { 0, 1, 0, 1, 0, 7500 });
-        lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 8000 });
-        lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 8500 });
-        lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 9000 });
-        lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 9500 });
-        lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 10000 });*/
-        
-        //gameController.SendString("LED_ONE_ON");//cyan = 1
-        //gameController.SendString("LED_TWO_ON");//orange = 2
-        //gameController.SendString("LED_THREE_ON");//pink = 3
-        //gameController.SendString("LED_FOUR_ON");//purple = 4
+        lightAnimation.Add(new LightAnimationData(false, false, false, false, false, 500)); //lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 3000 });
+        lightAnimation.Add(new LightAnimationData(true, true, true, true, true, 500)); //lightAnimation.Add(new int[] { 1, 1, 1, 1, 1, 3500 });
+        lightAnimation.Add(new LightAnimationData(false, false, false, false, false, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 4000 });
+        lightAnimation.Add(new LightAnimationData(true, true, true, true, true, 500));//lightAnimation.Add(new int[] { 1, 1, 1, 1, 1, 4500 });
+        lightAnimation.Add(new LightAnimationData(false, false, false, false, false, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 5000 });
+        lightAnimation.Add(new LightAnimationData(true, false, false, true, false, 500));//lightAnimation.Add(new int[] { 1, 0, 0, 1, 0, 5500 });
+        lightAnimation.Add(new LightAnimationData(false, true, true, false, false, 500));//lightAnimation.Add(new int[] { 0, 1, 1, 0, 0, 6000 });
+        lightAnimation.Add(new LightAnimationData(false, false, false, false, true, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 6500 });
+        lightAnimation.Add(new LightAnimationData(true, false, true, false, false, 500));//lightAnimation.Add(new int[] { 1, 0, 1, 0, 0, 7000 });
+        lightAnimation.Add(new LightAnimationData(false, true, false, true, false, 500));//lightAnimation.Add(new int[] { 0, 1, 0, 1, 0, 7500 });
+        lightAnimation.Add(new LightAnimationData(false, false, false, false, true, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 8000 });
+        lightAnimation.Add(new LightAnimationData(false, false, false, false, false, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 8500 });
+        lightAnimation.Add(new LightAnimationData(false, false, false, false, true, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 9000 });
+        lightAnimation.Add(new LightAnimationData(false, false, false, false, false, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 9500 });
+        lightAnimation.Add(new LightAnimationData(false, false, false, false, true, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 10000 });
         Console.WriteLine(lightAnimation.Count);
     }
     
