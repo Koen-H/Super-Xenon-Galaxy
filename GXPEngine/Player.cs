@@ -215,19 +215,19 @@ namespace GXPEngine
                     {
                         if (cookie.cookieColor == currentColor)//Check if the cookie is the same color as the player
                         {
-                            _pData.IncreaseScore();
+                            
                             cookie.Destroy();//DESTROY THE COOKIE!
 
-                            Console.WriteLine(speedBoostInterval);
                             if (cookie.cookieColor == lastColor)
                             {
                                 combo += 1f;
-                                Console.WriteLine(combo);
                             }
                             else
                             {
                                 combo = 0;
                             }
+
+                            _pData.IncreaseScore();
                             lastColor = cookie.cookieColor;
                         }
                         speedBoostStage += 1;

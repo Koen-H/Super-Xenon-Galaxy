@@ -71,8 +71,8 @@ namespace GXPEngine
                 x++;
                 _pData.SetButtons(buttons);
 
-                Console.WriteLine(alpha[i] + ": row = " + row + ", x = " + x);
-                Console.WriteLine(alpha[i].ToString());
+                //Console.WriteLine(alpha[i] + ": row = " + row + ", x = " + x);
+                //Console.WriteLine(alpha[i].ToString());
             }
         }
 

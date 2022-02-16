@@ -94,7 +94,7 @@ namespace GXPEngine
                 bool good = (player.DistanceTo(cookie) > player.width * 2);
 
                 GameObject[] collisions = cookie.GetCollisions(true, false);
-                Console.WriteLine(collisions.Length);
+                //Console.WriteLine(collisions.Length);
 
                 if (collisions.Length == 0 && good) break;
 
