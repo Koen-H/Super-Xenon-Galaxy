@@ -134,7 +134,6 @@ namespace GXPEngine
                 }
             }
 
-            Console.WriteLine(speed);
 
             float v = -speed * Time.deltaTime / 1000;
 

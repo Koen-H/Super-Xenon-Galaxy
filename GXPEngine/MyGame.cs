@@ -7,7 +7,7 @@ public class MyGame : Game
 {
 	private GameManager gameManager;
     public ArduinoController gameController;
-    private Boolean useController = false;//DISABLE FOR KEYBOARD
+    private Boolean useController = true;//DISABLE FOR KEYBOARD
 
 
     public MyGame() : base(1920, 1080, false, false, 960, 540)		// Create a window that's 800x600 and NOT fullscreen
@@ -15,7 +15,7 @@ public class MyGame : Game
         if (useController)
         {
             gameController = new ArduinoController();
-            gameController.SendString("LED_SPACE_ON");
+            //gameController.SendString("LED_SPACE_ON");
         }
         
         gameManager = new GameManager();
@@ -27,7 +27,11 @@ public class MyGame : Game
 	void Update()
 	{
 		gameManager.Update();
-        if(gameController != null) gameController.AnalogStick();
+        if (gameController != null)
+        {
+                //gameController.Update();
+                //gameController.AnalogStick();
+        }
 
         //Console.WriteLine(GetDiagnostics());
     }

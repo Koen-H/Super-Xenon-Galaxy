@@ -11,7 +11,11 @@ public class ArduinoController
     private String _message;
     private static int _parameterSize = 8;//number of parameters, i think 8 is plenty
     private String[] _parameters = new String[_parameterSize];
-    private List<int[]> lightAnimation = new List<int[]>();
+
+    private List<LightAnimationData> lightAnimation = new List<LightAnimationData>();
+    private int currentLightAnimation = 0;
+    private float lightAnimationInterval;
+
     public float analogRotation;
     public float analogForce;
 
@@ -19,9 +23,9 @@ public class ArduinoController
     public ArduinoController()
     {
         Console.WriteLine("Connecting with controller...");
-        SendString("COLORS_OFF");
+        //SendString("COLORS_OFF");
         CreateLightAnimation();
-        Initialise();
+        //Initialise();
         Console.WriteLine("Done.");
     }
 
@@ -231,13 +235,15 @@ public class ArduinoController
 
     public void CreateLightAnimation() { 
     
-        // cyan. orange, pink, purple, white, delay;
-        lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 0 });
-        lightAnimation.Add(new int[] { 1, 0, 0, 0, 0, 500 });
-        lightAnimation.Add(new int[] { 0, 0, 1, 0, 0, 1000 });
-        lightAnimation.Add(new int[] { 0, 0, 0, 1, 0, 1500 });
-        lightAnimation.Add(new int[] { 0, 1, 0, 0, 0, 2000 });
-        lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 2500 });
+        // cyan. orange, pink, purple, white, delay after the previous one happend;
+        lightAnimation.Add(new LightAnimationData( false, false, false, false, false, 0 ));
+        lightAnimation.Add(new LightAnimationData(true, false, false, false, false, 500));
+        lightAnimation.Add(new LightAnimationData(false, false, true, false, false, 500));
+        lightAnimation.Add(new LightAnimationData( false, false, false, true, false, 500 ));
+        lightAnimation.Add(new LightAnimationData(false, true, false, false, false, 500)); // lightAnimation.Add(new int[] { 0, 1, 0, 0, 0, 2000 });
+        lightAnimation.Add(new LightAnimationData(false, false, false, false, true, 500)); //lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 2500 });
+
+        /*TODO: Change this to the new layout, see above ^ FOR ELIO
         lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 3000 });
         lightAnimation.Add(new int[] { 1, 1, 1, 1, 1, 3500 });
         lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 4000 });
@@ -252,21 +258,27 @@ public class ArduinoController
         lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 8500 });
         lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 9000 });
         lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 9500 });
-        lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 10000 });
-        // SetInterval(() => gameController.SendString("LED_ONE_ON"), TimeSpan.FromSeconds(2));
-        CreateLightAnimation();
+        lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 10000 });*/
+        
         //gameController.SendString("LED_ONE_ON");//cyan = 1
         //gameController.SendString("LED_TWO_ON");//orange = 2
         //gameController.SendString("LED_THREE_ON");//pink = 3
         //gameController.SendString("LED_FOUR_ON");//purple = 4
+        Console.WriteLine(lightAnimation.Count);
     }
+    
 
     public void Update()
     {
-        for(int i = 0; i < lightAnimation.Count; i++)
-        {
-            
+        if (Time.time > lightAnimationInterval) {//Change to next light layout
+            LightAnimationData currentData = lightAnimation[currentLightAnimation++];
+            SetLights();
         }
+    }
+
+    private void SetLights()
+    {
+
     }
 
     ~ArduinoController()
