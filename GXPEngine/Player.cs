@@ -225,7 +225,7 @@ namespace GXPEngine
                     {
                         if (cookie.cookieColor == currentColor)//Check if the cookie is the same color as the player
                         {
-                            
+                            new Sound("Assets/Sounds/wolf growl.wav").Play();//should be sound chain 1
                             cookie.Destroy();//DESTROY THE COOKIE!
 
                             if (cookie.cookieColor == lastColor)
@@ -269,18 +269,21 @@ namespace GXPEngine
                     }
                 case 1:
                     {
+                        new Sound("Assets/Sounds/wolf growl.wav").Play();//should be sound chain 2
                         speedBoostInterval = Time.time + 1500f;
                         speedBoost = 260;
                         break;
                     }
                 case 2:
                     {
+                        new Sound("Assets/Sounds/wolf growl.wav").Play();//should be sound chain 3
                         speedBoostInterval = Time.time + 500f;
                         speedBoost = 338;
                         break;
                     }
                 case 3:
                     {
+                        new Sound("Assets/Sounds/wolf growl.wav").Play();//should be sound chain 4
                         speedBoostInterval = Time.time + 250f;
                         speedBoost = 440;
                         break;
