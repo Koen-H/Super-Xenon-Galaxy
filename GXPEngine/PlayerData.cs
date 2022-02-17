@@ -42,16 +42,19 @@ namespace GXPEngine
                     }
                 case 1:
                     {
+                        new Sound("Assets/Sounds/wolf growl.wav").Play();//should be sound chain 2
                         score += 10;
                         break;
                     }
                 case 2:
                     {
+                        new Sound("Assets/Sounds/wolf growl.wav").Play();//should be sound chain 3
                         score += 20;
                         break;
                     }
                 case 3:
                     {
+                        new Sound("Assets/Sounds/wolf growl.wav").Play();//should be sound chain 4
                         score += 50;
                         break;
                     }

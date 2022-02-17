@@ -200,7 +200,7 @@ public class ArduinoController
         {
             analogRotation = (float)Math.Ceiling(((Math.PI + Math.Atan2(yPos, -xPos)) * 180 / Math.PI));
 
-            //Console.WriteLine(xPos + ", " + yPos + ", " + analogRotation);
+            Console.WriteLine(xPos + ", " + yPos + ", " + analogRotation);
 
 
         }
@@ -259,6 +259,18 @@ public class ArduinoController
         lightAnimation.Add(new LightAnimationData(false, false, false, false, true, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 9000 });
         lightAnimation.Add(new LightAnimationData(false, false, false, false, false, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 0, 9500 });
         lightAnimation.Add(new LightAnimationData(false, false, false, false, true, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 10000 });
+        lightAnimation.Add(new LightAnimationData(true, true, true, true, true, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 10000 });
+        lightAnimation.Add(new LightAnimationData(true, false, false, false, false, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 10000 });
+        lightAnimation.Add(new LightAnimationData(false, false, false, true, false, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 10000 });
+        lightAnimation.Add(new LightAnimationData(false, false, false, false, true, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 10000 });
+        lightAnimation.Add(new LightAnimationData(false, false, true, false, false, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 10000 });
+        lightAnimation.Add(new LightAnimationData(false, true, false, false, false, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 10000 });
+        lightAnimation.Add(new LightAnimationData(false, false, false, false, false, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 10000 });
+        lightAnimation.Add(new LightAnimationData(true, true, true, true, true, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 10000 });
+        lightAnimation.Add(new LightAnimationData(false, false, false, false, false, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 10000 });
+        lightAnimation.Add(new LightAnimationData(true, true, true, true, true, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 10000 });
+        lightAnimation.Add(new LightAnimationData(false, false, false, false, false, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 10000 });
+        lightAnimation.Add(new LightAnimationData(true, true, true, true, true, 500));//lightAnimation.Add(new int[] { 0, 0, 0, 0, 1, 10000 });
         Console.WriteLine(lightAnimation.Count);
     }
     

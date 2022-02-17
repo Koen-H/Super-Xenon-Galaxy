@@ -72,7 +72,7 @@ namespace GXPEngine
         {
             if (cookies != null && cookies.Count > 0)
             {
-                Console.WriteLine(cookies.Count);
+                //Console.WriteLine(cookies.Count);
                 foreach (Cookie c in cookies)
                 {
                     c.SetAnimation();
