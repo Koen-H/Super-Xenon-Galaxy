@@ -105,6 +105,7 @@ namespace GXPEngine
                 }
                 else
                 {
+                    gameOverOnce = false;
                     pData.SetButtonActive(false);
                     leaderBoard.visible = false;
                 }
