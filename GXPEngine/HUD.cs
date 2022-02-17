@@ -82,7 +82,6 @@ namespace GXPEngine
             hudBoard = new Sprite("Assets/HUD/top.png");
             hudBoard.collider.isTrigger = true;
             AddChild(hudBoard);
-
         }
 
         private void CreateScore()

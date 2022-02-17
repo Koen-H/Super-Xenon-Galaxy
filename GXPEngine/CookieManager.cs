@@ -171,7 +171,7 @@ namespace GXPEngine
                 if (collisions.Length == 0 && good) break;
 
             }
-            CreatePowerUp(); //Spawns and creates a power up
+            //CreatePowerUp(); //Spawns and creates a power up
             CreateHazard(); // spawns and creates a hazard
             cookies.Add(cookie);
             AddChild(cookie);
@@ -230,6 +230,7 @@ namespace GXPEngine
 
         public void ApplyPowerUp(ObjectColor playerColor)
         {
+            new Sound("Assets/Sounds/powerup.wav").Play();
             List<Cookie> killCookieList = new List<Cookie>();
 
             if (playerColor == ObjectColor.PURPLE)

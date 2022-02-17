@@ -96,7 +96,9 @@ namespace GXPEngine
                 {
                     if (!gameOverOnce){
                         level.cookieManager.KillAllCookies();
-                        new Sound("Assets/Sounds/wolf growl.wav").Play();//should be game over sound.
+                        new Sound("Assets/Sounds/playerdeath.wav").Play();//should be game over sound.
+                        MyGame myGame = (MyGame)game;
+                        myGame.PlayBackgroundMusic("music endscreen.wav");
                         pData.SetButtonActive(true);
                         leaderBoard.visible = true;
                         gameOverOnce = true;
