@@ -14,8 +14,10 @@ namespace GXPEngine
 
         private bool active;
 
-        private bool pressW;
-        private bool pressS;
+        public bool analogUp = false;
+        public bool analogDown = false;
+        public bool pressW;
+        public bool pressS;
         private bool pressSpace;
 
         private int state = 1;
@@ -62,14 +64,14 @@ namespace GXPEngine
         /// Updating menu arrow.
         /// </summary>
         private void UpdateArrow()
-        {
-            if (Input.GetKeyDown(Key.W) && !pressW && state != 1 && visible)
+        {   
+            if ((Input.GetKeyDown(Key.W) || analogUp) && !pressW && state != 1 && visible)
             {
                 pressW = true;
                 state -= 1;
                 arrow.y -= arrow.height * 3;
             }
-            if (Input.GetKeyDown(Key.S) && !pressS && state != 3 && visible)
+            if ((Input.GetKeyDown(Key.S)|| analogDown) && !pressS && state != 3 && visible)
             {
                 pressS = true;
                 state += 1;

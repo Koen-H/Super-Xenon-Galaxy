@@ -171,7 +171,7 @@ namespace GXPEngine
                 if (collisions.Length == 0 && good) break;
 
             }
-           // CreatePowerUp(); //Spawns and creates a power up
+            CreatePowerUp(); //Spawns and creates a power up
             CreateHazard(); // spawns and creates a hazard
             cookies.Add(cookie);
             AddChild(cookie);
@@ -271,6 +271,17 @@ namespace GXPEngine
         private float CalculateSpawnRate()
         {
             return maxSpawnRate - (float) (_pData.GetScore() / 100);
+        }
+
+        public void KillAllCookies()
+        {
+            foreach (Cookie c in cookies) {
+                c.CookieDie();
+             }
+            foreach (AnimationSprite anim in currentPowerUps)
+            {
+                anim.LateDestroy();
+            }
         }
     }
 }

@@ -14,6 +14,7 @@ namespace GXPEngine
         private Level level;
         private LeaderBoard leaderBoard;
         private ArduinoController gameController;
+        private Boolean gameOverOnce;
 
 
         public GameManager(ArduinoController _gameController = null)
@@ -31,6 +32,7 @@ namespace GXPEngine
                 if (gameController != null)
                 {
                     gameController.playLightAnimation = false;
+                    gameController.SendString("COLORS_OFF");
                 }
 
                 player = new Player(game.width / 2, game.height / 2, pData);
@@ -44,8 +46,28 @@ namespace GXPEngine
                 AddChild(player);
                 AddChild(hud);
             }
+            if (gameController != null)
+            {
+                if (gameController.analogRotation > 280 || gameController.analogRotation < 80 && gameController.analogForce > 40)
+                {
+                    menu.analogUp = true;
 
-
+                }
+                else
+                {
+                    menu.analogUp = false;
+                    menu.pressW = false;
+                }
+                if (gameController.analogRotation < 250 && gameController.analogRotation > 100 && gameController.analogForce > 40)
+                {
+                    menu.analogDown = true;
+                }
+                else
+                {
+                    menu.analogDown = false;
+                    menu.pressS = false;
+                }
+            }
             menu.Update();
 
 
@@ -58,9 +80,13 @@ namespace GXPEngine
             {
                 if (pData.GetLifes() == 0)
                 {
-                    new Sound("Assets/Sounds/wolf growl.wav").Play();//should be game over sound.
-                    pData.SetButtonActive(true);
-                    leaderBoard.visible = true;
+                    if (!gameOverOnce){
+                        level.cookieManager.KillAllCookies();
+                        new Sound("Assets/Sounds/wolf growl.wav").Play();//should be game over sound.
+                        pData.SetButtonActive(true);
+                        leaderBoard.visible = true;
+                        gameOverOnce = true;
+                    }
                     leaderBoard.FixedUpdate();
                 }
                 else

@@ -11,7 +11,7 @@ namespace GXPEngine
     {
         private PlayerData _pData;
         private Player _player;
-        private CookieManager cookieManager;
+        public CookieManager cookieManager;
 
         private Sprite background;
         private Sprite midground;

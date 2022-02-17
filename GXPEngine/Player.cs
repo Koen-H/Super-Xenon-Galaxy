@@ -33,12 +33,19 @@ namespace GXPEngine
 
         private ObjectColor lastColor;
         private float combo;
+        
+
+        private float stunInterval = 0f;
+        private Boolean isStunned = false;
+        private float stunCooldown = 500f;
 
         private float speedBoostStage;
         private float speedBoost;
         private float speedBoostInterval;
-
         private float speed;
+
+        private float spaceInterval;
+
         public Player(float x, float y, PlayerData pData) : base("square.png", 1, 1)
         {
             combo = 0;
@@ -59,18 +66,20 @@ namespace GXPEngine
 
             MyGame myGame = (MyGame)game;
             if(myGame.gameController != null) gameController = myGame.gameController;
-
+            TouchedHazard();
             AddChild(bodyAnimation);
             AddChild(tailAnimation);
         }
 
         public void FixedUpdate()
         {
+            if (stunInterval < Time.time) isStunned = false;
             bodyAnimation.Update();
             tailAnimation.Update();
             Move();
             ChangeColor();
             PressSpace();
+
         }
 
         public float GetSpeed()
@@ -138,9 +147,10 @@ namespace GXPEngine
 
             float v = -speed * Time.deltaTime / 1000;
 
-
-            Move(0, v);
-
+            if (!isStunned)
+            {
+                Move(0, v);
+            }
             //Edge control
             if (x < -bodyAnimation.width / 4) x = game.width + bodyAnimation.width / 4;
             if (x > game.width + bodyAnimation.width / 4) x = -bodyAnimation.width / 4;
@@ -217,6 +227,7 @@ namespace GXPEngine
         {
             if (Input.GetKeyDown(Key.SPACE) && !pressSpace)
             {
+                spaceInterval = Time.time + 75f;
                 pressSpace = true;
                 if (gameController != null)
                 {
@@ -258,7 +269,7 @@ namespace GXPEngine
                 }
             }
 
-            if (Input.GetKeyUp(Key.SPACE))
+            if (spaceInterval < Time.time)
             {
                 pressSpace = false;
             }
@@ -310,6 +321,8 @@ namespace GXPEngine
 
         public void TouchedHazard()
         {
+            isStunned = true;
+            stunInterval = stunCooldown + Time.time;
             speedBoostStage = 0;
             combo = 0;
         }

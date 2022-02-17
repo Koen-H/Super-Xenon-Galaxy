@@ -109,7 +109,14 @@ namespace GXPEngine
             initializeAnimFrames(coloms, rows);
             SetOrigin(width / (scale * 2), height / (scale * 2));
         }
-
+        public void CookieDie()
+        {
+            SetPath("Assets/Cookie/death/" + cookieColor.ToString().ToLower() + ".png");
+            decayState = 6;
+            turnSpeed = 17;
+            animationSpeed = 0.1f;
+            timeToDie = Time.time + 1500f;
+        }
 
        /* public float GetColorIndex()
         {
