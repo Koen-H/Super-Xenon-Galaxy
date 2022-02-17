@@ -16,6 +16,8 @@ namespace GXPEngine
     public class Player : AnimationSprite
     {
         private PlayerData _pData;
+        private PlayerBody bodyAnimation;
+        private PlayerTail tailAnimation;
 
         private bool pressUp;
         private bool pressDown;
@@ -23,43 +25,81 @@ namespace GXPEngine
         private bool pressRight;
         private bool pressSpace;
 
-
         private const int spriteCols = 7;
         private const int spriteRows = 3;
-        private ObjectColor currentColor;
+        public ObjectColor currentColor;
 
         private ArduinoController gameController;
 
-        private float speed;
-        public Player(Vector2 pos, PlayerData pData) : base("Assets/Player/Body/pink.png", spriteCols, spriteRows)
-        {
-            _pData = pData;
-            x = pos.x;
-            y = pos.y;
-            //speed = 180;
+        private ObjectColor lastColor;
+        private float combo;
+        
 
+        private float stunInterval = 0f;
+        private Boolean isStunned = false;
+        private float stunCooldown = 500f;
+
+        private float speedBoostStage;
+        private float speedBoost;
+        private float speedBoostInterval;
+        private float speed;
+
+        private float spaceInterval;
+
+        public Player(float x, float y, PlayerData pData) : base("square.png", 1, 1)
+        {
+            combo = 0;
+            _pData = pData;
+            this.x = x;
+            this.y = y;
+
+            bodyAnimation = new PlayerBody();
+            tailAnimation = new PlayerTail(this);
             currentColor = ObjectColor.PINK;    //The default color for the player
             UpdateSprite();
 
             SetOrigin(width / 2, height / 2);
-            SetScaleXY(2.5f);
+            SetScaleXY(0.5f);
 
             collider.isTrigger = true;
+            alpha = 0;
 
             MyGame myGame = (MyGame)game;
             if(myGame.gameController != null) gameController = myGame.gameController;
+            TouchedHazard();
+            AddChild(bodyAnimation);
+            AddChild(tailAnimation);
         }
 
         public void FixedUpdate()
         {
-            Animate(0.5f);
+            if (stunInterval < Time.time) isStunned = false;
+            bodyAnimation.Update();
+            tailAnimation.Update();
             Move();
             ChangeColor();
-            EatCookie();
+            PressSpace();
+
+        }
+
+        public float GetSpeed()
+        {
+            if (speedBoostStage > 0 && speed > 0)//apply buff from speedchain
+            {
+                speed += speedBoost;
+                if (Time.time > speedBoostInterval)
+                {
+                    speedBoostStage--;
+                    SetSpeedBoost();
+
+                }
+            }
+            return speed * -1;
         }
 
         private void Move()
         {
+            
             speed = 0;
             
             if (rotation > 360) rotation -= 360;
@@ -76,7 +116,7 @@ namespace GXPEngine
 
             if (Input.GetKey(Key.W) && !Input.GetKey(Key.S))
             {
-                speed = 5 * 60;
+                speed = 5 * 40;
             }
 
             else if (Input.GetKey(Key.S) && !Input.GetKey(Key.W))
@@ -87,21 +127,35 @@ namespace GXPEngine
             if (gameController != null)
             {
                 rotation = gameController.analogRotation;
-                speed = (float)Math.Floor(gameController.analogForce / 10) * 60;
+                speed = (float)Math.Floor(gameController.analogForce / 10) * 40;
                 //speed *= 1.5f;
             }
 
+
+
+            if (speedBoostStage > 0 && speed > 0)//apply buff from speedchain
+            {
+                speed += speedBoost;
+                if (Time.time > speedBoostInterval)
+                {
+                    speedBoostStage--;
+                    SetSpeedBoost();
+
+                }
+            }
+
+
             float v = -speed * Time.deltaTime / 1000;
 
-            Move(0, v);
-
-            
-
+            if (!isStunned)
+            {
+                Move(0, v);
+            }
             //Edge control
-            if (x < -width / 2) x = game.width + width / 2;
-            if (x > game.width) x = -width / 2;
-            if (y < -height / 2) y = game.height + height / 2;
-            if (y > game.height + height / 2) y = -height / 2;
+            if (x < -bodyAnimation.width / 4) x = game.width + bodyAnimation.width / 4;
+            if (x > game.width + bodyAnimation.width / 4) x = -bodyAnimation.width / 4;
+            if (y < _pData.GetHudHeight() -bodyAnimation.height / 4) y = game.height + bodyAnimation.height / 4;
+            if (y > game.height + bodyAnimation.height / 4) y = _pData.GetHudHeight() - bodyAnimation.height / 4;
         }
 
         private void ChangeColor()
@@ -154,20 +208,31 @@ namespace GXPEngine
 
         private void UpdateSprite()
         {
-            string spriteString = "Assets/Player/Body/" + currentColor.ToString().ToLower() + ".png";
-            initializeFromTexture(Texture2D.GetInstance(spriteString, false));
-            initializeAnimFrames(spriteCols, spriteRows);
+            bodyAnimation.UpdateSprite(currentColor.ToString().ToLower());
+            tailAnimation.UpdateSprite(currentColor.ToString().ToLower());
+            //string spriteString = "Assets/Player/Body/" + currentColor.ToString().ToLower() + ".png";
+            //initializeFromTexture(Texture2D.GetInstance(spriteString, false));
+            //initializeAnimFrames(spriteCols, spriteRows);
 
-            SetOrigin(width / (scale * 2), height / (scale * 2));
+            //SetOrigin(width / (scale * 2), height / (scale * 2));
 
+            if (gameController != null)
+            {
+                gameController.ChangeLight(currentColor);
+            }
             //Console.WriteLine("Player's color has changed to:" + currentColor);
         }
 
-        private void EatCookie()
+        private void PressSpace()
         {
             if (Input.GetKeyDown(Key.SPACE) && !pressSpace)
             {
+                spaceInterval = Time.time + 75f;
                 pressSpace = true;
+                if (gameController != null)
+                {
+                    gameController.SendString("LED_SPACE_OFF");
+                }
 
                 GameObject[] collisions = GetCollisions();//Get all the collisions
                 foreach (GameObject collision in collisions)
@@ -176,18 +241,90 @@ namespace GXPEngine
                     {
                         if (cookie.cookieColor == currentColor)//Check if the cookie is the same color as the player
                         {
-                            _pData.IncreaseScore();
+                            cookie.cookieManager.RemoveCookieFromList(cookie);
+                            new Sound("Assets/Sounds/wolf growl.wav").Play();//should be sound chain 1
                             cookie.Destroy();//DESTROY THE COOKIE!
+                            
+                            if (cookie.cookieColor == lastColor)
+                            {
+                                combo += 1f;
+                            }
+                            else
+                            {
+                                combo = 0;
+                            }
+
+                            _pData.IncreaseScore(combo);
+                            lastColor = cookie.cookieColor;
                         }
+                        speedBoostStage += 1;
+                        SetSpeedBoost();
+                    }
+
+                    if (collision is EasyDraw button && _pData.isButtonActive())
+                    {
+                        _pData.ChangeName(_pData.GetButtons()[button]);
                     }
 
                 }
             }
 
-            if (Input.GetKeyUp(Key.SPACE))
+            if (spaceInterval < Time.time)
             {
                 pressSpace = false;
             }
+        }
+
+        private void SetSpeedBoost()
+        {
+            switch (speedBoostStage)
+            {
+                case 0:
+                    {
+                        break;
+                    }
+                case 1:
+                    {
+                        new Sound("Assets/Sounds/wolf growl.wav").Play();//should be sound chain 2
+                        speedBoostInterval = Time.time + 1500f;
+                        speedBoost = 260;
+                        break;
+                    }
+                case 2:
+                    {
+                        new Sound("Assets/Sounds/wolf growl.wav").Play();//should be sound chain 3
+                        speedBoostInterval = Time.time + 500f;
+                        speedBoost = 338;
+                        break;
+                    }
+                case 3:
+                    {
+                        new Sound("Assets/Sounds/wolf growl.wav").Play();//should be sound chain 4
+                        speedBoostInterval = Time.time + 250f;
+                        speedBoost = 440;
+                        break;
+                    }
+            }
+        }
+
+        void OnCollision(GameObject other)
+        {
+            if (other is EasyDraw button)
+            {
+                button.alpha = 1f;
+            }
+            if(other is Cookie && gameController != null)
+            {
+                gameController.SendString("LED_SPACE_ON");
+            }
+        }
+
+        public void TouchedHazard()
+        {
+            isStunned = true;
+            stunInterval = stunCooldown + Time.time;
+            speedBoostStage = 0;
+            combo = 0;
         }
     }
 

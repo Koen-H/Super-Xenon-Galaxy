@@ -9,6 +9,7 @@ namespace GXPEngine
     public class HUD : Canvas
     {
         private PlayerData _pData;
+        private LeaderBoard leaderBoard;
 
         private Sprite hudBoard;
         private EasyDraw score;
@@ -20,7 +21,7 @@ namespace GXPEngine
 
         private Font font;
 
-        public HUD(Game game, PlayerData pData) : base(game.width, game.height, false)
+        public HUD(Game game, PlayerData pData) : base(game.width, game.height)
         {
             _pData = pData;
             time = TimeSpan.FromMilliseconds(Time.time);
@@ -30,9 +31,12 @@ namespace GXPEngine
 
         public void Update()
         {
-            ScoreUpdate();
             LifesUpdate();
-            TimerUpdate();
+            if (_pData.GetLifes() > 0)
+            {
+                ScoreUpdate();
+                TimerUpdate();
+            }
         }
 
         private void CreateHUD()
@@ -45,7 +49,8 @@ namespace GXPEngine
 
         private void CreateHudBoard()
         {
-            hudBoard = new Sprite("Assets/HUD/top.png", false, false);
+            hudBoard = new Sprite("Assets/HUD/top.png");
+            hudBoard.collider.isTrigger = true;
             AddChild(hudBoard);
 
             _pData.SetHudHeight(hudBoard.height);
@@ -58,19 +63,12 @@ namespace GXPEngine
             score.Fill(Color.White);
             score.TextFont(font);
             score.Text("SCORE: " + _pData.GetScore());
-            score.SetXY(width / 2 - score.width / 2, score.height / 5);
+            score.SetXY(width / 2 - score.width / 2, (score.height / 5 )+5);
             AddChild(score);
         }
 
         private void CreateLifes()
         {
-            lifes = new EasyDraw(400, 100, false);
-            lifes.TextAlign(CenterMode.Center, CenterMode.Min);
-            lifes.Fill(Color.White);
-            lifes.TextFont(font);
-            lifes.Text("LIFES: " + _pData.GetLifes());
-            lifes.SetXY(lifes.width / 4, lifes.height / 4);
-            //AddChild(lifes);
 
             hearts = new List<AnimationSprite>();
             for (int i = 0; i < _pData.GetLifes(); i++)
@@ -91,9 +89,10 @@ namespace GXPEngine
             timer.Fill(Color.White);
             timer.TextFont(font);
             timer.Text((TimeSpan.FromMilliseconds(Time.time) - time).ToString("h\\.mm\\.ss\\.ff"));
-            timer.SetXY(width - timer.width * 1.1f, timer.height / 5);
+            timer.SetXY(width - timer.width * 1.1f, (timer.height / 5) + 5);
             AddChild(timer);
         }
+
 
         private void ScoreUpdate()
         {
@@ -103,8 +102,8 @@ namespace GXPEngine
 
         private void LifesUpdate()
         {
-            lifes.ClearTransparent();
-            lifes.Text("LIFES: " + _pData.GetLifes());
+            //lifes.ClearTransparent();
+            //lifes.Text("LIFES: " + _pData.GetLifes());
 
             if (hearts.Count > 0 && hearts.Count > _pData.GetLifes())
             {
