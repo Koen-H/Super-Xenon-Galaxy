@@ -23,6 +23,7 @@ namespace GXPEngine
             pData = new PlayerData();
             menu = new Menu();
             AddChild(menu);
+
         }
 
         public void Update()
@@ -39,7 +40,6 @@ namespace GXPEngine
                 hud = new HUD(game, pData);
 		        level = new Level("Assets/background.png", player, pData);
                 leaderBoard = new LeaderBoard(game, pData);
-                leaderBoard.visible = false;
 
                 AddChild(level);
                 AddChild(leaderBoard);
@@ -76,9 +76,23 @@ namespace GXPEngine
                 level.Update();
             }
 
+
+            if (hud != null)
+            {
+                if (leaderBoard.visible)
+                {
+                    hud.visible = false;
+                }
+                else
+                {
+                    hud.visible = true;
+                    hud.Update();
+                }
+            }
+
             if (leaderBoard != null)
             {
-                if (pData.GetLifes() == 0)
+                if (pData.GetLifes() == 0 && !hud.GetGameOver().visible)
                 {
                     if (!gameOverOnce){
                         level.cookieManager.KillAllCookies();
@@ -101,15 +115,7 @@ namespace GXPEngine
                 player.FixedUpdate();
             }
 
-            if (hud != null)
-            {
-                if (leaderBoard.visible)
-                {
-                    hud.visible = false;
-                    return;
-                }
-                hud.Update();
-            }
         }
+
     }
 }

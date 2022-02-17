@@ -20,12 +20,12 @@ public class MyGame : Game
             gameController = new ArduinoController();
            
         }
-        string[] lines =
-        {
-            "First line", "Second line", "Third line"
-        };
+        //string[] lines =
+        //{
+        //    "3", "MAT,00.01.02", "1111", "AAA,00.01.02","0", "LEL,00.01.02"
+        //};
 
-        File.WriteAllLines("Leaderboard", lines);
+       //File.WriteAllLines("Leaderboard", lines);
         gameManager = new GameManager(gameController);
 		AddChild(gameManager);
 		Console.WriteLine("MyGame initialized");

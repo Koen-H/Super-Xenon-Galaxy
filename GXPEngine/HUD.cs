@@ -9,22 +9,27 @@ namespace GXPEngine
     public class HUD : Canvas
     {
         private PlayerData _pData;
-        private LeaderBoard leaderBoard;
 
         private Sprite hudBoard;
         private EasyDraw score;
         private EasyDraw timer;
-        private EasyDraw lifes;
         private List<AnimationSprite> hearts;
+        private Sprite gameOver;
 
-        private TimeSpan time;
+        private const int goLimit = 2000;
+        public static int goStart;
+        private int goTimer;
+
+        private int time;
 
         private Font font;
 
         public HUD(Game game, PlayerData pData) : base(game.width, game.height)
         {
             _pData = pData;
-            time = TimeSpan.FromMilliseconds(Time.time);
+            _pData.SetHud(this);
+
+            time = Time.time;
             font = Utils.LoadFont("Assets/HUD/ka1.ttf", 30);
             CreateHUD();
         }
@@ -32,11 +37,35 @@ namespace GXPEngine
         public void Update()
         {
             LifesUpdate();
+            if (_pData.GetLifes() == 0)
+            {
+                GameOverUpdate();
+            }
             if (_pData.GetLifes() > 0)
             {
                 ScoreUpdate();
                 TimerUpdate();
             }
+        }
+
+        public Sprite GetGameOver()
+        {
+            return gameOver;
+        }
+
+        public int GetTime()
+        {
+            return time;
+        }
+
+        public void SetTime(int t)
+        {
+            time = t;
+        }
+
+        public Sprite GetHudBoard()
+        {
+            return hudBoard;
         }
 
         private void CreateHUD()
@@ -45,6 +74,7 @@ namespace GXPEngine
             CreateScore();
             CreateLifes();
             CreateTimer();
+            CreateGameOver();
         }
 
         private void CreateHudBoard()
@@ -53,7 +83,6 @@ namespace GXPEngine
             hudBoard.collider.isTrigger = true;
             AddChild(hudBoard);
 
-            _pData.SetHudHeight(hudBoard.height);
         }
 
         private void CreateScore()
@@ -63,7 +92,7 @@ namespace GXPEngine
             score.Fill(Color.White);
             score.TextFont(font);
             score.Text("SCORE: " + _pData.GetScore());
-            score.SetXY(width / 2 - score.width / 2, (score.height / 5 )+5);
+            score.SetXY(width / 2 - score.width / 2, score.height / 5);
             AddChild(score);
         }
 
@@ -74,23 +103,32 @@ namespace GXPEngine
             for (int i = 0; i < _pData.GetLifes(); i++)
             {
                 AnimationSprite heart = new AnimationSprite("Assets/HUD/heart.png", 1, 1);
-                heart.SetScaleXY(0.1f);
-                heart.SetXY(125 + ((heart.width + 10) * i), heart.height / 2.75f);
+                //heart.SetOrigin(width / 2, height / 2);
+                //heart.SetXY(game.width / 2, hudBoard.height / 2);
+                heart.SetXY(heart.width * 1.25f + ((heart.width - 20) * i), 1);
                 hearts.Add(heart);
                 AddChild(heart);
+
             }
         }
 
         private void CreateTimer()
         {
             timer = new EasyDraw(500, 100, false);
-
             timer.TextAlign(CenterMode.Min, CenterMode.Min);
             timer.Fill(Color.White);
             timer.TextFont(font);
-            timer.Text((TimeSpan.FromMilliseconds(Time.time) - time).ToString("h\\.mm\\.ss\\.ff"));
-            timer.SetXY(width - timer.width * 1.1f, (timer.height / 5) + 5);
+            timer.Text((TimeSpan.FromMilliseconds(Time.time - time)).ToString("mm\\.ss\\.ff"));
+            timer.SetXY(width - timer.width, timer.height / 5);
             AddChild(timer);
+        }
+        private void CreateGameOver()
+        {
+            gameOver = new Sprite("Assets/HUD/gameover.png");
+            gameOver.SetOrigin(gameOver.width / 2, gameOver.height / 2);
+            gameOver.SetXY(game.width / 2, game.height / 3);
+            gameOver.visible = false;
+            AddChild(gameOver);
         }
 
 
@@ -102,21 +140,43 @@ namespace GXPEngine
 
         private void LifesUpdate()
         {
-            //lifes.ClearTransparent();
-            //lifes.Text("LIFES: " + _pData.GetLifes());
-
-            if (hearts.Count > 0 && hearts.Count > _pData.GetLifes())
+            for (int i = 0; i < hearts.Count; i++)
             {
-                hearts[hearts.Count - 1].LateRemove();
-                hearts.RemoveAt(hearts.Count - 1);
+                if (_pData.GetLifes() - 1 < i)
+                {
+                    hearts[i].visible = false;
+                }
+                else if (_pData.GetLifes() - 1 >= i)
+                {
+                    hearts[i].visible = true;
+                }
+                else
+                {
+                    hearts[i].visible = false;
+
+                }
             }
         }
 
         private void TimerUpdate()
         {
             timer.ClearTransparent();
-            string temp = (TimeSpan.FromMilliseconds(Time.time) - time).ToString("h\\.mm\\.ss\\.ff");
+            string temp = (TimeSpan.FromMilliseconds(Time.time - time)).ToString("mm\\.ss\\.ff");
+            _pData.SetTime(Time.time - time);
             timer.Text(temp);
+        }
+        private void GameOverUpdate()
+        {
+            goTimer = Time.time - goStart;
+
+            if (goTimer <= goLimit)
+            {
+                gameOver.visible = true;
+            }
+            else
+            {
+                gameOver.visible = false;
+            }
         }
     }
 }

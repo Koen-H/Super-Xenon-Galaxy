@@ -10,25 +10,42 @@ namespace GXPEngine
     /// </summary>
     public class PlayerData
     {
-        private string _name;
+        private HUD hud;
 
-        private int score;
-        private int lifes;
-        private float hudHeight;
+        private string _name;
+        private int time;
+        private int _score;
+        private int _lifes;
+        private int maxLifes = 5;
+
+        private LeaderBoard leaderBoard;
 
         private Dictionary<EasyDraw, string> buttons;
         private bool buttonsActive;
 
-        public PlayerData()
+        public PlayerData(string name = "", int score = 0, int lifes = 1)
         {
-            lifes = 5;
-            score = 0;
-            _name = "";
+
+            maxLifes = lifes;
+            _lifes = lifes;
+            _score = score;
+            _name = name;
         }
+
+        public void Reset()
+        {
+            ResetLifes();
+            ResetScore();
+            Console.WriteLine(_name);
+            ResetPlayerName();
+            ResetLeaderBoard();
+            Console.WriteLine(_name);
+        }
+
 
         public int GetScore()
         {
-            return score;
+            return _score;
         }
 
         public void IncreaseScore(float combo = 0)
@@ -37,22 +54,22 @@ namespace GXPEngine
             {
                 case 0:
                     {
-                        score += 5;
+                        _score += 5;
                         break;
                     }
                 case 1:
                     {
-                        score += 10;
+                        _score += 10;
                         break;
                     }
                 case 2:
                     {
-                        score += 20;
+                        _score += 20;
                         break;
                     }
                 case 3:
                     {
-                        score += 50;
+                        _score += 50;
                         break;
                     }
             }
@@ -60,13 +77,18 @@ namespace GXPEngine
 
         public int GetLifes()
         {
-            return lifes;
+            return _lifes;
         }
 
         public void DecreaseLifes()
         {
             new Sound("Assets/Sounds/wolf growl.wav").Play();//should be sound when player loses 1 life.
-            lifes--;
+            
+            _lifes--;
+            if (_lifes == 0)
+            {
+                HUD.goStart = Time.time;
+            }
         }
 
         public bool isButtonActive()
@@ -79,14 +101,14 @@ namespace GXPEngine
             buttonsActive = b;
         }
 
-        public float GetHudHeight()
+        public HUD GetHud()
         {
-            return hudHeight;
+            return hud;
         }
 
-        public void SetHudHeight(float h)
+        public void SetHud(HUD h)
         {
-            hudHeight = h;
+            hud = h;
         }
 
         public Dictionary<EasyDraw, string> GetButtons()
@@ -104,6 +126,12 @@ namespace GXPEngine
             return _name;
         }
 
+        public void SetPlayerName(string s)
+        {
+            _name = s;
+        }
+
+
         public void ChangeName(string s)
         {
             if (s.Length > 0)
@@ -115,8 +143,53 @@ namespace GXPEngine
                 else if(!s.Equals("-") && _name.Length < 3)
                 {
                     _name += s;
+                    if (_name.Length == 3)
+                    {
+                        Console.WriteLine("HAAAAAAAAAAA");
+                        leaderBoard.GetHighScore().UpdateResults();
+                        leaderBoard.GetHighScore().visible = true;
+                    }
                 }
             }
+        }
+
+        public int GetTime()
+        {
+            return time;
+        }
+
+        public void SetTime(int t)
+        {
+            time = t;
+        }
+
+        public LeaderBoard GetLeaderBoard()
+        {
+            return leaderBoard;
+        }
+
+        public void SetLeaderBoard(LeaderBoard l)
+        {
+            leaderBoard = l;
+        }
+
+
+        private void ResetLeaderBoard()
+        {
+            leaderBoard.GetHighScore().visible = false;
+        }
+
+        public void ResetScore()
+        {
+            _score = 0;
+        }
+        public void ResetLifes()
+        {
+            _lifes = maxLifes;
+        }
+        public void ResetPlayerName()
+        {
+            _name = "";
         }
     }
 }
