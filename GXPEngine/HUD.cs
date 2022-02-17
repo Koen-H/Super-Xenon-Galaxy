@@ -27,6 +27,8 @@ namespace GXPEngine
         public HUD(Game game, PlayerData pData) : base(game.width, game.height)
         {
             _pData = pData;
+            _pData.SetHud(this);
+
             time = Time.time;
             font = Utils.LoadFont("Assets/HUD/ka1.ttf", 30);
             CreateHUD();
@@ -51,14 +53,19 @@ namespace GXPEngine
             return gameOver;
         }
 
-        public int GetGameOverTime()
+        public int GetTime()
         {
             return time;
         }
 
-        public void SetGameOverTime(int t)
+        public void SetTime(int t)
         {
             time = t;
+        }
+
+        public Sprite GetHudBoard()
+        {
+            return hudBoard;
         }
 
         private void CreateHUD()
@@ -76,7 +83,6 @@ namespace GXPEngine
             hudBoard.collider.isTrigger = true;
             AddChild(hudBoard);
 
-            _pData.SetHudHeight(hudBoard.height);
         }
 
         private void CreateScore()
@@ -103,15 +109,12 @@ namespace GXPEngine
                 hearts.Add(heart);
                 AddChild(heart);
 
-                Console.WriteLine(heart.y);
-
             }
         }
 
         private void CreateTimer()
         {
             timer = new EasyDraw(500, 100, false);
-
             timer.TextAlign(CenterMode.Min, CenterMode.Min);
             timer.Fill(Color.White);
             timer.TextFont(font);
@@ -137,10 +140,21 @@ namespace GXPEngine
 
         private void LifesUpdate()
         {
-            if (hearts.Count > 0 && hearts.Count > _pData.GetLifes())
+            for (int i = 0; i < hearts.Count; i++)
             {
-                hearts[hearts.Count - 1].LateRemove();
-                hearts.RemoveAt(hearts.Count - 1);
+                if (_pData.GetLifes() - 1 < i)
+                {
+                    hearts[i].visible = false;
+                }
+                else if (_pData.GetLifes() - 1 >= i)
+                {
+                    hearts[i].visible = true;
+                }
+                else
+                {
+                    hearts[i].visible = false;
+
+                }
             }
         }
 
@@ -153,10 +167,11 @@ namespace GXPEngine
         }
         private void GameOverUpdate()
         {
+            goTimer = Time.time - goStart;
+
             if (goTimer <= goLimit)
             {
                 gameOver.visible = true;
-                goTimer = Time.time - goStart;
             }
             else
             {

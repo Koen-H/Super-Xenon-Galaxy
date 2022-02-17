@@ -17,7 +17,7 @@ namespace GXPEngine
 
         public GameManager()
         {
-            pData = new PlayerData();
+            pData = new PlayerData("", 0, 1);
             menu = new Menu();
             AddChild(menu);
 
@@ -57,6 +57,7 @@ namespace GXPEngine
                 }
                 else
                 {
+                    hud.visible = true;
                     hud.Update();
                 }
             }
@@ -83,6 +84,5 @@ namespace GXPEngine
 
         }
 
-        
     }
 }

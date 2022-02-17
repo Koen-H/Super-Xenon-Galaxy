@@ -144,8 +144,8 @@ namespace GXPEngine
             //Edge control
             if (x < -bodyAnimation.width / 4) x = game.width + bodyAnimation.width / 4;
             if (x > game.width + bodyAnimation.width / 4) x = -bodyAnimation.width / 4;
-            if (y < _pData.GetHudHeight() -bodyAnimation.height / 4) y = game.height + bodyAnimation.height / 4;
-            if (y > game.height + bodyAnimation.height / 4) y = _pData.GetHudHeight() - bodyAnimation.height / 4;
+            if (y < _pData.GetHud().GetHudBoard().height -bodyAnimation.height / 4) y = game.height + bodyAnimation.height / 4;
+            if (y > game.height + bodyAnimation.height / 4) y = _pData.GetHud().GetHudBoard().height - bodyAnimation.height / 4;
         }
 
         private void ChangeColor()
@@ -246,11 +246,22 @@ namespace GXPEngine
 
                     }
 
-                    if (collision is EasyDraw button && _pData.isButtonActive())
+                    if (collision is EasyDraw key)
                     {
-                        _pData.ChangeName(_pData.GetButtons()[button]);
+                        if (_pData.isButtonActive() 
+                            && _pData.GetButtons().ContainsKey(key))
+                            _pData.ChangeName(_pData.GetButtons()[key]);
                     }
 
+                    if (collision is Button button)
+                    {
+                        if (button.GetName().Equals("again"))
+                        {
+                            _pData.Reset();
+                            _pData.GetHud().SetTime(Time.time);
+                            HUD.goStart = Time.time;
+                        }
+                    }
                 }
             }
 
@@ -287,7 +298,12 @@ namespace GXPEngine
 
         void OnCollision(GameObject other)
         {
-            if (other is EasyDraw button)
+            if (other is EasyDraw key && !_pData.GetLeaderBoard().GetHighScore().visible)
+            {
+                key.alpha = 1f;
+            }
+
+            if (other is Button button)
             {
                 button.alpha = 1f;
             }

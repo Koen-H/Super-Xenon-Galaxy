@@ -16,7 +16,7 @@ namespace GXPEngine
         public LeaderBoard(Game game, PlayerData pData) : base(game.width, game.height)
         {
             _pData = pData;
-            _pData.SetHighScore(this);
+            _pData.SetLeaderBoard(this);
 
             input = new InputName(game, pData);
             highscore = new HighScore(game, pData);
@@ -30,8 +30,14 @@ namespace GXPEngine
 
         public void FixedUpdate()
         {
-
-            input.FixedUpdate();
+            if (!highscore.visible)
+            {
+                input.FixedUpdate();
+            } 
+            else
+            {
+                highscore.FixedUpdate();
+            }
         }
 
         public HighScore GetHighScore()
@@ -105,14 +111,17 @@ namespace GXPEngine
                 letter.TextFont(buttonFont);
                 letter.Fill(Color.White);
                 letter.TextAlign(CenterMode.Center, CenterMode.Center);
-                letter.Text("" + alpha[i]);
+                letter.Text(alpha[i].ToString());
                 letter.SetXY(letter.width * x - buttonFont.Size / 2, height / 2 + (letter.height * row) + difference * 2);
                 buttons.Add(letter, alpha[i].ToString());
-                AddChildAt(letter, 25 - i);
+                AddChild(letter);
 
                 x++;
-                _pData.SetButtons(buttons);
+
+
             }
+            _pData.SetButtons(buttons);
+
         }
 
         private void CreateInputText()
@@ -191,45 +200,56 @@ namespace GXPEngine
         private Font normalFont;
         private Font timeFont;
 
+        private Button playAgain;
         private Sprite board;
 
-        private Dictionary<int, string> highscores;
+        private List<PlayerData> playerDatas;
+        private Dictionary<int, List<EasyDraw>> textRows = new Dictionary<int, List<EasyDraw>>();
 
         public HighScore(Game game, PlayerData pData) : base(game.width, game.height)
         {
             visible = false;
             _pData = pData;
 
-            highscores = new Dictionary<int, string>();
+            playerDatas = new List<PlayerData>();
             var array = File.ReadAllLines("LeaderBoard");
-            for (var i = 0; i < array.Length; i += 2)
+            for (var i = 0; i < array.Length; i++)
             {
-                highscores.Add(int.Parse(array[i]), array[i + 1]);
-                Console.WriteLine("{0}\n{1}", array[i], array[i + 1]);
-            }
+                string[] values = array[i].Split(',');
 
-            //var list = highscores.Keys.ToList();
-            //list.Sort();
-            //var sorted = new Dictionary<int, string>();
-            //foreach (var key in list)
-            //{
-            //    sorted.Add(key, highscores[key]);
-            //}
+                PlayerData p = new PlayerData(values[1], int.Parse(values[0]));
+                p.SetTime(int.Parse(values[2]));
+                playerDatas.Add(p);
+            }
 
             normalFont = Utils.LoadFont("Assets/HUD/ka1.ttf", 30);
             timeFont = Utils.LoadFont("Assets/HUD/ka1.ttf", 20);
             CreateBoard();
         }
 
+        public void FixedUpdate()
+        {
+            if (visible)
+            {
+                playAgain.alpha = 0.5f;
+                UpdateBoard();
+            }
+        }
+
+        public Button GetPlayAgain()
+        {
+            return playAgain;
+        }
+
         private void CreateBoard()
         {
-            board = new Sprite("Assets/HUD/lbgrid.png");
+            board = new Sprite("Assets/HUD/lb.png");
             board.SetOrigin(board.width / 2, board.height / 2);
             board.SetXY(game.width / 2, game.height / 2);
 
             for (int i = 0; i < 5; i++)
             {
-                Pivot row = new Pivot();
+                List<EasyDraw> list = new List<EasyDraw>();
 
                 EasyDraw name = new EasyDraw((int)normalFont.Size * 6, (int)normalFont.Size * 2);
                 name.SetOrigin(name.width / 2, name.height / 2);
@@ -238,7 +258,8 @@ namespace GXPEngine
                 name.TextAlign(CenterMode.Center, CenterMode.Center);
                 name.Text("MAT");
                 name.SetXY(-name.width * 1.1f, -name.height * 1.95f + (name.height * i * 1.25f));
-                row.AddChild(name);
+                board.AddChild(name);
+                list.Add(name);
 
                 EasyDraw score = new EasyDraw((int)normalFont.Size * 6, (int)normalFont.Size * 2);
                 score.SetOrigin(score.width / 2, score.height / 2);
@@ -247,7 +268,8 @@ namespace GXPEngine
                 score.TextAlign(CenterMode.Center, CenterMode.Center);
                 score.Text("9999");
                 score.SetXY(score.width / 5.25f, -name.height * 1.95f + (name.height * i * 1.25f));
-                row.AddChild(score);
+                board.AddChild(score);
+                list.Add(score);
 
                 EasyDraw time = new EasyDraw((int)normalFont.Size * 15, (int)normalFont.Size * 2);
                 time.SetOrigin(name.width / 2, name.height / 2);
@@ -256,43 +278,61 @@ namespace GXPEngine
                 time.TextAlign(CenterMode.Center, CenterMode.Center);
                 time.Text("00.00.00");
                 time.SetXY(time.width / 2.9f, -name.height * 1.8f + (name.height * i * 1.25f));
-                row.AddChild(time);
+                board.AddChild(time);
+                list.Add(time);
 
-                board.AddChild(row);
+                textRows.Add(i, list);
             }
+
+            playAgain = new Button("again", "Assets/HUD/playagain.png");
+            playAgain.SetOrigin(playAgain.width / 2, playAgain.height / 2);
+            playAgain.SetXY(0, playAgain.height * 2.5f);
+            Console.WriteLine(playAgain.y);
+            board.AddChild(playAgain);
             AddChild(board);
         }
 
         private void UpdateBoard()
         {
-            //for (int i = 0; i < highscores.Count; i++)
-            //{
-            //    for (int k = 0; k < 3; k++)
-            //    {
-            //        boar
-            //    }
-            //}
+            for (int i = 0; i < playerDatas.Count; i++)
+            {
+                PlayerData p = playerDatas[i];
+                List<EasyDraw> textToUpdate = textRows[i];
+
+
+                textToUpdate[0].ClearTransparent();
+                textToUpdate[0].Text(p.GetPlayerName());
+                textToUpdate[1].ClearTransparent();
+                textToUpdate[1].Text(p.GetScore().ToString());
+                textToUpdate[2].ClearTransparent();
+                textToUpdate[2].Text(TimeSpan.FromMilliseconds(p.GetTime()).ToString("mm\\.ss\\.ff"));
+            }
         }
+
 
         public void UpdateResults()
         {
-            highscores.Add(_pData.GetTime() / 250 + _pData.GetScore()
-                , string.Format("{0};{1}", _pData.GetPlayerName() , TimeSpan.FromMilliseconds(_pData.GetTime()).ToString("mm\\.ss\\.ff")));
+            PlayerData p = new PlayerData(_pData.GetPlayerName(), _pData.GetTime() / 250 + _pData.GetScore());
+            p.SetTime(_pData.GetTime());
+            playerDatas.Add(p);
 
-            var sorted = highscores.OrderByDescending(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
+            var sorted = playerDatas.OrderByDescending(x => x.GetScore()).ToList();
+
             while (sorted.Count > 5)
             {
-                sorted.Remove(sorted.Keys.Last());
+                sorted.Remove(sorted.Last());
             }
-            highscores = sorted;
-            WriteToFile(highscores);
+            playerDatas = sorted;
+            WriteToFile(playerDatas);
         }
 
-        private void WriteToFile(Dictionary<int, string> dict)
+        private void WriteToFile(List<PlayerData> list)
         {
             using (StreamWriter file = new StreamWriter("Leaderboard"))
-                foreach (var entry in dict)
-                    file.WriteLine("{0}\n{1}", entry.Key, entry.Value);
+                foreach (var entry in list)
+                {
+                    file.WriteLine("{0},{1},{2}", entry.GetScore(), entry.GetPlayerName(), entry.GetTime());
+                }
         }
     }
 }
