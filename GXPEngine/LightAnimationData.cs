@@ -18,7 +18,7 @@ namespace GXPEngine
             pink = _pink;
             purple = _purple;
             space = _space;
-            delay = _delay;
+            delay = _delay /2;
         }
     }
 }
