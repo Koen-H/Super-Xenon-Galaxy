@@ -22,7 +22,7 @@ namespace GXPEngine
             {
                 cookieManager.ApplyPowerUp(player.currentColor);
                 LateDestroy();
-                cookieManager.currentPowerUps.Remove(this);
+                cookieManager.removeItems.Add(this);
             }
 
         }

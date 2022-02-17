@@ -30,7 +30,7 @@ namespace GXPEngine
             if (Time.time > timeToDie)
             {
                 LateDestroy();
-                cookieManager.currentHazards.Remove(this);
+                cookieManager.removeItems.Add(this);
             }
 
         }
@@ -41,7 +41,7 @@ namespace GXPEngine
             {
                 //other.TouchedHazard();
                 LateDestroy();
-                cookieManager.currentHazards.Remove(this);
+                cookieManager.removeItems.Add(this);
             }
 
         }

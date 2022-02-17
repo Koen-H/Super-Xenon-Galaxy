@@ -26,8 +26,10 @@ namespace GXPEngine
         private List<Cookie> currentPurpleCookie = new List<Cookie>();
         private List<Cookie> currentCyanCookie = new List<Cookie>();
         private List<Cookie> currentOrangeCookie = new List<Cookie>();
+        public List<AnimationSprite> removeItems = new List<AnimationSprite>();
         public List<Hazard> currentHazards = new List<Hazard>();
         public List<PowerUp> currentPowerUps = new List<PowerUp>();
+
 
         public CookieManager(Level level, PlayerData pData)
         {
@@ -58,6 +60,20 @@ namespace GXPEngine
                 foreach (PowerUp powerUp in currentPowerUps)
                 {
                     powerUp.Update();
+                }
+            }
+            if(removeItems.Count > 0)
+            {
+                foreach (AnimationSprite item in removeItems)
+                {
+                    if(item is PowerUp)
+                    {
+                        currentPowerUps.Remove((PowerUp)item);
+                    }
+                    else if (item is Hazard)
+                    {
+                        currentHazards.Remove((Hazard)item);
+                    }
                 }
             }
             CookieDecay();
