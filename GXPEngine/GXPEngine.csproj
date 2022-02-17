@@ -32,18 +32,25 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArduinoController.cs" />
+    <Compile Include="Button.cs" />
     <Compile Include="Cookie.cs" />
     <Compile Include="CookieManager.cs" />
+    <Compile Include="GameManager.cs" />
     <Compile Include="GXPEngine\AddOns\Gizmos.cs" />
     <Compile Include="GXPEngine\AddOns\SpriteBatch.cs" />
     <Compile Include="GXPEngine\AddOns\TiledLoader.cs" />
+    <Compile Include="Hazard.cs" />
     <Compile Include="HUD.cs" />
+    <Compile Include="LeaderBoard.cs" />
     <Compile Include="Level.cs" />
+    <Compile Include="LightAnimationData.cs" />
+    <Compile Include="Menu.cs" />
     <Compile Include="MyGame.cs" />
     <Compile Include="GXPEngine\Core\Canvas.cs" />
     <Compile Include="GXPEngine\Game.cs" />
@@ -83,5 +90,10 @@
     <Compile Include="GXPEngine\SoLoud\Soloud.cs" />
     <Compile Include="GXPEngine\SoLoud\SoloudSoundSystem.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="PlayerBody.cs" />
+    <Compile Include="PlayerData.cs" />
+    <Compile Include="PlayerPiece.cs" />
+    <Compile Include="PlayerTail.cs" />
+    <Compile Include="PowerUp.cs" />
   </ItemGroup>
 </Project>

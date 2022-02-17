@@ -1,67 +1,127 @@
 #include <Keyboard.h>
 
-const int spacePin = 8;//spacebar
+// 9 = yellow light
+// 11 == cyan light
 
-const int colorPinOne = 3;//Color =
-const int colorPinTwo = 7;//Color = NOTE: CHANGE THIS PIN NUMBER TO 4 ON WORKING CONTROLLER!
-const int colorPinThree = 5;//Color =
-const int colorPinFour = 6;//Color =
+const int spacePin = 8;//spacebar
+const int spacePinLed = 10;// Spacebar led
+
+const int colorPinOne = 3;//Color = Orange
+const int colorPinLedOne = 11;//
+const int colorPinTwo = 6;//Color = NOTE: CHANGE THIS PIN NUMBER TO 4 ON WORKING CONTROLLER! Mine is 7
+const int colorPinLedTwo = 9;
+const int colorPinThree = 4;//Color =
+const int colorPinLedThree = 12;
+const int colorPinFour = 2;//Color = 
+const int colorPinLedFour = 7;
 boolean colorPinOnePressed, colorPinTwoPressed, colorPinThreePressed, colorPinFourPressed;
 int colorButtonOne = 0;
 int colorButtonTwo = 0;
 int colorButtonThree= 0;
 int colorButtonFour = 0; 
 
-const int analogY = A0;//Analog stick Y   
-const int analogX = A1;//Analog stick X                   
+const int analogX = A2;//Analog stick X  
+const int analogY = A3;//Analog stick Y   
+
+                 
 
 int spaceButton = 0;
 boolean buttonIsPressed;
 
+
+const int       RIGHT_LED_PIN = 10;
+const int      MIDDLE_LED_PIN = 11;
+const int        LEFT_LED_PIN = 12;
+
+
 void setup() {
   // put your setup code here, to run once:
   pinMode(spacePin, INPUT_PULLUP );
+  pinMode(spacePinLed, OUTPUT);
   pinMode(colorPinOne, INPUT_PULLUP );
+  pinMode(colorPinLedOne, OUTPUT );
   pinMode(colorPinTwo, INPUT_PULLUP );
+  pinMode(colorPinLedTwo, OUTPUT );
   pinMode(colorPinThree, INPUT_PULLUP );
+  pinMode(colorPinLedThree, OUTPUT );
   pinMode(colorPinFour, INPUT_PULLUP );
-
-
+  pinMode(colorPinLedFour, OUTPUT );
+  pinMode(RIGHT_LED_PIN, OUTPUT);
+  pinMode(MIDDLE_LED_PIN, OUTPUT);
+  pinMode(LEFT_LED_PIN, OUTPUT);
+  
   Serial.begin(9600);
 
   Keyboard.begin();
+  
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+  
+ String message;
+  while(Serial.available() > 0)
+  {
+    char c = Serial.read();
+    message.concat(c);
+  }
+  
+  if(message.indexOf("CONNECT CONTROLLER") >= 0)
+  {
+    String s = "CONNECTED";
+    Serial.println(s);
+  }
+  
+  if(message.indexOf("SEND") >= 0)
+  {
+    String s;
+    //Just concatenate everything you want to send, with a space in between
+    s.concat(analogRead(analogX)- 512);
+    s.concat(" ");
+    s.concat(analogRead(analogY)- 512);
+    //After everything is done just send the data
+    Serial.println(s);
+  }
+  
+  if(message.indexOf("COLORS_OFF") >= 0){
+    digitalWrite( colorPinLedOne, LOW);
+    digitalWrite( colorPinLedTwo, LOW);
+    digitalWrite( colorPinLedThree, LOW);
+    digitalWrite( colorPinLedFour, LOW);
+    
+  }
 
-  //analogY
-  if(analogRead(analogY)< 100){
-    Keyboard.press('w');
+  if(message.indexOf("LED_SPACE_ON") >= 0){
+    digitalWrite( spacePinLed, HIGH);
   }
-  else{
-    Keyboard.release('w');
+  if(message.indexOf("LED_ONE_ON") >= 0){
+    digitalWrite( colorPinLedOne, HIGH);
   }
-  if(analogRead(analogY)> 900){
-    Keyboard.press('s');
+    if(message.indexOf("LED_TWO_ON") >= 0){
+    digitalWrite( colorPinLedTwo, HIGH);
   }
-  else{
-    Keyboard.release('s');
+    if(message.indexOf("LED_THREE_ON") >= 0){
+    digitalWrite( colorPinLedThree, HIGH);
+  }
+    if(message.indexOf("LED_FOUR_ON") >= 0){
+    digitalWrite( colorPinLedFour, HIGH);
   }
 
 
-   //analogY
-  if(analogRead(analogX)< 100){
-    Keyboard.press('a');
+  if(message.indexOf("LED_SPACE_OFF") >= 0){
+    digitalWrite( spacePinLed, LOW);
   }
-  else{
-    Keyboard.release('a');
+    if(message.indexOf("LED_ONE_OFF") >= 0){
+    digitalWrite( colorPinLedOne, LOW);
   }
-  if(analogRead(analogX)> 900){
-    Keyboard.press('d');
+    if(message.indexOf("LED_TWO_OFF") >= 0){
+    digitalWrite( colorPinLedTwo, LOW);
   }
-  else{
-    Keyboard.release('d');
+    if(message.indexOf("LED_THREE_OFF") >= 0){
+    digitalWrite( colorPinLedThree, LOW);
+  }
+    if(message.indexOf("LED_FOUR_OFF") >= 0){
+    digitalWrite( colorPinLedFour, LOW);
   }
 
 
@@ -121,4 +181,9 @@ void loop() {
   
 
   
+}
+
+void Flush(){
+  while(Serial.available())
+   char c=Serial.read();
 }
