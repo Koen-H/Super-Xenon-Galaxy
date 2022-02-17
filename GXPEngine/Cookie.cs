@@ -75,7 +75,7 @@ namespace GXPEngine
                     case 2://Low
                         SetPath("Assets/Cookie/small/" + cookieColor.ToString().ToLower() + ".png");
                         decayState = 3;
-                        nextSpriteTime = currentTime + 3000f;
+                        nextSpriteTime = currentTime + 3800f;
                         turnSpeed = 6;
                         break;
 
@@ -88,8 +88,9 @@ namespace GXPEngine
 
                     case 4://BIG
                         SetPath("Assets/Cookie/big/" + cookieColor.ToString().ToLower() + ".png");
+                        new Sound("Assets/Sounds/cookie death.wav").Play();
                         decayState = 5;
-                        nextSpriteTime = currentTime + 4000f;
+                        nextSpriteTime = currentTime + 3200f;
                         turnSpeed = 15f;
                         break;
 

@@ -44,6 +44,7 @@ namespace GXPEngine
                 otherp.TouchedHazard();
                 LateDestroy();
                 cookieManager.removeItems.Add(this);
+                
             }
 
         }

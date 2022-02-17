@@ -23,7 +23,7 @@ namespace GXPEngine
         private Dictionary<EasyDraw, string> buttons;
         private bool buttonsActive;
 
-        public PlayerData(string name = "", int score = 0, int lifes = 1)
+        public PlayerData(string name = "", int score = 0, int lifes = 5)
         {
 
             maxLifes = lifes;
@@ -54,21 +54,25 @@ namespace GXPEngine
             {
                 case 0:
                     {
+                        new Sound("Assets/Sounds/Collect 1.wav").Play(false, 0, 0.5f);//should be sound chain 1
                         _score += 5;
                         break;
                     }
                 case 1:
                     {
+                        new Sound("Assets/Sounds/Collect 2.wav").Play(false, 0, 0.5f);//should be sound chain 2
                         _score += 10;
                         break;
                     }
                 case 2:
                     {
+                        new Sound("Assets/Sounds/Collect 3.wav").Play(false, 0, 0.5f);//should be sound chain 3
                         _score += 20;
                         break;
                     }
                 case 3:
                     {
+                        new Sound("Assets/Sounds/Collect 4.wav").Play(false, 0, 0.5f);//should be sound chain 4
                         _score += 50;
                         break;
                     }
