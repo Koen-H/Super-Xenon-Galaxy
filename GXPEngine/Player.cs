@@ -307,6 +307,12 @@ namespace GXPEngine
                 gameController.SendString("LED_SPACE_ON");
             }
         }
+
+        public void TouchedHazard()
+        {
+            speedBoostStage = 0;
+            combo = 0;
+        }
     }
 
 }

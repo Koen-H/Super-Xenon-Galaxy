@@ -9,7 +9,7 @@ namespace GXPEngine
     {
         private CookieManager cookieManager;
         private float timeToDie;
-        public Hazard(CookieManager _cookieManager, float x, float y) : base("Assets/Powerup/powerup.png", 7, 3)
+        public Hazard(CookieManager _cookieManager, float x, float y) : base("Assets/Hazard/hazard.png", 7, 3)
         {
             cookieManager = _cookieManager;
             collider.isTrigger = true;
@@ -23,8 +23,9 @@ namespace GXPEngine
 
         public void Update()
         {
+            Animate(0.5f);
             
-            float v = -200 * Time.deltaTime / 1000;
+            float v = -125 * Time.deltaTime / 1000;
 
             Move(0, v);
             if (Time.time > timeToDie)
@@ -39,7 +40,8 @@ namespace GXPEngine
         {
             if (other is Player player)
             {
-                //other.TouchedHazard();
+                Player otherp = (Player)other;
+                otherp.TouchedHazard();
                 LateDestroy();
                 cookieManager.removeItems.Add(this);
             }

@@ -13,10 +13,12 @@ namespace GXPEngine
         private PlayerData pData;
         private Level level;
         private LeaderBoard leaderBoard;
+        private ArduinoController gameController;
 
 
-        public GameManager()
+        public GameManager(ArduinoController _gameController = null)
         {
+            gameController = _gameController;
             pData = new PlayerData();
             menu = new Menu();
             AddChild(menu);
@@ -24,10 +26,13 @@ namespace GXPEngine
 
         public void Update()
         {
-            
-
             if (!menu.isActive())
             {
+                if (gameController != null)
+                {
+                    gameController.playLightAnimation = false;
+                }
+
                 player = new Player(game.width / 2, game.height / 2, pData);
                 hud = new HUD(game, pData);
 		        level = new Level("Assets/background.png", player, pData);

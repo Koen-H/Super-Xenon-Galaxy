@@ -26,7 +26,7 @@ public class MyGame : Game
         };
 
         File.WriteAllLines("Leaderboard", lines);
-        gameManager = new GameManager();
+        gameManager = new GameManager(gameController);
 		AddChild(gameManager);
 		Console.WriteLine("MyGame initialized");
 	}

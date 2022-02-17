@@ -13,6 +13,7 @@ public class ArduinoController
     private String[] _parameters = new String[_parameterSize];
 
     private List<LightAnimationData> lightAnimation = new List<LightAnimationData>();
+    public Boolean playLightAnimation = true;
     private int currentLightAnimation = 0;
     private float lightAnimationInterval;
 
@@ -265,7 +266,7 @@ public class ArduinoController
 
     public void Update()
     {
-        if (Time.time > lightAnimationInterval) {//Change to next light layout
+        if (Time.time > lightAnimationInterval && playLightAnimation) {//Change to next light layout
             LightAnimationData currentData = lightAnimation[currentLightAnimation++];
             SetLights(currentData);
             lightAnimationInterval = currentData.delay + Time.time;
