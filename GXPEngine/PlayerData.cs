@@ -36,10 +36,10 @@ namespace GXPEngine
         {
             ResetLifes();
             ResetScore();
-            Console.WriteLine(_name);
+            //Console.WriteLine(_name);
             ResetPlayerName();
             ResetLeaderBoard();
-            Console.WriteLine(_name);
+            //Console.WriteLine(_name);
         }
 
 
@@ -145,7 +145,7 @@ namespace GXPEngine
                     _name += s;
                     if (_name.Length == 3)
                     {
-                        Console.WriteLine("HAAAAAAAAAAA");
+                       // Console.WriteLine("HAAAAAAAAAAA");
                         leaderBoard.GetHighScore().UpdateResults();
                         leaderBoard.GetHighScore().visible = true;
                     }

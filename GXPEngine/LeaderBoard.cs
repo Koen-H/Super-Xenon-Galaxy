@@ -287,7 +287,7 @@ namespace GXPEngine
             playAgain = new Button("again", "Assets/HUD/playagain.png");
             playAgain.SetOrigin(playAgain.width / 2, playAgain.height / 2);
             playAgain.SetXY(0, playAgain.height * 2.5f);
-            Console.WriteLine(playAgain.y);
+            //Console.WriteLine(playAgain.y);
             board.AddChild(playAgain);
             AddChild(board);
         }
