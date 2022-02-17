@@ -18,7 +18,7 @@ public class MyGame : Game
         if (useController)
         {
             gameController = new ArduinoController();
-            gameController.SendString("LED_SPACE_ON");
+           
         }
         string[] lines =
         {

@@ -157,6 +157,22 @@ namespace GXPEngine
         {
             cookies.Remove(cookie);
             //TODO: add the color typed list.
+            if (cookie.cookieColor == ObjectColor.PURPLE)
+            {
+                currentPurpleCookie.Remove(cookie);
+            }
+            if (cookie.cookieColor == ObjectColor.PINK)
+            {
+                currentPinkCookie.Remove(cookie);
+            }
+            if (cookie.cookieColor == ObjectColor.CYAN)
+            {
+                currentCyanCookie.Remove(cookie);
+            }
+            if (cookie.cookieColor == ObjectColor.ORANGE)
+            {
+                currentOrangeCookie.Remove(cookie);
+            }
         }
 
 
