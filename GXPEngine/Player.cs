@@ -48,10 +48,11 @@ namespace GXPEngine
 
         public Player(float x, float y, PlayerData pData) : base("square.png", 1, 1)
         {
-            combo = 0;
             _pData = pData;
             this.x = x;
             this.y = y;
+
+            combo = 0;
 
             bodyAnimation = new PlayerBody();
             tailAnimation = new PlayerTail(this);
@@ -67,8 +68,9 @@ namespace GXPEngine
             MyGame myGame = (MyGame)game;
             if(myGame.gameController != null) gameController = myGame.gameController;
             TouchedHazard();
-            AddChild(bodyAnimation);
+            
             AddChild(tailAnimation);
+            AddChild(bodyAnimation);
         }
 
         public void FixedUpdate()
@@ -154,8 +156,8 @@ namespace GXPEngine
             //Edge control
             if (x < -bodyAnimation.width / 4) x = game.width + bodyAnimation.width / 4;
             if (x > game.width + bodyAnimation.width / 4) x = -bodyAnimation.width / 4;
-            if (y < _pData.GetHudHeight() -bodyAnimation.height / 4) y = game.height + bodyAnimation.height / 4;
-            if (y > game.height + bodyAnimation.height / 4) y = _pData.GetHudHeight() - bodyAnimation.height / 4;
+            if (y < _pData.GetHud().GetHudBoard().height -bodyAnimation.height / 4) y = game.height + bodyAnimation.height / 4;
+            if (y > game.height + bodyAnimation.height / 4) y = _pData.GetHud().GetHudBoard().height - bodyAnimation.height / 4;
         }
 
         private void ChangeColor()
@@ -261,11 +263,22 @@ namespace GXPEngine
                         SetSpeedBoost();
                     }
 
-                    if (collision is EasyDraw button && _pData.isButtonActive())
+                    if (collision is EasyDraw key)
                     {
-                        _pData.ChangeName(_pData.GetButtons()[button]);
+                        if (_pData.isButtonActive() 
+                            && _pData.GetButtons().ContainsKey(key))
+                            _pData.ChangeName(_pData.GetButtons()[key]);
                     }
 
+                    if (collision is Button button)
+                    {
+                        if (button.GetName().Equals("again"))
+                        {
+                            _pData.Reset();
+                            _pData.GetHud().SetTime(Time.time);
+                            HUD.goStart = Time.time;
+                        }
+                    }
                 }
             }
 
@@ -279,10 +292,6 @@ namespace GXPEngine
         {
             switch (speedBoostStage)
             {
-                case 0:
-                    {
-                        break;
-                    }
                 case 1:
                     {
                         new Sound("Assets/Sounds/wolf growl.wav").Play();//should be sound chain 2
@@ -309,7 +318,12 @@ namespace GXPEngine
 
         void OnCollision(GameObject other)
         {
-            if (other is EasyDraw button)
+            if (other is EasyDraw key && !_pData.GetLeaderBoard().GetHighScore().visible)
+            {
+                key.alpha = 1f;
+            }
+
+            if (other is Button button)
             {
                 button.alpha = 1f;
             }

@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArduinoController.cs" />
+    <Compile Include="Button.cs" />
     <Compile Include="Cookie.cs" />
     <Compile Include="CookieManager.cs" />
     <Compile Include="GameManager.cs" />

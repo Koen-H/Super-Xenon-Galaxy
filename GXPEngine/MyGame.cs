@@ -10,7 +10,7 @@ public class MyGame : Game
 {
 	private GameManager gameManager;
     public ArduinoController gameController;
-    private Boolean useController = true;//DISABLE FOR KEYBOARD
+    private Boolean useController = false;//DISABLE FOR KEYBOARD
 
 
     public MyGame() : base(1920, 1080, false, false, 960, 540)		// Create a window that's 800x600 and NOT fullscreen
@@ -20,12 +20,12 @@ public class MyGame : Game
             gameController = new ArduinoController();
            
         }
-        string[] lines =
-        {
-            "First line", "Second line", "Third line"
-        };
+        //string[] lines =
+        //{
+        //    "3", "MAT,00.01.02", "1111", "AAA,00.01.02","0", "LEL,00.01.02"
+        //};
 
-        File.WriteAllLines("Leaderboard", lines);
+       //File.WriteAllLines("Leaderboard", lines);
         gameManager = new GameManager(gameController);
 		AddChild(gameManager);
 		Console.WriteLine("MyGame initialized");
