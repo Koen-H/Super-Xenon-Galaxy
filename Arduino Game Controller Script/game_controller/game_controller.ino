@@ -109,7 +109,7 @@ void loop() {
 
 
   if(message.indexOf("LED_SPACE_OFF") >= 0){
-    digitalWrite( spacePinLed, HIGH);
+    digitalWrite( spacePinLed, LOW);
   }
     if(message.indexOf("LED_ONE_OFF") >= 0){
     digitalWrite( colorPinLedOne, LOW);

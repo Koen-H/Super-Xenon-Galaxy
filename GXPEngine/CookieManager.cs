@@ -26,6 +26,8 @@ namespace GXPEngine
         private List<Cookie> currentPurpleCookie = new List<Cookie>();
         private List<Cookie> currentCyanCookie = new List<Cookie>();
         private List<Cookie> currentOrangeCookie = new List<Cookie>();
+        public List<Hazard> currentHazards = new List<Hazard>();
+        public List<PowerUp> currentPowerUps = new List<PowerUp>();
 
         public CookieManager(Level level, PlayerData pData)
         {
@@ -36,7 +38,7 @@ namespace GXPEngine
             random = new Random();
             timerMilli = 0;
             spawnRate = maxSpawnRate;
-
+            
 
             cookies = new List<Cookie>();
             CreateCookies();
@@ -44,6 +46,20 @@ namespace GXPEngine
 
         public void Update()
         {
+            if(currentHazards.Count > 0)
+            {
+                foreach (Hazard hazard in currentHazards)
+                {
+                    hazard.Update();
+                }
+            }
+            if (currentPowerUps.Count > 0)
+            {
+                foreach (PowerUp powerUp in currentPowerUps)
+                {
+                    powerUp.Update();
+                }
+            }
             CookieDecay();
             if (_pData.GetLifes() <= 0) return;
             CreateCookies();
@@ -67,18 +83,36 @@ namespace GXPEngine
         {
             timerMilli = t;
         }
+        
+        private void CreatePowerUp()
+        {
+            float rX = random.Next(distance, game.width - distance);
+            float rY = random.Next(distance, game.height - distance);
+
+            PowerUp powerUp = new PowerUp(this, rX, rY);
+            currentPowerUps.Add(powerUp);
+            AddChild(powerUp);
+        }
+        private void CreateHazard()
+        {
+            float rX = random.Next(distance, game.width - distance);
+            float rY = random.Next(distance, game.height - distance);
+
+            Hazard hazard = new Hazard(this, rX, rY);
+            currentHazards.Add(hazard);
+            AddChild(hazard);
+        }
+
 
         private void CookieDecay()
         {
             if (cookies != null && cookies.Count > 0)
             {
-                Console.WriteLine(cookies.Count);
                 foreach (Cookie c in cookies)
                 {
                     c.SetAnimation();
                     if (Time.time > c.timeToDie)
                     {
-                        
                         if (_pData.GetLifes() > 0) {
                             _pData.DecreaseLifes();
                           }
@@ -103,6 +137,7 @@ namespace GXPEngine
 
         private void CreateCookies()
         {
+            
             if ((int)GetTimer() < GetSpawnRate()) return;
             SetTimer(0);
 
@@ -120,6 +155,8 @@ namespace GXPEngine
                 if (collisions.Length == 0 && good) break;
 
             }
+            CreatePowerUp(); //Spawns and creates a power up
+            CreateHazard(); // spawns and creates a hazard
             cookies.Add(cookie);
             AddChild(cookie);
         }
@@ -175,8 +212,42 @@ namespace GXPEngine
             }
         }
 
+        public void ApplyPowerUp(ObjectColor playerColor)
+        {
+            List<Cookie> killCookieList = new List<Cookie>();
 
-
+            if (playerColor == ObjectColor.PURPLE)
+            {
+                killCookieList = currentPurpleCookie;
+            }
+            if (playerColor == ObjectColor.PINK)
+            {
+                killCookieList = currentPinkCookie;
+            }
+            if (playerColor == ObjectColor.CYAN)
+            {
+                killCookieList = currentCyanCookie;
+            }
+            if (playerColor == ObjectColor.ORANGE)
+            {
+                killCookieList = currentOrangeCookie;
+            }
+            if (killCookieList != null)
+            {
+                List<Cookie> removeCookieList = new List<Cookie>();
+                foreach (Cookie cookie in killCookieList)
+                {
+                    cookie.LateDestroy();
+                    _pData.IncreaseScore(0);
+                    removeCookieList.Add(cookie);
+                    
+                }
+                foreach(Cookie cookie in removeCookieList)
+                {
+                    RemoveCookieFromList(cookie);
+                }
+            }
+        }
         /// <summary>
         /// Method for future spawn rate calculation depending on score.
         /// </summary>

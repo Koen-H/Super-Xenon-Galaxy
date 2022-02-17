@@ -265,17 +265,19 @@ public class ArduinoController
 
     public void Update()
     {
-        /*if (Time.time > lightAnimationInterval) {//Change to next light layout
+        if (Time.time > lightAnimationInterval) {//Change to next light layout
             LightAnimationData currentData = lightAnimation[currentLightAnimation++];
             SetLights(currentData);
             lightAnimationInterval = currentData.delay + Time.time;
-        }*/
+            if (currentLightAnimation == lightAnimation.Count) currentLightAnimation = 0;
+        }
+        
     }
 
     private void SetLights(LightAnimationData lightData)
     {
         SendString("COLORS_OFF");
-        SendString("LED_SPACE_OFF");
+        //
 
         if (lightData.cyan)
         {
@@ -296,6 +298,10 @@ public class ArduinoController
         if (lightData.space)
         {
             SendString("LED_SPACE_ON");
+        }
+        else
+        {
+            SendString("LED_SPACE_OFF");
         }
     }
 

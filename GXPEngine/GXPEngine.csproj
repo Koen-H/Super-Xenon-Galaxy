@@ -44,6 +44,7 @@
     <Compile Include="GXPEngine\AddOns\Gizmos.cs" />
     <Compile Include="GXPEngine\AddOns\SpriteBatch.cs" />
     <Compile Include="GXPEngine\AddOns\TiledLoader.cs" />
+    <Compile Include="Hazard.cs" />
     <Compile Include="HUD.cs" />
     <Compile Include="LeaderBoard.cs" />
     <Compile Include="Level.cs" />
@@ -92,5 +93,6 @@
     <Compile Include="PlayerData.cs" />
     <Compile Include="PlayerPiece.cs" />
     <Compile Include="PlayerTail.cs" />
+    <Compile Include="PowerUp.cs" />
   </ItemGroup>
 </Project>

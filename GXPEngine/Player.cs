@@ -27,7 +27,7 @@ namespace GXPEngine
 
         private const int spriteCols = 7;
         private const int spriteRows = 3;
-        private ObjectColor currentColor;
+        public ObjectColor currentColor;
 
         private ArduinoController gameController;
 
@@ -90,6 +90,7 @@ namespace GXPEngine
 
         private void Move()
         {
+            
             speed = 0;
             
             if (rotation > 360) rotation -= 360;
@@ -217,6 +218,10 @@ namespace GXPEngine
             if (Input.GetKeyDown(Key.SPACE) && !pressSpace)
             {
                 pressSpace = true;
+                if (gameController != null)
+                {
+                    gameController.SendString("LED_SPACE_OFF");
+                }
 
                 GameObject[] collisions = GetCollisions();//Get all the collisions
                 foreach (GameObject collision in collisions)
@@ -228,7 +233,7 @@ namespace GXPEngine
                             cookie.cookieManager.RemoveCookieFromList(cookie);
                             new Sound("Assets/Sounds/wolf growl.wav").Play();//should be sound chain 1
                             cookie.Destroy();//DESTROY THE COOKIE!
-
+                            
                             if (cookie.cookieColor == lastColor)
                             {
                                 combo += 1f;
@@ -296,6 +301,10 @@ namespace GXPEngine
             if (other is EasyDraw button)
             {
                 button.alpha = 1f;
+            }
+            if(other is Cookie && gameController != null)
+            {
+                gameController.SendString("LED_SPACE_ON");
             }
         }
     }
