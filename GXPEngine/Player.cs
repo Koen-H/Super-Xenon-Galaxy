@@ -41,10 +41,11 @@ namespace GXPEngine
         private float speed;
         public Player(float x, float y, PlayerData pData) : base("square.png", 1, 1)
         {
-            combo = 0;
             _pData = pData;
             this.x = x;
             this.y = y;
+
+            combo = 0;
 
             bodyAnimation = new PlayerBody();
             tailAnimation = new PlayerTail(this);
@@ -60,8 +61,8 @@ namespace GXPEngine
             MyGame myGame = (MyGame)game;
             if(myGame.gameController != null) gameController = myGame.gameController;
 
-            AddChild(bodyAnimation);
             AddChild(tailAnimation);
+            AddChild(bodyAnimation);
         }
 
         public void FixedUpdate()

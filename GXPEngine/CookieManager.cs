@@ -32,7 +32,6 @@ namespace GXPEngine
             timerMilli = 0;
             spawnRate = maxSpawnRate;
 
-
             cookies = new List<Cookie>();
             CreateCookies();
         }

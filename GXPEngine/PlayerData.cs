@@ -11,17 +11,19 @@ namespace GXPEngine
     public class PlayerData
     {
         private string _name;
-
+        private int time;
         private int score;
         private int lifes;
         private float hudHeight;
+
+        private LeaderBoard leaderBoard;
 
         private Dictionary<EasyDraw, string> buttons;
         private bool buttonsActive;
 
         public PlayerData()
         {
-            lifes = 5;
+            lifes = 1;
             score = 0;
             _name = "";
         }
@@ -66,6 +68,10 @@ namespace GXPEngine
         public void DecreaseLifes()
         {
             lifes--;
+            if (lifes == 0)
+            {
+                HUD.goStart = Time.time;
+            }
         }
 
         public bool isButtonActive()
@@ -114,8 +120,33 @@ namespace GXPEngine
                 else if(!s.Equals("-") && _name.Length < 3)
                 {
                     _name += s;
+                    if (_name.Length == 3)
+                    {
+                        leaderBoard.GetHighScore().UpdateResults();
+                        leaderBoard.GetHighScore().visible = true;
+                    }
                 }
             }
+        }
+
+        public int GetTime()
+        {
+            return time;
+        }
+
+        public void SetTime(int t)
+        {
+            time = t;
+        }
+
+        public LeaderBoard GetLeaderBoard()
+        {
+            return leaderBoard;
+        }
+
+        public void SetHighScore(LeaderBoard l)
+        {
+            leaderBoard = l;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace GXPEngine
             SetXY(x, y);
 
             colorIndex = 1;
-            decaySpeed = 2;
+            decaySpeed = 20;
         }
 
         void Update()
