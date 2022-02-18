@@ -99,39 +99,30 @@ namespace GXPEngine
                     hud.Update();
                 }
 
-                if (leaderBoard != null)
-                {
-                    if (!gameOverOnce){
-                        level.cookieManager.KillAllCookies();
-                        new Sound("Assets/Sounds/playerdeath.wav").Play();//should be game over sound.
-                        MyGame myGame = (MyGame)game;
-                        myGame.PlayBackgroundMusic("music endscreen.wav");
-                        pData.SetButtonActive(true);
-                        leaderBoard.visible = true;
-                        gameOverOnce = true;
-                    if (pData.GetLifes() == 0 && !hud.GetGameOver().visible)
+                    if (leaderBoard != null)
                     {
-                        if (!gameOverOnce)
+                        if (pData.GetLifes() == 0 && !hud.GetGameOver().visible)
                         {
-                            level.cookieManager.KillAllCookies();
-                            new Sound("Assets/Sounds/playerdeath.wav").Play();//should be game over sound.
-                            MyGame myGame = (MyGame)game;
-                            myGame.PlayBackgroundMusic("music endscreen.wav");
-                            pData.SetButtonActive(true);
-                            leaderBoard.visible = true;
-                            gameOverOnce = true;
+                            if (!gameOverOnce)
+                            {
+                                level.cookieManager.KillAllCookies();
+                                new Sound("Assets/Sounds/playerdeath.wav").Play();//should be game over sound.
+                                MyGame myGame = (MyGame)game;
+                                myGame.PlayBackgroundMusic("music endscreen.wav");
+                                pData.SetButtonActive(true);
+                                leaderBoard.visible = true;
+                                gameOverOnce = true;
+                            }
+                            leaderBoard.FixedUpdate();
                         }
-                        leaderBoard.FixedUpdate();
+                        else
+                        {
+                            gameOverOnce = false;
+                            pData.SetButtonActive(false);
+                            leaderBoard.visible = false;
+                        }
                     }
-                    else
-                    {
-                        gameOverOnce = false;
-                        pData.SetButtonActive(false);
-                        leaderBoard.visible = false;
-                    }
-                }
-
-                if (player.visible)
+                    if (player.visible)
                 {
                     player.FixedUpdate();
                 }
