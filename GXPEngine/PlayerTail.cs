@@ -27,16 +27,25 @@ namespace GXPEngine
         public void Update()
         {
             Animate(0.5f);
-            if (height < _player.GetSpeed() * 1.28f)
+            if (_player.GetSpeed() != 0)
             {
-                height += 3;
+                visible = true;
             }
-            else if (height > _player.GetSpeed() * 1.28f)
+            else
             {
-                height -= 1;
-                if (height < 100) height = 100;
+                visible = false;
             }
-            SetXY(0, maxHeight);
+
+            //if (height < _player.GetSpeed() * 1.28f)
+            //{
+            //    height += 3;
+            //}
+            //else if (height > _player.GetSpeed() * 1.28f)
+            //{
+            //    height -= 1;
+            //    if (height < 100) height = 100;
+            //}
+            //SetXY(0, maxHeight);
 
             //height = (int)(_player.GetSpeed() * 1.28f);
         }

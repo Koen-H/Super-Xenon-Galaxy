@@ -43,7 +43,7 @@ namespace GXPEngine
             
 
             cookies = new List<Cookie>();
-            CreateCookies();
+            CreateObjects();
         }
 
         public void Update()
@@ -66,19 +66,19 @@ namespace GXPEngine
             {
                 foreach (AnimationSprite item in removeItems)
                 {
-                    if(item is PowerUp)
+                    if(item is PowerUp powerup)
                     {
-                        currentPowerUps.Remove((PowerUp)item);
+                        currentPowerUps.Remove(powerup);
                     }
-                    else if (item is Hazard)
+                    else if (item is Hazard hazard)
                     {
-                        currentHazards.Remove((Hazard)item);
+                        currentHazards.Remove(hazard);
                     }
                 }
             }
             CookieDecay();
             if (_pData.GetLifes() <= 0) return;
-            CreateCookies();
+            CreateObjects();
         }
 
         private float GetSpawnRate()
@@ -99,25 +99,6 @@ namespace GXPEngine
         {
             timerMilli = t;
         }
-        
-        private void CreatePowerUp()
-        {
-            float rX = random.Next(distance, game.width - distance);
-            float rY = random.Next(distance, game.height - distance);
-
-            PowerUp powerUp = new PowerUp(this, rX, rY);
-            currentPowerUps.Add(powerUp);
-            AddChild(powerUp);
-        }
-        private void CreateHazard()
-        {
-            float rX = random.Next(distance, game.width - distance);
-            float rY = random.Next(distance, game.height - distance);
-
-            Hazard hazard = new Hazard(this, rX, rY);
-            currentHazards.Add(hazard);
-            AddChild(hazard);
-        }
 
 
         private void CookieDecay()
@@ -129,9 +110,7 @@ namespace GXPEngine
                     c.SetAnimation();
                     if (Time.time > c.timeToDie)
                     {
-                        if (_pData.GetLifes() > 0) {
-                            _pData.DecreaseLifes();
-                          }
+                        if (_pData.GetLifes() > 0) _pData.DecreaseLifes();
                         RemoveCookieFromList(c);
                         c.Destroy();
                         break;
@@ -151,7 +130,7 @@ namespace GXPEngine
             }
         }
 
-        private void CreateCookies()
+        private void CreateObjects()
         {
             
             if ((int)GetTimer() < GetSpawnRate()) return;
@@ -166,15 +145,15 @@ namespace GXPEngine
                 bool good = (player.DistanceTo(cookie) > player.width * 2);
 
                 GameObject[] collisions = cookie.GetCollisions(true, false);
-                //Console.WriteLine(collisions.Length);
 
                 if (collisions.Length == 0 && good) break;
 
             }
-            //CreatePowerUp(); //Spawns and creates a power up
             CreateHazard(); // spawns and creates a hazard
             cookies.Add(cookie);
             AddChild(cookie);
+            if (_pData.GetTime() < 30000) return;
+            CreatePowerUp(); //Spawns and creates a power up
         }
 
         private Cookie CreateCookie()
@@ -205,7 +184,30 @@ namespace GXPEngine
             }
             return cookie;
         }
-        
+
+
+        private void CreatePowerUp()
+        {
+            int r = random.Next(0, 20);
+            if (r != 1) return;
+
+            float rX = random.Next(distance, game.width - distance);
+            float rY = random.Next(distance, game.height - distance);
+
+            PowerUp powerUp = new PowerUp(this, rX, rY);
+            currentPowerUps.Add(powerUp);
+            AddChild(powerUp);
+        }
+        private void CreateHazard()
+        {
+            float rX = random.Next(distance, game.width - distance);
+            float rY = random.Next(distance, game.height - distance);
+
+            Hazard hazard = new Hazard(this, rX, rY);
+            currentHazards.Add(hazard);
+            AddChild(hazard);
+        }
+
         public void RemoveCookieFromList(Cookie cookie)
         {
             cookies.Remove(cookie);
