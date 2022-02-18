@@ -47,6 +47,7 @@ namespace GXPEngine
 
         public void Update()
         {
+
             background.x += 0.07f * direction;
             if (background.x > game.width * 0.66f)
             {

@@ -11,6 +11,7 @@ namespace GXPEngine
     public class PlayerData
     {
         private HUD hud;
+        private Menu menu;
 
         private string _name;
         private int time;
@@ -34,12 +35,11 @@ namespace GXPEngine
 
         public void Reset()
         {
+            hud.visible = true;
             ResetLifes();
             ResetScore();
-            //Console.WriteLine(_name);
             ResetPlayerName();
             ResetLeaderBoard();
-            //Console.WriteLine(_name);
         }
 
 
@@ -161,6 +161,16 @@ namespace GXPEngine
         public void SetTime(int t)
         {
             time = t;
+        }
+
+        public Menu GetMenu()
+        {
+            return menu;
+        }
+
+        public void SetMenu(Menu m)
+        {
+            menu = m;
         }
 
         public LeaderBoard GetLeaderBoard()
