@@ -40,7 +40,6 @@ namespace GXPEngine
 
         public void Update()
         {
-            Console.WriteLine(menu.visible);
             if (!menu.isActive())
             {
                 if (gameController != null)

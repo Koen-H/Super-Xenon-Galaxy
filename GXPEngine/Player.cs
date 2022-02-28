@@ -81,7 +81,6 @@ namespace GXPEngine
             Move();
             ChangeColor();
             PressSpace();
-
         }
 
         public float GetSpeed()

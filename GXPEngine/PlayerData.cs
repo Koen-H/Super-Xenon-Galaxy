@@ -24,7 +24,7 @@ namespace GXPEngine
         private Dictionary<EasyDraw, string> buttons;
         private bool buttonsActive;
 
-        public PlayerData(string name = "", int score = 0, int lifes = 1)
+        public PlayerData(string name = "", int score = 0, int lifes = 5)
         {
 
             maxLifes = lifes;

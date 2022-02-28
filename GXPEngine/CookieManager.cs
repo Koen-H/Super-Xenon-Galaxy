@@ -200,10 +200,13 @@ namespace GXPEngine
         }
         private void CreateHazard()
         {
-            float rX = random.Next(distance, game.width - distance);
+            var xValues = new List<int> { random.Next(-distance * 2, 0), random.Next(game.width), random.Next(game.width, game.width + distance * 2) };
+            var yValues = new List<int> { random.Next(-distance * 2, 0), random.Next(game.height, game.height + distance * 2) };
+            float rX = random.Next(random.Next(-distance * 4, -distance * 2), random.Next(game.width - distance));
             float rY = random.Next(distance, game.height - distance);
 
-            Hazard hazard = new Hazard(this, rX, rY);
+            //Need to fix so if it can't spawn in center (using while loop probably) TODO!!!
+            Hazard hazard = new Hazard(this, xValues[random.Next(xValues.Count)], yValues[random.Next(yValues.Count)]);
             currentHazards.Add(hazard);
             AddChild(hazard);
         }
