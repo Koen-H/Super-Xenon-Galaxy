@@ -118,7 +118,10 @@ namespace GXPEngine
 
             if (Input.GetKeyDown(Key.SPACE) && !pressSpace && visible)
             {
-                pressSpace = true;
+                new Sound("Assets/Sounds/select.wav").Play(false,0,0.5f);
+                MyGame myGame = (MyGame)game;
+                myGame.PlayBackgroundMusic("Music game.mp3");
+               pressSpace = true;
                 switch (state)
                 {
                     case 1:

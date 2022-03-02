@@ -67,7 +67,7 @@ namespace GXPEngine
 
             MyGame myGame = (MyGame)game;
             if(myGame.gameController != null) gameController = myGame.gameController;
-            TouchedHazard();
+            //TouchedHazard();
             
             AddChild(tailAnimation);
             AddChild(bodyAnimation);
@@ -295,21 +295,19 @@ namespace GXPEngine
             {
                 case 1:
                     {
-                        new Sound("Assets/Sounds/wolf growl.wav").Play();//should be sound chain 2
+                        
                         speedBoostInterval = Time.time + 1500f;
                         speedBoost = 260;
                         break;
                     }
                 case 2:
                     {
-                        new Sound("Assets/Sounds/wolf growl.wav").Play();//should be sound chain 3
                         speedBoostInterval = Time.time + 500f;
                         speedBoost = 338;
                         break;
                     }
                 case 3:
                     {
-                        new Sound("Assets/Sounds/wolf growl.wav").Play();//should be sound chain 4
                         speedBoostInterval = Time.time + 250f;
                         speedBoost = 440;
                         break;
@@ -336,6 +334,7 @@ namespace GXPEngine
 
         public void TouchedHazard()
         {
+            new Sound("Assets/Sounds/enemyhit.wav").Play();
             isStunned = true;
             stunInterval = stunCooldown + Time.time;
             speedBoostStage = 0;

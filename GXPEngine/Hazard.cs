@@ -104,6 +104,7 @@ namespace GXPEngine
                 player.TouchedHazard();
                 LateDestroy();
                 cookieManager.removeItems.Add(this);
+                
             }
 
         }
