@@ -21,9 +21,21 @@ namespace GXPEngine
         {
             gameController = _gameController;
             pData = new PlayerData();
-            menu = new Menu();
-            AddChild(menu);
+            menu = new Menu(pData);
+            player = new Player(game.width / 2, game.height / 2, pData);
+            hud = new HUD(game, pData);
+            level = new Level("Assets/background.png", player, pData);
+            leaderBoard = new LeaderBoard(game, pData);
 
+            level.visible = false;
+            hud.visible = false;
+            player.visible = false;
+
+            AddChild(level);
+            AddChild(leaderBoard);
+            AddChild(player);
+            AddChild(hud);
+            AddChild(menu);
         }
 
         public void Update()
@@ -35,16 +47,6 @@ namespace GXPEngine
                     gameController.playLightAnimation = false;
                     gameController.SendString("COLORS_OFF");
                 }
-
-                player = new Player(game.width / 2, game.height / 2, pData);
-                hud = new HUD(game, pData);
-		        level = new Level("Assets/background.png", player, pData);
-                leaderBoard = new LeaderBoard(game, pData);
-
-                AddChild(level);
-                AddChild(leaderBoard);
-                AddChild(player);
-                AddChild(hud);
             }
             if (gameController != null)
             {
@@ -68,17 +70,24 @@ namespace GXPEngine
                     menu.pressS = false;
                 }
             }
-            menu.Update();
-
-
-            if (level != null)
+            if (menu.visible)
             {
-                level.Update();
+                menu.Update();
+                level.visible = false;
+                hud.visible = false;
+                player.visible = false;
             }
-
-
-            if (hud != null)
+            else
             {
+                level.visible = true;
+                hud.visible = true;
+                player.visible = true;
+                if (level.visible)
+                {
+                    level.Update();
+                }
+
+
                 if (leaderBoard.visible)
                 {
                     hud.visible = false;
@@ -88,34 +97,37 @@ namespace GXPEngine
                     hud.visible = true;
                     hud.Update();
                 }
-            }
 
-            if (leaderBoard != null)
-            {
-                if (pData.GetLifes() == 0 && !hud.GetGameOver().visible)
+                if (leaderBoard != null)
                 {
-                    if (!gameOverOnce){
-                        level.cookieManager.KillAllCookies();
-                        new Sound("Assets/Sounds/playerdeath.wav").Play();//should be game over sound.
-                        MyGame myGame = (MyGame)game;
-                        myGame.PlayBackgroundMusic("music endscreen.wav");
-                        pData.SetButtonActive(true);
-                        leaderBoard.visible = true;
-                        gameOverOnce = true;
+
+                    if (pData.GetLifes() == 0 && !hud.GetGameOver().visible)
+                    {
+                        if (!gameOverOnce)
+                        {
+                            level.cookieManager.KillAllCookies();
+                            new Sound("Assets/Sounds/playerdeath.wav").Play();//should be game over sound.
+                            MyGame myGame = (MyGame)game;
+                            myGame.PlayBackgroundMusic("music endscreen.wav");
+                            pData.SetButtonActive(true);
+                            leaderBoard.visible = true;
+                            gameOverOnce = true;
+                        }
+                        leaderBoard.FixedUpdate();
                     }
-                    leaderBoard.FixedUpdate();
-                }
-                else
-                {
-                    gameOverOnce = false;
-                    pData.SetButtonActive(false);
-                    leaderBoard.visible = false;
-                }
-            }
+                    else
+                    {
+                        gameOverOnce = false;
+                        pData.SetButtonActive(false);
+                        leaderBoard.visible = false;
 
-            if (player != null)
-            {
-                player.FixedUpdate();
+                    }
+                }
+
+                if (player.visible)
+                {
+                    player.FixedUpdate();
+                }
             }
 
         }

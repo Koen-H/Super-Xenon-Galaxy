@@ -81,7 +81,6 @@ namespace GXPEngine
             Move();
             ChangeColor();
             PressSpace();
-
         }
 
         public float GetSpeed()
@@ -270,13 +269,15 @@ namespace GXPEngine
                             _pData.ChangeName(_pData.GetButtons()[key]);
                     }
 
-                    if (collision is Button button)
+                    if (collision is Button button && _pData.GetLeaderBoard().GetHighScore().visible)
                     {
                         if (button.GetName().Equals("again"))
                         {
+                            _pData.GetMenu().visible = true;
+                            _pData.GetMenu().SetArrow();
                             _pData.Reset();
-                            _pData.GetHud().SetTime(Time.time);
-                            HUD.goStart = Time.time;
+                            //_pData.GetHud().SetTime(Time.time);
+                            //HUD.goStart = Time.time;
                         }
                     }
                 }

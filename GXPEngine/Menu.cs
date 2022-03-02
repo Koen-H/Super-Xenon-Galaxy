@@ -6,9 +6,11 @@ using System.Text;
 
 namespace GXPEngine
 {
-    class Menu : Canvas
+    public class Menu : Canvas
     {
+        private PlayerData _pData;
 
+        private Sprite howToPlay;
         private Sprite arrow;
         private Sprite background;
 
@@ -22,12 +24,15 @@ namespace GXPEngine
 
         private int state = 1;
 
-        public Menu() : base(1920, 1080, false)
+        public Menu(PlayerData pData) : base(1920, 1080, false)
         {
+            _pData = pData;
+            _pData.SetMenu(this);
             active = true;
 
             CreateArrow();
             UpdateArrow();
+            CreateHowToPlay();
         }
 
         public void Update()
@@ -45,19 +50,35 @@ namespace GXPEngine
             active = b;
         }
 
+        public void SetArrow()
+        {
+            arrow.y += arrow.height * 3.5f;
+            state = 3;
+        }
+
 
         /// <summary>
         /// Creating menu arrow.
         /// </summary>
         private void CreateArrow()
         {
-            background = new Sprite("Assets/Menu/background.png", false, false);
+            background = new Sprite("Assets/Menu/background2.png", false, false);
             AddChild(background);
 
             arrow = new Sprite("Assets/Menu/arrow.png", false, false);
-            arrow.SetXY(width / 2 - arrow.width * 2, height / 2);
+            arrow.SetScaleXY(1.5f);
+            arrow.SetXY(width / 2 + arrow.width * 2, height / 2 + arrow.height * 1.5f);
             AddChild(arrow);
 
+        }
+
+        private void CreateHowToPlay()
+        {
+            howToPlay = new Sprite("Assets/Menu/howtoplay.png", false, false);
+            howToPlay.SetOrigin(howToPlay.width / 2, howToPlay.height / 2);
+            howToPlay.SetXY(width / 2, height / 2);
+            howToPlay.visible = false;
+            AddChild(howToPlay);
         }
 
         /// <summary>
@@ -68,14 +89,31 @@ namespace GXPEngine
             if ((Input.GetKeyDown(Key.W) || analogUp) && !pressW && state != 1 && visible)
             {
                 pressW = true;
+                if (state == 2)
+                {
+                    arrow.y -= arrow.height * 2;
+
+                }
+                else if (state == 3)
+                {
+                    arrow.y -= arrow.height * 1.5f;
+                }
                 state -= 1;
-                arrow.y -= arrow.height * 3;
             }
-            if ((Input.GetKeyDown(Key.S)|| analogDown) && !pressS && state != 3 && visible)
+            if ((Input.GetKeyDown(Key.S) || analogDown) && !pressS && state != 3 && visible)
             {
                 pressS = true;
+
+                if (state == 1)
+                {
+                    arrow.y += arrow.height * 2;
+
+                }
+                else if (state == 2)
+                {
+                    arrow.y += arrow.height * 1.5f;
+                }
                 state += 1;
-                arrow.y += arrow.height * 3;
             }
 
             if (Input.GetKeyDown(Key.SPACE) && !pressSpace && visible)
@@ -89,10 +127,14 @@ namespace GXPEngine
                     case 1:
                         active = false;
                         visible = false;
+                        _pData.Reset();
+                        _pData.GetHud().SetTime(Time.time);
+                        HUD.goStart = Time.time;
                         break;
                     case 2:
                         break;
                     case 3:
+                        howToPlay.visible = !howToPlay.visible;
                         break;
                 }
             }
@@ -117,5 +159,6 @@ namespace GXPEngine
                 pressSpace = false;
             }
         }
+
     }
 }
